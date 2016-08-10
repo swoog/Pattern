@@ -10,17 +10,15 @@
 
     public class InstanciateObject
     {
+        private IKernel kernel;
+
         public InstanciateObject()
         {
+            this.kernel = new Kernel();
         }
 
-        public static IEnumerable<object[]> Kernels => new[] { new object[]
-                                                                   {
-                                                                       new Kernel()
-                                                                   } };
-
-        [CustomTheory(DisplayName = nameof(Should_instanciate_type_When_bind_self_type)), MemberData("Kernels")]
-        public void Should_instanciate_type_When_bind_self_type(IKernel kernel)
+        [CustomFact(DisplayName = nameof(Should_instanciate_type_When_bind_self_type))]
+        public void Should_instanciate_type_When_bind_self_type()
         {
             kernel.Bind(typeof(SimpleClass), typeof(SimpleClass));
 
@@ -29,5 +27,28 @@
             Assert.NotNull(instance);
             Assert.IsType<SimpleClass>(instance);
         }
+
+        [CustomFact(DisplayName = nameof(Should_instanciate_type_When_inject_another_type))]
+        public void Should_instanciate_type_When_inject_another_type()
+        {
+            this.kernel.Bind(typeof(ComplexClass), typeof(ComplexClass));
+            this.kernel.Bind(typeof(SimpleClass), typeof(SimpleClass));
+
+            var instance = this.kernel.Get(typeof(ComplexClass));
+
+            Assert.NotNull(instance);
+            var complexType = Assert.IsType<ComplexClass>(instance);
+            Assert.NotNull(complexType.InjectedType);
+        }
+    }
+
+    public class ComplexClass
+    {
+        public ComplexClass(SimpleClass injectedType)
+        {
+            this.InjectedType = injectedType;
+        }
+
+        public SimpleClass InjectedType { get; set; }
     }
 }

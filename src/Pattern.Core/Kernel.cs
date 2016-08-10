@@ -2,6 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+
     using Pattern.Core.Interfaces;
 
     public class Kernel : IKernel
@@ -22,7 +25,16 @@
         {
             var to = this.binds[@from];
 
-            return Activator.CreateInstance(to);
+            var constructor = to.GetTypeInfo().GetConstructors().Single();
+
+            var parameters = constructor.GetParameters().Select(Resolve).ToArray();
+
+            return Activator.CreateInstance(to, parameters);
+        }
+
+        private object Resolve(ParameterInfo arg)
+        {
+            return Get(arg.ParameterType);
         }
     }
 }

@@ -2,7 +2,7 @@ namespace Pattern.Core.Tests
 {
     using Xunit;
 
-    public class CustomTheoryAttribute : TheoryAttribute
+    public class CustomFactAttribute : FactAttribute
     {
         private string displayName;
 
