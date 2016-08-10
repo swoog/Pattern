@@ -1,8 +1,8 @@
-namespace Pattern.Core.Tests
+namespace Pattern.Config.Tests
 {
     using Xunit;
 
-    public class CustomTheoryAttribute : TheoryAttribute
+    public class CustomFactAttribute : FactAttribute
     {
         private string displayName;
 

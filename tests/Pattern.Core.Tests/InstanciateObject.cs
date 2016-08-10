@@ -1,36 +1,21 @@
 ﻿namespace Pattern.Core.Tests
 {
-    using System.Collections.Generic;
+    using Pattern.Core;
+    using Interfaces;
 
     using Xunit;
-    using Pattern.Core;
-#if NET45
-    using Pattern.Core.Ninject;
-#endif
-    using Pattern.Core.Interfaces;
-
-    using Xunit.Extensions;
 
     public class InstanciateObject
     {
+        private readonly IKernel kernel;
+
         public InstanciateObject()
         {
+            this.kernel = new Kernel();
         }
 
-        public static IEnumerable<object[]> Kernels => new[] { new object[]
-                                                                   {
-                                                                       new Kernel()
-                                                                   },
-#if NET45
-            new object[]
-                                                                   {
-                                                                       new NinjectStandardKernel()
-                                                                   }
-#endif
-        };
-
-        [CustomTheory(DisplayName = nameof(Should_instanciate_type_When_bind_self_type)), MemberData("Kernels")]
-        public void Should_instanciate_type_When_bind_self_type(IKernel kernel)
+        [CustomFact(DisplayName = nameof(Should_instanciate_type_When_bind_self_type))]
+        public void Should_instanciate_type_When_bind_self_type()
         {
             kernel.Bind(typeof(SimpleClass), typeof(SimpleClass));
 
@@ -38,6 +23,46 @@
 
             Assert.NotNull(instance);
             Assert.IsType<SimpleClass>(instance);
+        }
+
+        [CustomFact(DisplayName = nameof(Should_instanciate_type_When_inject_another_type))]
+        public void Should_instanciate_type_When_inject_another_type()
+        {
+            this.kernel.Bind(typeof(ComplexClass), typeof(ComplexClass));
+            this.kernel.Bind(typeof(SimpleClass), typeof(SimpleClass));
+
+            var instance = this.kernel.Get(typeof(ComplexClass));
+
+            Assert.NotNull(instance);
+            var complexType = Assert.IsType<ComplexClass>(instance);
+            Assert.NotNull(complexType.InjectedType);
+        }
+
+        [CustomFact(DisplayName = nameof(Should_instanciate_type_When_map_to_interface))]
+        public void Should_instanciate_type_When_map_to_interface()
+        {
+            this.kernel.Bind(typeof(ComplexInterfaceClass), typeof(ComplexInterfaceClass));
+            this.kernel.Bind(typeof(ISimpleClass), typeof(SimpleClass));
+
+            var instance = this.kernel.Get(typeof(ComplexInterfaceClass));
+
+            Assert.NotNull(instance);
+            var complexType = Assert.IsType<ComplexInterfaceClass>(instance);
+            Assert.NotNull(complexType.InjectedType);
+        }
+
+        [CustomFact(DisplayName = nameof(Should_display_an_error_message_When_instanciate_an_unknow_object))]
+        public void Should_display_an_error_message_When_instanciate_an_unknow_object()
+        {
+            this.kernel.Bind(typeof(ComplexInterfaceClass), typeof(ComplexInterfaceClass));
+
+            var exception = Assert.Throws<InjectionException>(
+                () =>
+                    {
+                        this.kernel.Get(typeof(ComplexInterfaceClass));
+                    });
+
+            Assert.Equal("Injection not found for ISimpleClass when injected in ComplexInterfaceClass.", exception.Message);
         }
     }
 }

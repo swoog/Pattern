@@ -1,4 +1,4 @@
-namespace Pattern.Core.Tests
+﻿namespace Pattern.Config.Tests
 {
     public class SimpleClass : ISimpleClass
     {

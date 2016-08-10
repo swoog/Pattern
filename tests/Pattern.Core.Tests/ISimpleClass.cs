@@ -1,6 +1,6 @@
 namespace Pattern.Core.Tests
 {
-    public class SimpleClass : ISimpleClass
+    public interface ISimpleClass
     {
     }
 }
