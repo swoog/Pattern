@@ -28,6 +28,11 @@
 
         private object GetInternal(CallContext callContext)
         {
+            if (callContext.InstanciatedType == typeof(IKernel))
+            {
+                return this;
+            }
+
             if (!this.binds.ContainsKey(callContext.InstanciatedType))
             {
                 throw new InjectionException(callContext.InstanciatedType, callContext.Parent);

@@ -1,13 +1,21 @@
 ﻿{
-  "version": "1.0.0-*",
+  "version": "99.99.99.99",
 
   "dependencies": {
-    "NETStandard.Library": "1.6.0"
   },
 
   "frameworks": {
+    "net45": {
+
+    },
+    "net451": {
+
+    },
     "netstandard1.6": {
-      "imports": "dnxcore50"
+      "imports": "dnxcore50",
+      "dependencies": {
+        "NETStandard.Library": "1.6.0"
+      }
     }
   }
 }

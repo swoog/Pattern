@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Pattern.Core.Interfaces
+namespace Pattern.Config
 {
     public class Class1
     {
