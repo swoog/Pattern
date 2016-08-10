@@ -4,6 +4,9 @@
 
     using Xunit;
     using Pattern.Core;
+#if NET45
+    using Pattern.Core.Ninject;
+#endif
     using Pattern.Core.Interfaces;
 
     using Xunit.Extensions;
@@ -17,7 +20,14 @@
         public static IEnumerable<object[]> Kernels => new[] { new object[]
                                                                    {
                                                                        new Kernel()
-                                                                   } };
+                                                                   },
+#if NET45
+            new object[]
+                                                                   {
+                                                                       new NinjectStandardKernel()
+                                                                   }
+#endif
+        };
 
         [CustomTheory(DisplayName = nameof(Should_instanciate_type_When_bind_self_type)), MemberData("Kernels")]
         public void Should_instanciate_type_When_bind_self_type(IKernel kernel)
