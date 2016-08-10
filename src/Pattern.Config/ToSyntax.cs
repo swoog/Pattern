@@ -1,5 +1,7 @@
-﻿namespace Pattern.Core.Interfaces
+namespace Pattern.Config
 {
+    using Pattern.Core.Interfaces;
+
     public class ToSyntax<TFrom> : IToSyntax<TFrom>
     {
         private readonly IKernel kernel;

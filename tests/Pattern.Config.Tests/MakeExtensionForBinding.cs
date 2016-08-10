@@ -2,6 +2,7 @@
 {
     using NSubstitute;
     using Pattern.Core.Interfaces;
+    using Pattern.Config;
 
     public class MakeExtensionForBinding
     {

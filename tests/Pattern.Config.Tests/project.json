@@ -6,6 +6,7 @@
     "xunit": "2.1.0",
     "dotnet-test-xunit": "2.2.0-preview2-build1029",
     "Pattern.Core.Interfaces": "99.99.99.99",
+    "Pattern.Config": "99.99.99.99",
     "NSubstitute": "2.0.0-rc"
   },
   "frameworks": {

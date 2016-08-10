@@ -1,4 +1,4 @@
-﻿namespace Pattern.Core.Interfaces
+namespace Pattern.Config
 {
     public interface IToSyntax<TFrom>
     {
