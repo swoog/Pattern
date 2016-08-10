@@ -1,11 +1,10 @@
 ﻿namespace Pattern.Core
 {
+    using Interfaces;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-
-    using Pattern.Core.Interfaces;
 
     public class Kernel : IKernel
     {
@@ -23,17 +22,18 @@
 
         public object Get(Type @from)
         {
-            return this.GetInternal(@from, @from);
+            var callContext = new CallContext(@from);
+            return this.GetInternal(callContext);
         }
 
-        private object GetInternal(Type @from, Type typeToInject)
+        private object GetInternal(CallContext callContext)
         {
-            if (!this.binds.ContainsKey(@from))
+            if (!this.binds.ContainsKey(callContext.InstanciatedType))
             {
-                throw new InjectionException(@from, typeToInject);
+                throw new InjectionException(callContext.InstanciatedType, callContext.Parent);
             }
 
-            var to = this.binds[@from];
+            var to = this.binds[callContext.InstanciatedType];
 
             var constructor = to.GetTypeInfo().GetConstructors().Single();
 
@@ -44,7 +44,8 @@
 
         private object Resolve(ParameterInfo arg, Type typeToInject)
         {
-            return GetInternal(arg.ParameterType, typeToInject);
+            var callContext = new CallContext(arg.ParameterType, typeToInject);
+            return this.GetInternal(callContext);
         }
     }
 }
