@@ -14,6 +14,15 @@
             this.kernel = new Kernel();
         }
 
+        [CustomFact(DisplayName = nameof(Should_get_the_instance_of_kernel_When_get_IKernel))]
+        public void Should_get_the_instance_of_kernel_When_get_IKernel()
+        {
+            var instance = this.kernel.Get(typeof(IKernel));
+
+            Assert.NotNull(instance);
+            Assert.Same(this.kernel, instance);
+        }
+
         [CustomFact(DisplayName = nameof(Should_instanciate_type_When_bind_self_type))]
         public void Should_instanciate_type_When_bind_self_type()
         {
