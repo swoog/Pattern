@@ -23,18 +23,28 @@
 
         public object Get(Type @from)
         {
+            return this.GetInternal(@from, @from);
+        }
+
+        private object GetInternal(Type @from, Type typeToInject)
+        {
+            if (!this.binds.ContainsKey(@from))
+            {
+                throw new InjectionException(@from, typeToInject);
+            }
+
             var to = this.binds[@from];
 
             var constructor = to.GetTypeInfo().GetConstructors().Single();
 
-            var parameters = constructor.GetParameters().Select(Resolve).ToArray();
+            var parameters = constructor.GetParameters().Select(arg => this.Resolve(arg, to)).ToArray();
 
             return constructor.Invoke(parameters);
         }
 
-        private object Resolve(ParameterInfo arg)
+        private object Resolve(ParameterInfo arg, Type typeToInject)
         {
-            return Get(arg.ParameterType);
+            return GetInternal(arg.ParameterType, typeToInject);
         }
     }
 }

@@ -1,13 +1,13 @@
 ﻿namespace Pattern.Core.Tests
 {
-    using Interfaces;
     using Pattern.Core;
+    using Interfaces;
 
     using Xunit;
 
     public class InstanciateObject
     {
-        private IKernel kernel;
+        private readonly IKernel kernel;
 
         public InstanciateObject()
         {
@@ -50,19 +50,19 @@
             var complexType = Assert.IsType<ComplexInterfaceClass>(instance);
             Assert.NotNull(complexType.InjectedType);
         }
-    }
 
-    public interface ISimpleClass
-    {
-    }
-
-    public class ComplexInterfaceClass
-    {
-        public ComplexInterfaceClass(ISimpleClass injectedType)
+        [CustomFact(DisplayName = nameof(Should_display_an_error_message_When_instanciate_an_unknow_object))]
+        public void Should_display_an_error_message_When_instanciate_an_unknow_object()
         {
-            this.InjectedType = injectedType;
-        }
+            this.kernel.Bind(typeof(ComplexInterfaceClass), typeof(ComplexInterfaceClass));
 
-        public ISimpleClass InjectedType { get; set; }
+            var exception = Assert.Throws<InjectionException>(
+                () =>
+                    {
+                        this.kernel.Get(typeof(ComplexInterfaceClass));
+                    });
+
+            Assert.Equal("Injection not found for ISimpleClass when injected in ComplexInterfaceClass.", exception.Message);
+        }
     }
 }
