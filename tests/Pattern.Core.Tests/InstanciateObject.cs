@@ -1,12 +1,9 @@
 ﻿namespace Pattern.Core.Tests
 {
-    using System.Collections.Generic;
+    using Interfaces;
+    using Pattern.Core;
 
     using Xunit;
-    using Pattern.Core;
-    using Pattern.Core.Interfaces;
-
-    using Xunit.Extensions;
 
     public class InstanciateObject
     {
@@ -40,15 +37,32 @@
             var complexType = Assert.IsType<ComplexClass>(instance);
             Assert.NotNull(complexType.InjectedType);
         }
+
+        [CustomFact(DisplayName = nameof(Should_instanciate_type_When_map_to_interface))]
+        public void Should_instanciate_type_When_map_to_interface()
+        {
+            this.kernel.Bind(typeof(ComplexInterfaceClass), typeof(ComplexInterfaceClass));
+            this.kernel.Bind(typeof(ISimpleClass), typeof(SimpleClass));
+
+            var instance = this.kernel.Get(typeof(ComplexInterfaceClass));
+
+            Assert.NotNull(instance);
+            var complexType = Assert.IsType<ComplexInterfaceClass>(instance);
+            Assert.NotNull(complexType.InjectedType);
+        }
     }
 
-    public class ComplexClass
+    public interface ISimpleClass
     {
-        public ComplexClass(SimpleClass injectedType)
+    }
+
+    public class ComplexInterfaceClass
+    {
+        public ComplexInterfaceClass(ISimpleClass injectedType)
         {
             this.InjectedType = injectedType;
         }
 
-        public SimpleClass InjectedType { get; set; }
+        public ISimpleClass InjectedType { get; set; }
     }
 }

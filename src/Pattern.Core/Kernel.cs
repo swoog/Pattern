@@ -29,7 +29,7 @@
 
             var parameters = constructor.GetParameters().Select(Resolve).ToArray();
 
-            return Activator.CreateInstance(to, parameters);
+            return constructor.Invoke(parameters);
         }
 
         private object Resolve(ParameterInfo arg)
