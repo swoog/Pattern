@@ -9,11 +9,18 @@ namespace Pattern.Core.Ninject
 
     public class NinjectStandardKernel : Pattern.Core.Interfaces.IKernel
     {
-        private readonly StandardKernel standardKernel;
+        private readonly IKernel standardKernel;
 
         public NinjectStandardKernel()
+            : this(new StandardKernel())
         {
-            this.standardKernel = new StandardKernel();
+            
+        }
+
+        public NinjectStandardKernel(IKernel kernel)
+        {
+            this.standardKernel = kernel;
+            this.standardKernel.Bind<Pattern.Core.Interfaces.IKernel>().ToConstant(this);
         }
 
         public void Bind(Type @from, Type to)
