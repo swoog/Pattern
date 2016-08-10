@@ -4,7 +4,7 @@ namespace Pattern.Core.Ninject
 
     public static class NinjectExtensions
     {
-        public static Pattern.Core.Interfaces.IKernel BindPattern(IKernel ninjectKernel)
+        public static Pattern.Core.Interfaces.IKernel BindPattern(this IKernel ninjectKernel)
         {
             return new NinjectStandardKernel(ninjectKernel);
         }
