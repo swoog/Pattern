@@ -1,0 +1,15 @@
+{
+  "version": "99.99.99.99",
+
+  "dependencies": {
+    "Ninject": "3.2.2",
+    "Pattern.Core.Interfaces": "99.99.99.99"
+  },
+
+  "frameworks": {
+    "net45": {
+    },
+    "net451": {
+    }
+  }
+}
