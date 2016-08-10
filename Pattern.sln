@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9F929A59-25F0-40ED-A49C-515B0DE527BF}"
 	ProjectSection(SolutionItems) = preProject
 		global.json = global.json
+		Pack.ps1 = Pack.ps1
 	EndProjectSection
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Pattern.Core.Interfaces", "src\Pattern.Core.Interfaces\Pattern.Core.Interfaces.xproj", "{8217713E-18AE-4E07-BD2E-0DE15B0862E1}"
