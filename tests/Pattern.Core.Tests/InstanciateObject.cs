@@ -1,7 +1,7 @@
 ﻿namespace Pattern.Core.Tests
 {
     using Pattern.Core;
-    using Interfaces;
+    using Pattern.Core.Interfaces;
 
     using Xunit;
 
@@ -52,6 +52,19 @@
         {
             this.kernel.Bind(typeof(ComplexInterfaceClass), typeof(ComplexInterfaceClass));
             this.kernel.Bind(typeof(ISimpleClass), typeof(SimpleClass));
+
+            var instance = this.kernel.Get(typeof(ComplexInterfaceClass));
+
+            Assert.NotNull(instance);
+            var complexType = Assert.IsType<ComplexInterfaceClass>(instance);
+            Assert.NotNull(complexType.InjectedType);
+        }
+
+        [CustomFact(DisplayName = nameof(Should_instanciate_type_When_use_custom_factory))]
+        public void Should_instanciate_type_When_use_custom_factory()
+        {
+            this.kernel.Bind(typeof(ComplexInterfaceClass), typeof(ComplexInterfaceClass));
+            this.kernel.Bind(typeof(ISimpleClass), new LambdaFactory(() => new SimpleClass()));
 
             var instance = this.kernel.Get(typeof(ComplexInterfaceClass));
 

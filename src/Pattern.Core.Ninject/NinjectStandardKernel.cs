@@ -7,9 +7,11 @@ namespace Pattern.Core.Ninject
 {
     using global::Ninject;
 
+    using Pattern.Core.Interfaces;
+
     public class NinjectStandardKernel : Pattern.Core.Interfaces.IKernel
     {
-        private readonly IKernel standardKernel;
+        private readonly global::Ninject.IKernel standardKernel;
 
         public NinjectStandardKernel()
             : this(new StandardKernel())
@@ -17,7 +19,7 @@ namespace Pattern.Core.Ninject
             
         }
 
-        public NinjectStandardKernel(IKernel kernel)
+        public NinjectStandardKernel(global::Ninject.IKernel kernel)
         {
             this.standardKernel = kernel;
             this.standardKernel.Bind<Pattern.Core.Interfaces.IKernel>().ToConstant(this);
@@ -26,6 +28,11 @@ namespace Pattern.Core.Ninject
         public void Bind(Type @from, Type to)
         {
             this.standardKernel.Bind(from).To(to);
+        }
+
+        public void Bind(Type @from, IFactory toFactory)
+        {
+            this.standardKernel.Bind(@from).ToMethod(c => toFactory.Create());
         }
 
         public object Get(Type @from)
