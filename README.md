@@ -13,14 +13,14 @@ There are implementation for this abstraction like :
 
 You can use all patterns and facilities with this two implementation.
 
-## Pattern.Config
-This package is a fluent configurator. With this package you use a fluent syntax like :
-
+#### Pattern.Core
+This package is a very simple implementation of IOC.
+You can create a kernel like :
 ```csharp
-kernel.Bind<IInterface>().To<Class>()
+var kernel = new Kernel();
 ```
 
-## Pattern.Core.Ninject
+#### Pattern.Core.Ninject
 Two way is possible to use this package :
 
 On legacy you can :
@@ -31,4 +31,25 @@ var patternKernel = kernel.BindPattern()
 Or you can create a StandardKernel like :
 ```csharp
 var patternKernel = new NinjectStandardKernel()
+```
+
+## Pattern.Config
+This package is a fluent configurator. With this package you use a fluent syntax like :
+
+```csharp
+kernel.Bind<IInterface>
+    ().To<Class>
+        ()
+```
+
+
+## Pattern.Logging
+This package define an interface to implement for abstract error logging in your application.
+
+You can create your own implementation, or you can use :
+##### Pattern.Logging.log4net
+This package abstract use log4net througth the kernel abstraction in Pattern.Core.Interfaces.
+
+```csharp
+    kernel.BindLog4net();
 ```
