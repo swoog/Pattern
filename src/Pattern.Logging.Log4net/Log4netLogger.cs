@@ -32,5 +32,10 @@
         {
             this.log.Error(message);
         }
+
+        public void Error(Exception ex, string message)
+        {
+            this.log.Error(message, ex);
+        }
     }
 }
