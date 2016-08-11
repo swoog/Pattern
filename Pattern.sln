@@ -27,6 +27,10 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Pattern.Config.Tests", "tes
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Pattern.Core.Ninject", "src\Pattern.Core.Ninject\Pattern.Core.Ninject.xproj", "{CFB6C44B-DFAF-4453-BCF5-0F71766F3B97}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Pattern.Logging", "src\Pattern.Logging\Pattern.Logging.xproj", "{A535D145-29F2-4AE6-95DA-AE64475BFBE7}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Pattern.Logging.Log4net", "src\Pattern.Logging.Log4net\Pattern.Logging.Log4net.xproj", "{C34EA8DB-FD4E-484D-A400-594B93165B7A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +61,14 @@ Global
 		{CFB6C44B-DFAF-4453-BCF5-0F71766F3B97}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CFB6C44B-DFAF-4453-BCF5-0F71766F3B97}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CFB6C44B-DFAF-4453-BCF5-0F71766F3B97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A535D145-29F2-4AE6-95DA-AE64475BFBE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A535D145-29F2-4AE6-95DA-AE64475BFBE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A535D145-29F2-4AE6-95DA-AE64475BFBE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A535D145-29F2-4AE6-95DA-AE64475BFBE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C34EA8DB-FD4E-484D-A400-594B93165B7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C34EA8DB-FD4E-484D-A400-594B93165B7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C34EA8DB-FD4E-484D-A400-594B93165B7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C34EA8DB-FD4E-484D-A400-594B93165B7A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -68,5 +80,7 @@ Global
 		{67E2AFDA-FE4A-4027-A210-1B94DD983EFD} = {38133F35-7BEA-4C0C-AA6E-50EE8CDB7360}
 		{3A4FACB0-CC63-4582-BCC4-899459C409E7} = {6E44F257-F107-4287-9026-48BAE6CC41E5}
 		{CFB6C44B-DFAF-4453-BCF5-0F71766F3B97} = {38133F35-7BEA-4C0C-AA6E-50EE8CDB7360}
+		{A535D145-29F2-4AE6-95DA-AE64475BFBE7} = {38133F35-7BEA-4C0C-AA6E-50EE8CDB7360}
+		{C34EA8DB-FD4E-484D-A400-594B93165B7A} = {38133F35-7BEA-4C0C-AA6E-50EE8CDB7360}
 	EndGlobalSection
 EndGlobal
