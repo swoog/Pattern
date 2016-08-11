@@ -4,42 +4,33 @@
 
     using log4net;
 
-    using Pattern.Core.Interfaces;
-
     public class Log4netLogger : ILogger
     {
-        public Log4netLogger()
+        private readonly ILog log;
+
+        public Log4netLogger(ILog log)
         {
+            this.log = log;
         }
 
         public void Debug(string message)
         {
+            this.log.Debug(message);
         }
 
         public void Info(string message)
         {
-            throw new NotImplementedException();
+            this.log.Info(message);
         }
 
         public void Warning(string message)
         {
-            throw new NotImplementedException();
+            this.log.Warn(message);
         }
 
         public void Error(string message)
         {
-            throw new NotImplementedException();
-        }
-    }
-
-    public static class Log4netBindingExtensions
-    {
-        public static IKernel BindLof4net(IKernel kernel)
-        {
-            kernel.Bind(typeof(Log4netLogger), typeof(Log4netLogger));
-            //LogManager.GetLogger()
-
-            return kernel;
+            this.log.Error(message);
         }
     }
 }
