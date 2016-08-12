@@ -23,9 +23,9 @@
             this.binds.Add(@from, toFactory);
         }
 
-        public object Get(Type @from)
+        public object Get(Type parentType, Type @from)
         {
-            var callContext = new CallContext(@from);
+            var callContext = new CallContext(@from, parentType);
             return this.GetInternal(callContext);
         }
 

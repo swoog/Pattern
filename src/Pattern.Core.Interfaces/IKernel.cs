@@ -8,6 +8,6 @@
 
         void Bind(Type @from, IFactory toFactory);
 
-        object Get(Type @from);
+        object Get(Type parentType, Type @from);
     }
 }

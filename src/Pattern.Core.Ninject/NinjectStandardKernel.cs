@@ -35,7 +35,7 @@ namespace Pattern.Core.Ninject
             this.standardKernel.Bind(@from).ToMethod(c => toFactory.Create());
         }
 
-        public object Get(Type @from)
+        public object Get(Type parentType, Type @from)
         {
             return this.standardKernel.Get(@from);
         }
