@@ -5,5 +5,7 @@ namespace Pattern.Config
         void ToSelf();
 
         void To<TTo>() where TTo : TFrom;
+
+        void ToMethod<TTo>(System.Func<TTo> p) where TTo : TFrom;
     }
 }

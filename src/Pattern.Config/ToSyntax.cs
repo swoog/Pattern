@@ -1,5 +1,7 @@
 namespace Pattern.Config
 {
+    using System;
+
     using Pattern.Core.Interfaces;
 
     public class ToSyntax<TFrom> : IToSyntax<TFrom>
@@ -20,6 +22,11 @@ namespace Pattern.Config
             where TTo:TFrom
         {
             this.kernel.Bind(typeof(TFrom), typeof(TTo));
+        }
+
+        public void ToMethod<TTo>(Func<TTo> p) where TTo : TFrom
+        {
+            this.kernel.Bind(typeof(TFrom), new LambdaFactory(()=> p()));
         }
     }
 }

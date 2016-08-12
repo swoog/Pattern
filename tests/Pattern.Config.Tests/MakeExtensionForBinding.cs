@@ -3,6 +3,7 @@
     using NSubstitute;
     using Pattern.Core.Interfaces;
     using Pattern.Config;
+    using Pattern.Config.Tests.Fakes;
 
     public class MakeExtensionForBinding
     {
@@ -27,6 +28,14 @@
             this.kernel.Bind<ISimpleClass>().To<SimpleClass>();
 
             this.kernel.Received(1).Bind(typeof(ISimpleClass), typeof(SimpleClass));
+        }
+
+        [CustomFact(DisplayName = nameof(Should_bind_class_with_a_lambda_factory_When_bind_to_method))]
+        public void Should_bind_class_with_a_lambda_factory_When_bind_to_method()
+        {
+            this.kernel.Bind<ISimpleClass>().ToMethod(() => new SimpleClass());
+
+            this.kernel.Received(1).Bind(typeof(ISimpleClass), Arg.Any<LambdaFactory>());
         }
     }
 }
