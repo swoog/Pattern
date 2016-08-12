@@ -10,9 +10,9 @@ namespace Pattern.Core
     {
         private readonly Type typeToCreate;
 
-        private readonly Kernel kernel;
+        private readonly IKernel kernel;
 
-        public InternalFactory(Type typeToCreate, Kernel kernel)
+        public InternalFactory(Type typeToCreate, IKernel kernel)
         {
             this.typeToCreate = typeToCreate;
             this.kernel = kernel;
@@ -29,9 +29,7 @@ namespace Pattern.Core
 
         private object Resolve(ParameterInfo arg, Type typeToInject)
         {
-            var callContext = new CallContext(arg.ParameterType, typeToInject);
-            return this.kernel.GetInternal(callContext);
+            return this.kernel.Get(typeToInject, arg.ParameterType);
         }
-
     }
 }
