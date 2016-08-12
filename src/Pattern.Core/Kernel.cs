@@ -15,7 +15,7 @@
 
         public void Bind(Type @from, Type to)
         {
-            this.binds.Add(@from, new InternalFactory(to, this));
+            this.Bind(from, new TypeFactory(to, this));
         }
 
         public void Bind(Type @from, IFactory toFactory)

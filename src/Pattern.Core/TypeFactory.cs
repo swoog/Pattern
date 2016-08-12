@@ -6,23 +6,23 @@ namespace Pattern.Core
 
     using Pattern.Core.Interfaces;
 
-    internal class InternalFactory : IFactory
+    internal class TypeFactory : IFactory
     {
-        private readonly Type typeToCreate;
+        public Type TypeToCreate { get; }
 
         private readonly IKernel kernel;
 
-        public InternalFactory(Type typeToCreate, IKernel kernel)
+        public TypeFactory(Type typeToCreate, IKernel kernel)
         {
-            this.typeToCreate = typeToCreate;
+            this.TypeToCreate = typeToCreate;
             this.kernel = kernel;
         }
 
         public object Create()
         {
-            var constructor = this.typeToCreate.GetTypeInfo().GetConstructors().Single();
+            var constructor = this.TypeToCreate.GetTypeInfo().GetConstructors().Single();
 
-            var parameters = constructor.GetParameters().Select(arg => this.Resolve(arg, this.typeToCreate)).ToArray();
+            var parameters = constructor.GetParameters().Select(arg => this.Resolve(arg, this.TypeToCreate)).ToArray();
 
             return constructor.Invoke(parameters);
         }
