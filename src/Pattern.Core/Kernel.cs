@@ -53,7 +53,12 @@
 
             var to = this.GetFactories(callContext);
 
-            return to.Select(t => t.Create()).First();
+            if (to.Count > 1)
+            {
+                throw new FactoryException(callContext.InstanciatedType);
+            }
+
+            return to.Select(t => t.Create()).Single();
         }
 
         private IList<IFactory> GetFactories(CallContext callContext)

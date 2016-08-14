@@ -29,7 +29,22 @@
             Assert.IsType<SimpleClass>(collection[0]);
             Assert.IsType<SimpleClass2>(collection[1]);
         }
-        // Should throw error when bind two_class_on_same_interface
+
+        [CustomFact(DisplayName = nameof(Should_throw_error_When_bind_two_class_same_interface))]
+        public void Should_throw_error_When_bind_two_class_same_interface()
+        {
+            this.kernel.Bind(typeof(ISimpleClass), this.GetTypeFactory<SimpleClass>());
+            this.kernel.Bind(typeof(ISimpleClass), this.GetTypeFactory<SimpleClass2>());
+
+            var exception = Assert.Throws<FactoryException>(
+                () =>
+                {
+                    this.kernel.Get(typeof(ISimpleClass));
+                });
+
+            Assert.Equal("Injection have found many factories for ISimpleClass.", exception.Message);
+
+        }
 
         private TypeFactory GetTypeFactory<T>()
         {
