@@ -4,6 +4,7 @@
     using Pattern.Core.Interfaces;
     using Pattern.Config;
     using Pattern.Config.Tests.Fakes;
+    using Pattern.Core.Interfaces.Factories;
 
     public class MakeExtensionForBinding
     {
@@ -19,7 +20,8 @@
         {
             this.kernel.Bind<SimpleClass>().ToSelf();
 
-            this.kernel.Received(1).Bind(typeof(SimpleClass), typeof(SimpleClass));
+            this.kernel.Received(1)
+                .Bind(typeof(SimpleClass), Arg.Is<TypeFactory>(f => f.TypeToCreate == typeof(SimpleClass)));
         }
 
         [CustomFact(DisplayName = nameof(Should_bind_class_When_bind_interface_to_class))]
@@ -27,7 +29,8 @@
         {
             this.kernel.Bind<ISimpleClass>().To<SimpleClass>();
 
-            this.kernel.Received(1).Bind(typeof(ISimpleClass), typeof(SimpleClass));
+            this.kernel.Received(1)
+                .Bind(typeof(ISimpleClass), Arg.Is<TypeFactory>(f => f.TypeToCreate == typeof(SimpleClass)));
         }
 
         [CustomFact(DisplayName = nameof(Should_bind_class_with_a_lambda_factory_When_bind_to_method))]

@@ -25,11 +25,6 @@ namespace Pattern.Core.Ninject
             this.standardKernel.Bind<Pattern.Core.Interfaces.IKernel>().ToConstant(this);
         }
 
-        public void Bind(Type @from, Type to)
-        {
-            this.standardKernel.Bind(from).To(to);
-        }
-
         public void Bind(Type @from, IFactory toFactory)
         {
             this.standardKernel.Bind(@from).ToMethod(c => toFactory.Create());

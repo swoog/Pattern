@@ -4,8 +4,6 @@
     using System;
     using System.Collections.Generic;
 
-    using Pattern.Core.Interfaces.Factories;
-
     public class Kernel : IKernel
     {
         private readonly Dictionary<Type, IFactory> binds;
@@ -13,11 +11,6 @@
         public Kernel()
         {
             this.binds = new Dictionary<Type, IFactory>();
-        }
-
-        public void Bind(Type @from, Type to)
-        {
-            this.Bind(from, new TypeFactory(to, this));
         }
 
         public void Bind(Type @from, IFactory toFactory)
@@ -28,11 +21,6 @@
         public object Get(Type parentType, Type @from)
         {
             var callContext = new CallContext(@from, parentType);
-            return this.GetInternal(callContext);
-        }
-
-        internal object GetInternal(CallContext callContext)
-        {
             if (callContext.InstanciatedType == typeof(IKernel))
             {
                 return this;

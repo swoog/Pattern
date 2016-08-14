@@ -16,13 +16,13 @@ namespace Pattern.Config
 
         public void ToSelf()
         {
-            this.kernel.Bind(typeof(TFrom), typeof(TFrom));
+            this.To<TFrom>();
         }
 
         public void To<TTo>()
             where TTo:TFrom
         {
-            this.kernel.Bind(typeof(TFrom), typeof(TTo));
+            this.kernel.Bind(typeof(TFrom), new TypeFactory(typeof(TTo), this.kernel));
         }
 
         public void ToMethod<TTo>(Func<TTo> p) where TTo : TFrom
