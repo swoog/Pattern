@@ -9,7 +9,7 @@ namespace Pattern.Logging.Log4net
         public static IKernel BindLog4net(this IKernel kernel)
         {
             kernel.Bind(
-                typeof(Log4netLogger),
+                typeof(ILogger),
                 new LambdaFactory(() => new Log4netLogger(LogManager.GetLogger(typeof(Log4netLogger)))));
 
             return kernel;
