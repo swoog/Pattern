@@ -3,14 +3,15 @@
     using Pattern.Core;
     using Pattern.Core.Interfaces;
     using Pattern.Core.Interfaces.Factories;
+    using Pattern.Core.Tests.Fakes;
 
     using Xunit;
 
-    public class InstanciateObject
+    public class InstanciateOneObject
     {
         private readonly IKernel kernel;
 
-        public InstanciateObject()
+        public InstanciateOneObject()
         {
             this.kernel = new Kernel();
         }

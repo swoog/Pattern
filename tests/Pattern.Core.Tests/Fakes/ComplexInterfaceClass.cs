@@ -1,4 +1,4 @@
-﻿namespace Pattern.Core.Tests
+﻿namespace Pattern.Core.Tests.Fakes
 {
     public class ComplexInterfaceClass
     {
