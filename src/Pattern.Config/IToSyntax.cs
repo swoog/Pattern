@@ -1,5 +1,7 @@
 namespace Pattern.Config
 {
+    using Pattern.Core.Interfaces;
+
     public interface IToSyntax<TFrom>
     {
         void ToSelf();
@@ -7,5 +9,7 @@ namespace Pattern.Config
         void To<TTo>() where TTo : TFrom;
 
         void ToMethod<TTo>(System.Func<TTo> p) where TTo : TFrom;
+
+        void ToFactory<T>() where T : IFactory;
     }
 }

@@ -40,5 +40,21 @@
 
             this.kernel.Received(1).Bind(typeof(ISimpleClass), Arg.Any<LambdaFactory>());
         }
+
+        [CustomFact(DisplayName = nameof(Should_bind_class_When_bind_to_factory))]
+        public void Should_bind_class_When_bind_to_factory()
+        {
+            this.kernel.Bind<ISimpleClass>().ToFactory<FakeFactory>();
+
+            this.kernel.Received(1).Bind(typeof(ISimpleClass), Arg.Any<FakeFactory>());
+        }
+    }
+
+    public class FakeFactory : IFactory
+    {
+        public object Create()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

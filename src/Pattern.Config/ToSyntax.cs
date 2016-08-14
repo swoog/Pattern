@@ -29,5 +29,13 @@ namespace Pattern.Config
         {
             this.kernel.Bind(typeof(TFrom), new LambdaFactory(()=> p()));
         }
+
+        public void ToFactory<T>()
+            where T : IFactory
+        {
+            var factory = this.kernel.Get<T>();
+
+            this.kernel.Bind(typeof(TFrom), factory);
+        }
     }
 }
