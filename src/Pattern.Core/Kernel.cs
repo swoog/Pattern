@@ -39,7 +39,14 @@
             var any = @from.GetTypeInfo().GetInterfaces().FirstOrDefault(i => i.GetTypeInfo().IsGenericType && i.GetGenericTypeDefinition() == typeof(IEnumerable<>));
             if (any != null)
             {
-                var list = @from.GetTypeInfo().GetConstructors().First().Invoke(null) as IList;
+                var constructorInfo = @from.GetTypeInfo().GetConstructors().FirstOrDefault();
+
+                if (constructorInfo == null)
+                {
+                    constructorInfo = typeof(List<>).MakeGenericType(any.GenericTypeArguments[0]).GetTypeInfo().GetConstructors().First();
+                }
+
+                var list = constructorInfo.Invoke(null) as IList;
 
                 callContext = new CallContext(any.GenericTypeArguments[0], parentType);
                 var factories = this.GetFactories(callContext);
