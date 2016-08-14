@@ -8,5 +8,10 @@ namespace Pattern.Core.Interfaces
         {
             return kernel.Get(null, @from);
         }
+
+        public static T Get<T>(this IKernel kernel)
+        {
+            return (T)kernel.Get(null, typeof(T));
+        }
     }
 }

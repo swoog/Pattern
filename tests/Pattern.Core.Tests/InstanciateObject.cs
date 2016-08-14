@@ -34,6 +34,16 @@
             Assert.IsType<SimpleClass>(instance);
         }
 
+        [CustomFact(DisplayName = nameof(Should_instanciate_type__When_get_with_generic_method))]
+        public void Should_instanciate_type__When_get_with_generic_method()
+        {
+            this.kernel.Bind(typeof(ISimpleClass), typeof(SimpleClass));
+
+            ISimpleClass instance = this.kernel.Get<ISimpleClass>();
+
+            Assert.NotNull(instance);
+        }
+
         [CustomFact(DisplayName = nameof(Should_instanciate_type_When_inject_another_type))]
         public void Should_instanciate_type_When_inject_another_type()
         {
