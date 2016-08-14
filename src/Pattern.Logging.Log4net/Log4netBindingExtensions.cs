@@ -3,6 +3,7 @@ namespace Pattern.Logging.Log4net
     using log4net;
 
     using Pattern.Core.Interfaces;
+    using Pattern.Core.Interfaces.Factories;
 
     public static class Log4netBindingExtensions
     {

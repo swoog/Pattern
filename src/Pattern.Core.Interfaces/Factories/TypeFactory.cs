@@ -1,12 +1,10 @@
-namespace Pattern.Core
+namespace Pattern.Core.Interfaces.Factories
 {
     using System;
     using System.Linq;
     using System.Reflection;
 
-    using Pattern.Core.Interfaces;
-
-    internal class TypeFactory : IFactory
+    public class TypeFactory : IFactory
     {
         public Type TypeToCreate { get; }
 

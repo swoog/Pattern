@@ -4,6 +4,8 @@
     using System;
     using System.Collections.Generic;
 
+    using Pattern.Core.Interfaces.Factories;
+
     public class Kernel : IKernel
     {
         private readonly Dictionary<Type, IFactory> binds;

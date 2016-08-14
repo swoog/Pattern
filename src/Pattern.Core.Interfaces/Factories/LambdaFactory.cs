@@ -1,4 +1,4 @@
-﻿namespace Pattern.Core.Interfaces
+namespace Pattern.Core.Interfaces.Factories
 {
     using System;
 

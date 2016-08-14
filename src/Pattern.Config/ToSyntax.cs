@@ -3,6 +3,7 @@ namespace Pattern.Config
     using System;
 
     using Pattern.Core.Interfaces;
+    using Pattern.Core.Interfaces.Factories;
 
     public class ToSyntax<TFrom> : IToSyntax<TFrom>
     {

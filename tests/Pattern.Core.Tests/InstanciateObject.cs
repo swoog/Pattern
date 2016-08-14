@@ -2,6 +2,7 @@
 {
     using Pattern.Core;
     using Pattern.Core.Interfaces;
+    using Pattern.Core.Interfaces.Factories;
 
     using Xunit;
 
