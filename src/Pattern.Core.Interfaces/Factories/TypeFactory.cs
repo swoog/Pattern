@@ -18,7 +18,7 @@ namespace Pattern.Core.Interfaces.Factories
 
         public object Create()
         {
-            var constructor = this.TypeToCreate.GetTypeInfo().GetConstructors().Single();
+            var constructor = this.TypeToCreate.GetTypeInfo().DeclaredConstructors.Single();
 
             var parameters = constructor.GetParameters().Select(arg => this.Resolve(arg, this.TypeToCreate)).ToArray();
 

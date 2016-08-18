@@ -38,14 +38,14 @@
                 return this;
             }
 
-            var any = @from.GetTypeInfo().GetInterfaces().FirstOrDefault(i => i.GetTypeInfo().IsGenericType && i.GetGenericTypeDefinition() == typeof(IEnumerable<>));
+            var any = @from.GetTypeInfo().ImplementedInterfaces.FirstOrDefault(i => i.GetTypeInfo().IsGenericType && i.GetGenericTypeDefinition() == typeof(IEnumerable<>));
             if (any != null)
             {
-                var constructorInfo = @from.GetTypeInfo().GetConstructors().FirstOrDefault();
+                var constructorInfo = @from.GetTypeInfo().DeclaredConstructors.FirstOrDefault();
 
                 if (constructorInfo == null)
                 {
-                    constructorInfo = typeof(List<>).MakeGenericType(any.GenericTypeArguments[0]).GetTypeInfo().GetConstructors().First();
+                    constructorInfo = typeof(List<>).MakeGenericType(any.GenericTypeArguments[0]).GetTypeInfo().DeclaredConstructors.First();
                 }
 
                 var list = constructorInfo.Invoke(null) as IList;
