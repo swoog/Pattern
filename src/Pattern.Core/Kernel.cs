@@ -7,6 +7,8 @@
     using System.Linq;
     using System.Reflection;
 
+    using Pattern.Core.Interfaces.Factories;
+
     public class Kernel : IKernel
     {
         private readonly Dictionary<Type, IList<IFactory>> binds;
@@ -72,11 +74,19 @@
         {
             if (!this.binds.ContainsKey(callContext.InstanciatedType))
             {
+                if (callContext.InstanciatedType.GetTypeInfo().IsClass)
+                {
+                    var factory = new TypeFactory(callContext.InstanciatedType, this);
+
+                    this.binds.Add(callContext.InstanciatedType, new List<IFactory>() { factory });
+
+                    return this.binds[callContext.InstanciatedType];
+                }
+
                 throw new InjectionException(callContext.InstanciatedType, callContext.Parent);
             }
 
-            var to = this.binds[callContext.InstanciatedType];
-            return to;
+            return this.binds[callContext.InstanciatedType];
         }
     }
 }

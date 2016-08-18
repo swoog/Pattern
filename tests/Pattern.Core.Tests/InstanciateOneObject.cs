@@ -36,6 +36,15 @@
             Assert.IsType<SimpleClass>(instance);
         }
 
+        [CustomFact(DisplayName = nameof(Should_instanciate_type_When_bind_self_type))]
+        public void Should_instanciate_type_When_use_auto_bind_concret_type()
+        {
+            var instance = kernel.Get(typeof(SimpleClass));
+
+            Assert.NotNull(instance);
+            Assert.IsType<SimpleClass>(instance);
+        }
+
         [CustomFact(DisplayName = nameof(Should_instanciate_type__When_get_with_generic_method))]
         public void Should_instanciate_type__When_get_with_generic_method()
         {
