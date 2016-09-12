@@ -34,16 +34,17 @@
             Assert.Equal(1, instanceOfObjsctWithArguments.IntValue);
             Assert.NotNull(instanceOfObjsctWithArguments.SimpleClass);
         }
-    }
 
-    public class ObjectWithInjectedArguments : ObjectWithArguments
-    {
-        public SimpleClass SimpleClass { get; set; }
-
-        public ObjectWithInjectedArguments(int i, SimpleClass simpleClass, string stringValue)
-            : base(i, stringValue)
+        [CustomFact(DisplayName = nameof(Should_make_an_injection_error_When_custom_arguments_does_not_corresponding))]
+        public void Should_make_an_injection_error_When_custom_arguments_does_not_corresponding()
         {
-            this.SimpleClass = simpleClass;
+            var exception = Assert.Throws<InjectionException>(
+                () =>
+                {
+                    this.kernel.Get(null, typeof(ObjectWithInjectedArguments), "Toto");
+                });
+
+            Assert.Equal("Injection not found for Int32 when injected in ObjectWithInjectedArguments.", exception.Message);
         }
     }
 }
