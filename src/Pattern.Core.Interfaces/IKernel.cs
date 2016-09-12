@@ -6,6 +6,6 @@
     {
         void Bind(Type @from, IFactory toFactory);
 
-        object Get(Type parentType, Type @from);
+        object Get(Type parentType, Type @from, params object[] parameters);
     }
 }

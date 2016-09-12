@@ -30,7 +30,7 @@
             }
         }
 
-        public object Get(Type parentType, Type @from)
+        public object Get(Type parentType, Type @from, params object[] parameters)
         {
             var callContext = new CallContext(@from, parentType);
             if (callContext.InstanciatedType == typeof(IKernel))
@@ -54,7 +54,7 @@
                 var factories = this.GetFactories(callContext);
                 foreach (var factory in factories)
                 {
-                    list.Add(factory.Create());
+                    list.Add(factory.Create(parameters));
                 }
 
                 return list;
@@ -67,7 +67,7 @@
                 throw new FactoryException(callContext.InstanciatedType);
             }
 
-            return to.Select(t => t.Create()).Single();
+            return to.Select(t => t.Create(parameters)).Single();
         }
 
         private IList<IFactory> GetFactories(CallContext callContext)

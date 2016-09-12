@@ -11,7 +11,7 @@ namespace Pattern.Core.Interfaces.Factories
             this.create = create;
         }
 
-        public object Create()
+        public object Create(object[] parameters)
         {
             return this.create();
         }

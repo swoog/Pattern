@@ -2,6 +2,6 @@
 {
     public interface IFactory
     {
-        object Create();
+        object Create(object[] parameters);
     }
 }

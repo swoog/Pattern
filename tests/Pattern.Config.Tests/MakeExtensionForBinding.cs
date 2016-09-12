@@ -52,7 +52,7 @@
 
     public class FakeFactory : IFactory
     {
-        public object Create()
+        public object Create(object[] parameters)
         {
             throw new System.NotImplementedException();
         }
