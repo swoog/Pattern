@@ -7,6 +7,14 @@
     using Pattern.Core.Interfaces.Factories;
     using Pattern.Tests.Xunit;
 
+    public class program
+    {
+        public static void Main()
+        {
+
+        }
+    }
+
     public class MakeExtensionForBinding
     {
         private readonly IKernel kernel;

@@ -2,10 +2,6 @@
   <PropertyGroup>
     <VersionPrefix>99.99.99.99</VersionPrefix>
     <TargetFramework>netstandard1.0</TargetFramework>
-    <AssemblyName>Pattern.Core.Interfaces</AssemblyName>
-    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="**\*.cs" />
@@ -13,8 +9,6 @@
     <EmbeddedResource Include="compiler\resources\**\*" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="NETStandard.Library">
-      <Version>1.6.1</Version>
-    </PackageReference>
+    <PackageReference Include="NETStandard.Library" Version="1.6.1" />
   </ItemGroup>
 </Project>
