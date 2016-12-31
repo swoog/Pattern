@@ -6,14 +6,6 @@ using Xunit;
 
 namespace Pattern.Mvvm.Tests
 {
-    public class program
-    {
-        public static void Main()
-        {
-
-        }
-    }
-
     public class ViewModelBaseTests
     {
         [NamedFact(nameof(Should_notify_property_changed_when_raise_property))]

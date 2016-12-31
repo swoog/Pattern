@@ -6,13 +6,6 @@
     using Pattern.Core.Tests.Fakes;
     using Pattern.Tests.Xunit;
     using Xunit;
-    public class program
-    {
-        public static void Main()
-        {
-
-        }
-    }
 
     public class InstanciateOneObject
     {

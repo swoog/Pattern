@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <VersionPrefix>99.99.99.99</VersionPrefix>
+    <TargetFramework>netcoreapp1.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="**\*.cs" />
+    <EmbeddedResource Include="**\*.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Pattern.Core.Interfaces\Pattern.Core.Interfaces.csproj" />
+    <ProjectReference Include="..\..\src\Pattern.Module\Pattern.Module.csproj" />
+    <ProjectReference Include="..\..\src\Pattern.Tests.Xunit\Pattern.Tests.Xunit.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETCore.App" Version="1.0.1" />
+    <PackageReference Include="Microsoft.TestPlatform.TestHost" Version="15.0.0-preview-20161227-02" />
+    <PackageReference Include="NSubstitute" Version="2.0.1-rc" />
+    <PackageReference Include="xunit" Version="2.2.0-beta4-build3444" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0-beta4-build1194" />
+  </ItemGroup>
+</Project>
