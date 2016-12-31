@@ -1,6 +1,7 @@
 ﻿using NSubstitute;
 using Pattern.Core.Interfaces;
 using Pattern.Core.Interfaces.Factories;
+using Pattern.Tests.Xunit;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,7 +13,7 @@ namespace Pattern.Module.Tests
 {
     public class ModulesFeature
     {
-        [Fact]
+        [NamedFact(nameof(Should_bind_module_when_add_module_to_kernel))]
         public void Should_bind_module_when_add_module_to_kernel()
         {
             var kernel = Substitute.For<IKernel>();
@@ -22,7 +23,7 @@ namespace Pattern.Module.Tests
             kernel.Bind(typeof(IModule), Arg.Is<TypeFactory>(t => t.TypeToCreate == typeof(FakeModule)));
         }
 
-        [Fact]
+        [NamedFact(nameof(Should_load_module_when_start_module_on_kernel))]
         public void Should_load_module_when_start_module_on_kernel()
         {
             var module = Substitute.For<IModule>();
