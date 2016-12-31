@@ -14,12 +14,12 @@ namespace Pattern.Mvvm.Tests
         }
     }
 
-    public class BaseViewModelTests
+    public class ViewModelBaseTests
     {
         [NamedFact(nameof(Should_notify_property_changed_when_raise_property))]
         public void Should_notify_property_changed_when_raise_property()
         {
-            var baseViewModel = new FakeBaseViewModel();
+            var baseViewModel = new FakeViewModelBase();
             var watcher = new PropertyChangedWatcher();
             baseViewModel.PropertyChanged += watcher.PropertyChanged;
 
@@ -31,7 +31,7 @@ namespace Pattern.Mvvm.Tests
         [NamedFact(nameof(Should_notify_property_changed_toto_when_raise_property_toto))]
         public void Should_notify_property_changed_toto_when_raise_property_toto()
         {
-            var baseViewModel = new FakeBaseViewModel();
+            var baseViewModel = new FakeViewModelBase();
             var watcher = new PropertyChangedWatcher();
             baseViewModel.PropertyChanged += watcher.PropertyChanged;
 
@@ -43,7 +43,7 @@ namespace Pattern.Mvvm.Tests
         [NamedFact(nameof(Should_notify_property_changed_toto_when_set_property))]
         public void Should_notify_property_changed_toto_when_set_property()
         {
-            var baseViewModel = new FakeBaseViewModel();
+            var baseViewModel = new FakeViewModelBase();
             var watcher = new PropertyChangedWatcher();
             baseViewModel.PropertyChanged += watcher.PropertyChanged;
 

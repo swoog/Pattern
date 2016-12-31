@@ -2,7 +2,7 @@
 
 namespace Pattern.Mvvm.Tests
 {
-    public class FakeBaseViewModel : BaseViewModel
+    public class FakeViewModelBase : ViewModelBase
     {
         private string toto;
 
@@ -12,13 +12,13 @@ namespace Pattern.Mvvm.Tests
             set
             {
                 toto = value;
-                base.RaiseProperty();
+                base.RaisePropertyChanged();
             }
         }
 
         internal void RaiseProperty(string propertyName = "")
         {
-            base.RaiseProperty(propertyName);
+            base.RaisePropertyChanged(propertyName);
         }
     }
 }

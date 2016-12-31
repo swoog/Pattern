@@ -4,9 +4,9 @@ using System.Runtime.CompilerServices;
 
 namespace Pattern.Mvvm
 {
-    public class BaseViewModel : INotifyPropertyChanged
+    public class ViewModelBase : INotifyPropertyChanged
     {
-        public void RaiseProperty([CallerMemberName]string propertyName = null)
+        public void RaisePropertyChanged([CallerMemberName]string propertyName = null)
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
