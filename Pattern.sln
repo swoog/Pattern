@@ -7,7 +7,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{38133F35-7BE
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9F929A59-25F0-40ED-A49C-515B0DE527BF}"
 	ProjectSection(SolutionItems) = preProject
-		global.json = global.json
 		Pack.ps1 = Pack.ps1
 		README.md = README.md
 		Versions.ps1 = Versions.ps1
@@ -30,6 +29,12 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pattern.Config.Tests", "tests\Pattern.Config.Tests\Pattern.Config.Tests.csproj", "{C74BEF6F-CE96-4DF8-A83D-CC2D62A30179}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pattern.Core.Tests", "tests\Pattern.Core.Tests\Pattern.Core.Tests.csproj", "{642F842D-0336-4C9E-A48B-478FB82F4207}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pattern.Mvvm", "src\Pattern.Mvvm\Pattern.Mvvm.csproj", "{F0BBE62E-CCBA-45FC-A08B-F1AB95CDD498}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pattern.Mvvm.Tests", "tests\Pattern.Mvvm.Tests\Pattern.Mvvm.Tests.csproj", "{AEEA2B74-2035-4483-8273-506132F77D17}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pattern.Tests.Xunit", "src\Pattern.Tests.Xunit\Pattern.Tests.Xunit.csproj", "{5DBE3FBD-110A-43BD-AE68-A304384FDCBB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -150,5 +155,8 @@ Global
 		{58D5FB76-A9AC-4C32-A2FB-B1F331962643} = {38133F35-7BEA-4C0C-AA6E-50EE8CDB7360}
 		{C74BEF6F-CE96-4DF8-A83D-CC2D62A30179} = {6E44F257-F107-4287-9026-48BAE6CC41E5}
 		{642F842D-0336-4C9E-A48B-478FB82F4207} = {6E44F257-F107-4287-9026-48BAE6CC41E5}
+		{F0BBE62E-CCBA-45FC-A08B-F1AB95CDD498} = {38133F35-7BEA-4C0C-AA6E-50EE8CDB7360}
+		{AEEA2B74-2035-4483-8273-506132F77D17} = {6E44F257-F107-4287-9026-48BAE6CC41E5}
+		{5DBE3FBD-110A-43BD-AE68-A304384FDCBB} = {38133F35-7BEA-4C0C-AA6E-50EE8CDB7360}
 	EndGlobalSection
 EndGlobal

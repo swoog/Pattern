@@ -7,6 +7,7 @@
     using Pattern.Core.Tests.Fakes;
 
     using Xunit;
+    using Pattern.Tests.Xunit;
 
     public class InstanciateCollectionObject
     {
@@ -19,7 +20,7 @@
             this.kernel.Bind(typeof(ISimpleClass), this.GetTypeFactory<SimpleClass2>());
         }
 
-        [CustomFact(DisplayName = nameof(Should_instanciate_a_collection_When_bind_two_class_on_same_interface))]
+        [NamedFact(nameof(Should_instanciate_a_collection_When_bind_two_class_on_same_interface))]
         public void Should_instanciate_a_collection_When_bind_two_class_on_same_interface()
         {
             var collection = this.kernel.Get<List<ISimpleClass>>();
@@ -29,7 +30,7 @@
             Assert.IsType<SimpleClass2>(collection[1]);
         }
 
-        [CustomFact(DisplayName = nameof(Should_instanciate_a_collection_When_get_interface_collection))]
+        [NamedFact(nameof(Should_instanciate_a_collection_When_get_interface_collection))]
         public void Should_instanciate_a_collection_When_get_interface_collection()
         {
             var collection = this.kernel.Get<IList<ISimpleClass>>();
@@ -39,7 +40,7 @@
             Assert.IsType<SimpleClass2>(collection[1]);
         }
 
-        [CustomFact(DisplayName = nameof(Should_instanciate_a_collection_When_injected))]
+        [NamedFact(nameof(Should_instanciate_a_collection_When_injected))]
         public void Should_instanciate_a_collection_When_injected()
         {
             this.kernel.Bind(typeof(ComplexListClass), this.GetTypeFactory<ComplexListClass>());
@@ -50,7 +51,7 @@
             Assert.Equal(2, instance.SimpleClasses.Count);
         }
 
-        [CustomFact(DisplayName = nameof(Should_throw_error_When_bind_two_class_same_interface))]
+        [NamedFact(nameof(Should_throw_error_When_bind_two_class_same_interface))]
         public void Should_throw_error_When_bind_two_class_same_interface()
         {
             var exception = Assert.Throws<FactoryException>(

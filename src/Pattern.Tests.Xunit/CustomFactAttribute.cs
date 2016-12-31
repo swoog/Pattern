@@ -1,10 +1,15 @@
-namespace Pattern.Config.Tests
+namespace Pattern.Tests.Xunit
 {
-    using Xunit;
+    using global::Xunit;
 
-    public class CustomFactAttribute : FactAttribute
+    public class NamedFact : FactAttribute
     {
         private string displayName;
+
+        public NamedFact(string displayName)
+        {
+            this.displayName = displayName.Replace("_", " ");
+        }
 
         public override string DisplayName
         {
