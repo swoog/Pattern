@@ -5,6 +5,7 @@
     using Pattern.Config;
     using Pattern.Config.Tests.Fakes;
     using Pattern.Core.Interfaces.Factories;
+    using Pattern.Tests.Xunit;
 
     public class MakeExtensionForBinding
     {
@@ -15,7 +16,7 @@
             this.kernel = Substitute.For<IKernel>();
         }
 
-        [CustomFact(DisplayName = nameof(Should_bind_class_to_self_When_use_bind_to_self))]
+        [NamedFact(nameof(Should_bind_class_to_self_When_use_bind_to_self))]
         public void Should_bind_class_to_self_When_use_bind_to_self()
         {
             this.kernel.Bind<SimpleClass>().ToSelf();
@@ -24,7 +25,7 @@
                 .Bind(typeof(SimpleClass), Arg.Is<TypeFactory>(f => f.TypeToCreate == typeof(SimpleClass)));
         }
 
-        [CustomFact(DisplayName = nameof(Should_bind_class_When_bind_interface_to_class))]
+        [NamedFact(nameof(Should_bind_class_When_bind_interface_to_class))]
         public void Should_bind_class_When_bind_interface_to_class()
         {
             this.kernel.Bind<ISimpleClass>().To<SimpleClass>();
@@ -33,7 +34,7 @@
                 .Bind(typeof(ISimpleClass), Arg.Is<TypeFactory>(f => f.TypeToCreate == typeof(SimpleClass)));
         }
 
-        [CustomFact(DisplayName = nameof(Should_bind_class_with_a_lambda_factory_When_bind_to_method))]
+        [NamedFact(nameof(Should_bind_class_with_a_lambda_factory_When_bind_to_method))]
         public void Should_bind_class_with_a_lambda_factory_When_bind_to_method()
         {
             this.kernel.Bind<ISimpleClass>().ToMethod(() => new SimpleClass());
@@ -41,7 +42,7 @@
             this.kernel.Received(1).Bind(typeof(ISimpleClass), Arg.Any<LambdaFactory>());
         }
 
-        [CustomFact(DisplayName = nameof(Should_bind_class_When_bind_to_factory))]
+        [NamedFact(nameof(Should_bind_class_When_bind_to_factory))]
         public void Should_bind_class_When_bind_to_factory()
         {
             this.kernel.Bind<ISimpleClass>().ToFactory<FakeFactory>();

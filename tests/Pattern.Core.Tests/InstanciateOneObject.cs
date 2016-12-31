@@ -4,7 +4,7 @@
     using Pattern.Core.Interfaces;
     using Pattern.Core.Interfaces.Factories;
     using Pattern.Core.Tests.Fakes;
-
+    using Pattern.Tests.Xunit;
     using Xunit;
 
     public class InstanciateOneObject
@@ -16,7 +16,7 @@
             this.kernel = new Kernel();
         }
 
-        [CustomFact(DisplayName = nameof(Should_get_the_instance_of_kernel_When_get_IKernel))]
+        [NamedFact(nameof(Should_get_the_instance_of_kernel_When_get_IKernel))]
         public void Should_get_the_instance_of_kernel_When_get_IKernel()
         {
             var instance = this.kernel.Get(typeof(IKernel));
@@ -25,7 +25,7 @@
             Assert.Same(this.kernel, instance);
         }
 
-        [CustomFact(DisplayName = nameof(Should_instanciate_type_When_bind_self_type))]
+        [NamedFact(nameof(Should_instanciate_type_When_bind_self_type))]
         public void Should_instanciate_type_When_bind_self_type()
         {
             kernel.Bind(typeof(SimpleClass), this.GetTypeFactory<SimpleClass>());
@@ -36,7 +36,7 @@
             Assert.IsType<SimpleClass>(instance);
         }
 
-        [CustomFact(DisplayName = nameof(Should_instanciate_type_When_bind_self_type))]
+        [NamedFact(nameof(Should_instanciate_type_When_bind_self_type))]
         public void Should_instanciate_type_When_use_auto_bind_concret_type()
         {
             var instance = kernel.Get(typeof(SimpleClass));
@@ -45,7 +45,7 @@
             Assert.IsType<SimpleClass>(instance);
         }
 
-        [CustomFact(DisplayName = nameof(Should_instanciate_type__When_get_with_generic_method))]
+        [NamedFact(nameof(Should_instanciate_type__When_get_with_generic_method))]
         public void Should_instanciate_type__When_get_with_generic_method()
         {
             this.kernel.Bind(typeof(ISimpleClass), this.GetTypeFactory<SimpleClass>());
@@ -55,7 +55,7 @@
             Assert.NotNull(instance);
         }
 
-        [CustomFact(DisplayName = nameof(Should_instanciate_type_When_inject_another_type))]
+        [NamedFact(nameof(Should_instanciate_type_When_inject_another_type))]
         public void Should_instanciate_type_When_inject_another_type()
         {
             this.kernel.Bind(typeof(ComplexClass), this.GetTypeFactory<ComplexClass>());
@@ -68,7 +68,7 @@
             Assert.NotNull(complexType.InjectedType);
         }
 
-        [CustomFact(DisplayName = nameof(Should_instanciate_type_When_map_to_interface))]
+        [NamedFact(nameof(Should_instanciate_type_When_map_to_interface))]
         public void Should_instanciate_type_When_map_to_interface()
         {
             this.kernel.Bind(typeof(ComplexInterfaceClass), this.GetTypeFactory<ComplexInterfaceClass>());
@@ -81,7 +81,7 @@
             Assert.NotNull(complexType.InjectedType);
         }
 
-        [CustomFact(DisplayName = nameof(Should_instanciate_type_When_use_custom_factory))]
+        [NamedFact(nameof(Should_instanciate_type_When_use_custom_factory))]
         public void Should_instanciate_type_When_use_custom_factory()
         {
             this.kernel.Bind(typeof(ComplexInterfaceClass), this.GetTypeFactory<ComplexInterfaceClass>());
@@ -94,7 +94,7 @@
             Assert.NotNull(complexType.InjectedType);
         }
 
-        [CustomFact(DisplayName = nameof(Should_display_an_error_message_When_instanciate_an_unknow_object))]
+        [NamedFact(nameof(Should_display_an_error_message_When_instanciate_an_unknow_object))]
         public void Should_display_an_error_message_When_instanciate_an_unknow_object()
         {
             this.kernel.Bind(typeof(ComplexInterfaceClass), this.GetTypeFactory<ComplexInterfaceClass>());
