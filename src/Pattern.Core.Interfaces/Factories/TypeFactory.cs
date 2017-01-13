@@ -19,31 +19,82 @@ namespace Pattern.Core.Interfaces.Factories
 
         public object Create(object[] parameters1)
         {
-            var constructor = this.TypeToCreate.GetTypeInfo().DeclaredConstructors.Single();
-
             var parameterQueue = new Queue<object>(parameters1);
 
-            var parameters = constructor.GetParameters().Select(arg => this.Resolve(arg, this.TypeToCreate, parameterQueue)).ToArray();
+            var constructors = this.TypeToCreate.GetTypeInfo().DeclaredConstructors.Select(c => CanResolve(parameterQueue, c)).ToList();
 
-            return constructor.Invoke(parameters);
+            var constructor = constructors.Where(c => c.Can).FirstOrDefault();
+
+            if (constructor == null)
+            {
+                throw new ConstructiorSearchException(this.TypeToCreate);
+            }
+
+            var parameters = constructor.Parameters.Select(arg =>
+            {
+                if (arg.Value != null) { return arg.Value; }
+                return this.Resolve(arg.Type, this.TypeToCreate, parameterQueue);
+            }
+            ).ToArray();
+
+            return constructor.Constructor.Invoke(parameters);
         }
 
-        private object Resolve(ParameterInfo arg, Type typeToInject, Queue<object> parameterQueue)
+        private ConstructorResult CanResolve(Queue<object> parameterQueue, ConstructorInfo constructorInfo)
         {
-            var parameterType = arg.ParameterType;
-
-            if (parameterType == typeof(int))
+            if (constructorInfo.IsStatic)
             {
-                object resolve;
-                if (ResolveParameterQueue(arg, parameterQueue, out resolve)) return resolve;
-            }
-            else if (parameterType == typeof(string))
-            {
-                object resolve;
-                if (ResolveParameterQueue(arg, parameterQueue, out resolve)) return resolve;
+                return new ConstructorResult() { Can = false };
             }
 
-            return this.kernel.Get(typeToInject, arg.ParameterType);
+            var parameters = constructorInfo.GetParameters();
+
+            var parametersResult = parameters.Select(p => CanResolve(parameterQueue, constructorInfo.DeclaringType, p)).ToList();
+
+            return new ConstructorResult()
+            {
+                Can = parametersResult.All(p => p.Can),
+                Constructor = constructorInfo,
+                Parameters = parametersResult,
+            };
+        }
+
+        public class ResolveResult
+        {
+            public bool Can { get; set; }
+            public Type Type { get; internal set; }
+            public object Value { get; set; }
+        }
+
+        private ResolveResult CanResolve(Queue<object> parameterQueue, Type parentType, ParameterInfo arg)
+        {
+            if (arg.ParameterType == typeof(int))
+            {
+                object resolve;
+                if (ResolveParameterQueue(arg, parameterQueue, out resolve))
+                {
+                    return new ResolveResult() { Can = true, Value = resolve, Type = typeof(int) };
+                }
+
+                return new ResolveResult() { Can = false };
+            }
+            else if (arg.ParameterType == typeof(string))
+            {
+                object resolve;
+                if (ResolveParameterQueue(arg, parameterQueue, out resolve))
+                {
+                    return new ResolveResult() { Can = true, Value = resolve, Type = typeof(string) };
+                }
+
+                return new ResolveResult() { Can = false };
+            }
+
+            return new ResolveResult() { Can = this.kernel.CanResolve(parentType, arg.ParameterType), Type = arg.ParameterType };
+        }
+
+        private object Resolve(Type parameterType, Type typeToInject, Queue<object> parameterQueue)
+        {
+            return this.kernel.Get(typeToInject, parameterType);
         }
 
         private static bool ResolveParameterQueue(ParameterInfo arg, Queue<object> parameterQueue, out object resolve)
@@ -62,6 +113,13 @@ namespace Pattern.Core.Interfaces.Factories
             resolve = null;
 
             return false;
+        }
+
+        public class ConstructorResult
+        {
+            public bool Can { get; set; }
+            public ConstructorInfo Constructor { get; set; }
+            public IEnumerable<ResolveResult> Parameters { get; internal set; }
         }
     }
 }

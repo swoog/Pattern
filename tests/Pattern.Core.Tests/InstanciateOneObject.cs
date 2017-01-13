@@ -25,6 +25,28 @@
             Assert.Same(this.kernel, instance);
         }
 
+        [NamedFact(nameof(Should_instanciate_type_When_have_two_constructor))]
+        public void Should_instanciate_type_When_have_two_constructor()
+        {
+            kernel.Bind(typeof(SimpleClassWithTwoConstructor), this.GetTypeFactory<SimpleClassWithTwoConstructor>());
+
+            var instance = kernel.Get(typeof(SimpleClassWithTwoConstructor));
+
+            Assert.NotNull(instance);
+            Assert.IsType<SimpleClassWithTwoConstructor>(instance);
+        }
+
+        [NamedFact(nameof(Should_instanciate_type_When_have_static_constructor))]
+        public void Should_instanciate_type_When_have_static_constructor()
+        {
+            kernel.Bind(typeof(SimpleClassWithStaticConstructor), this.GetTypeFactory<SimpleClassWithStaticConstructor>());
+
+            var instance = kernel.Get(typeof(SimpleClassWithStaticConstructor));
+
+            Assert.NotNull(instance);
+            Assert.IsType<SimpleClassWithStaticConstructor>(instance);
+        }
+
         [NamedFact(nameof(Should_instanciate_type_When_bind_self_type))]
         public void Should_instanciate_type_When_bind_self_type()
         {
@@ -107,6 +129,21 @@
 
             Assert.Equal("Injection not found for ISimpleClass when injected in ComplexInterfaceClass.", exception.Message);
         }
+
+        [NamedFact(nameof(Should_display_an_error_message_When_instanciate_an_unknow_object_from_abstract))]
+        public void Should_display_an_error_message_When_instanciate_an_unknow_object_from_abstract()
+        {
+            this.kernel.Bind(typeof(ComplexInterfaceClassWithAbstractInject), this.GetTypeFactory<ComplexInterfaceClassWithAbstractInject>());
+
+            var exception = Assert.Throws<InjectionException>(
+                () =>
+                {
+                    this.kernel.Get(typeof(ComplexInterfaceClassWithAbstractInject));
+                });
+
+            Assert.Equal("Injection not found for AbstractSimpleClass when injected in ComplexInterfaceClassWithAbstractInject.", exception.Message);
+        }
+
 
         private TypeFactory GetTypeFactory<T>()
         {

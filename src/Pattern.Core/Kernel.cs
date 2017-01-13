@@ -30,6 +30,29 @@
             }
         }
 
+        public bool CanResolve(Type parentType, Type @from)
+        {
+            var callContext = new CallContext(@from, parentType);
+
+            var any = @from.GetTypeInfo().ImplementedInterfaces.FirstOrDefault(i => i.GetTypeInfo().IsGenericType && i.GetGenericTypeDefinition() == typeof(IEnumerable<>));
+            if (any != null)
+            {
+                var constructorInfo = @from.GetTypeInfo().DeclaredConstructors.FirstOrDefault();
+
+                if (constructorInfo == null)
+                {
+                    constructorInfo = typeof(List<>).MakeGenericType(any.GenericTypeArguments[0]).GetTypeInfo().DeclaredConstructors.First();
+                }
+
+                var list = constructorInfo.Invoke(null) as IList;
+
+                callContext = new CallContext(any.GenericTypeArguments[0], parentType);
+                return this.GetFactories(callContext).Count > 1;
+            }
+
+            return this.GetFactories(callContext).Count >= 1;
+        }
+
         public object Get(Type parentType, Type @from, params object[] parameters)
         {
             var callContext = new CallContext(@from, parentType);
@@ -74,7 +97,8 @@
         {
             if (!this.binds.ContainsKey(callContext.InstanciatedType))
             {
-                if (callContext.InstanciatedType.GetTypeInfo().IsClass)
+                TypeInfo typeInfo = callContext.InstanciatedType.GetTypeInfo();
+                if (typeInfo.IsClass && !typeInfo.IsAbstract)
                 {
                     var factory = new TypeFactory(callContext.InstanciatedType, this);
 

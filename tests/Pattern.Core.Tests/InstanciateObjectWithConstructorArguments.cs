@@ -1,6 +1,7 @@
 ﻿namespace Pattern.Core.Tests
 {
     using Pattern.Core.Interfaces;
+    using Pattern.Core.Interfaces.Factories;
     using Pattern.Core.Tests.Fakes;
     using Pattern.Tests.Xunit;
     using Xunit;
@@ -38,13 +39,13 @@
         [NamedFact(nameof(Should_make_an_injection_error_When_custom_arguments_does_not_corresponding))]
         public void Should_make_an_injection_error_When_custom_arguments_does_not_corresponding()
         {
-            var exception = Assert.Throws<InjectionException>(
+            var exception = Assert.Throws<ConstructiorSearchException>(
                 () =>
                 {
                     this.kernel.Get(null, typeof(ObjectWithInjectedArguments), "Toto");
                 });
 
-            Assert.Equal("Injection not found for Int32 when injected in ObjectWithInjectedArguments.", exception.Message);
+            Assert.Equal("Can create instance of ObjectWithInjectedArguments.", exception.Message);
         }
     }
 }

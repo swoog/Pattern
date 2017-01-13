@@ -31,6 +31,11 @@ namespace Pattern.Core.Ninject
             this.standardKernel.Bind(@from).ToMethod(c => toFactory.Create(new object[0]));
         }
 
+        public bool CanResolve(Type parent, Type @from)
+        {
+            return (bool)this.standardKernel.CanResolve(@from);
+        }
+
         public object Get(Type parentType, Type @from, params object[] parameters)
         {
             if (parameters.Length > 0)
