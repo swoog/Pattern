@@ -33,6 +33,10 @@
         public bool CanResolve(Type parentType, Type @from)
         {
             var callContext = new CallContext(@from, parentType);
+            if (callContext.InstanciatedType == typeof(IKernel))
+            {
+                return true;
+            }
 
             var any = @from.GetTypeInfo().ImplementedInterfaces.FirstOrDefault(i => i.GetTypeInfo().IsGenericType && i.GetGenericTypeDefinition() == typeof(IEnumerable<>));
             if (any != null)

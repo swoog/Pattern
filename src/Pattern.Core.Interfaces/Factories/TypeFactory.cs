@@ -17,7 +17,7 @@ namespace Pattern.Core.Interfaces.Factories
             this.kernel = kernel;
         }
 
-        public object Create(object[] parameters1)
+        public virtual object Create(object[] parameters1)
         {
             var parameterQueue = new Queue<object>(parameters1);
 

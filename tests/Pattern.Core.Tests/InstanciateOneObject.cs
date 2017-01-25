@@ -25,6 +25,16 @@
             Assert.Same(this.kernel, instance);
         }
 
+        [NamedFact(nameof(Should_inject_the_instance_of_kernel_When_constructor_have_IKernel))]
+        public void Should_inject_the_instance_of_kernel_When_constructor_have_IKernel()
+        {
+            var instance = this.kernel.Get(typeof(SimpleClassWithKernelConstructor));
+
+            Assert.NotNull(instance);
+            var typeInstance = Assert.IsType<SimpleClassWithKernelConstructor>(instance);
+            Assert.Same(this.kernel, typeInstance.Kernel);
+        }
+
         [NamedFact(nameof(Should_instanciate_type_When_have_two_constructor))]
         public void Should_instanciate_type_When_have_two_constructor()
         {
