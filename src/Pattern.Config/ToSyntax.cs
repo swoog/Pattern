@@ -14,20 +14,28 @@ namespace Pattern.Config
             this.kernel = kernel;
         }
 
-        public void ToSelf()
+        public IScopeSyntax ToSelf()
         {
-            this.To<TFrom>();
+            return this.To<TFrom>();
         }
 
-        public void To<TTo>()
-            where TTo:TFrom
+        public IScopeSyntax To<TTo>()
+            where TTo : TFrom
         {
-            this.kernel.Bind(typeof(TFrom), new TypeFactory(typeof(TTo), this.kernel));
+            var typeFactory = new TypeFactory(typeof(TTo), this.kernel);
+            var componentFactory = new ComponentFactory
+                                       {
+                                           Factory = typeFactory
+                                       };
+
+            this.kernel.Bind(typeof(TFrom), componentFactory);
+
+            return new ScopeSyntax(componentFactory);
         }
 
         public void ToMethod<TTo>(Func<TTo> p) where TTo : TFrom
         {
-            this.kernel.Bind(typeof(TFrom), new LambdaFactory(()=> p()));
+            this.kernel.Bind(typeof(TFrom), new LambdaFactory(() => p()));
         }
 
         public void ToFactory<T>()
@@ -36,6 +44,21 @@ namespace Pattern.Config
             var factory = this.kernel.Get<T>();
 
             this.kernel.Bind(typeof(TFrom), factory);
+        }
+    }
+
+    public class ScopeSyntax : IScopeSyntax
+    {
+        private readonly ComponentFactory componentFactory;
+
+        public ScopeSyntax(ComponentFactory componentFactory)
+        {
+            this.componentFactory = componentFactory;
+        }
+
+        public void InSingletonScope()
+        {
+            this.componentFactory.Factory = new SingletonFactory(this.componentFactory.Factory);
         }
     }
 }

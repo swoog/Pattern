@@ -23,19 +23,17 @@ namespace Pattern.Core.Interfaces.Factories
 
             var constructors = this.TypeToCreate.GetTypeInfo().DeclaredConstructors.Select(c => CanResolve(parameterQueue, c)).ToList();
 
-            var constructor = constructors.Where(c => c.Can).FirstOrDefault();
+            var constructor = constructors
+                .OrderByDescending(c => c.Parameters?.Count() ?? 0)
+                .FirstOrDefault(c => c.Can);
 
             if (constructor == null)
             {
                 throw new ConstructiorSearchException(this.TypeToCreate);
             }
 
-            var parameters = constructor.Parameters.Select(arg =>
-            {
-                if (arg.Value != null) { return arg.Value; }
-                return this.Resolve(arg.Type, this.TypeToCreate, parameterQueue);
-            }
-            ).ToArray();
+            var parameters = constructor.Parameters
+                .Select(arg => arg.Value ?? this.Resolve(arg.Type, this.TypeToCreate, parameterQueue)).ToArray();
 
             return constructor.Constructor.Invoke(parameters);
         }

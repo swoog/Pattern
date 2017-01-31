@@ -14,6 +14,22 @@ namespace Pattern.Core.Tests.Fakes
         }
     }
 
+    public class SimpleClassWithStaticConstructorAndInjectedConstructor
+    {
+        public static ISimpleClass simpleClassStatic;
+        private readonly ISimpleClass simpleClass;
+
+        public SimpleClassWithStaticConstructorAndInjectedConstructor(ISimpleClass simpleClass)
+        {
+            this.simpleClass = simpleClass;
+        }
+
+        static SimpleClassWithStaticConstructorAndInjectedConstructor()
+        {
+            simpleClassStatic = new SimpleClassWithStaticConstructor();
+        }
+    }
+
     public class SimpleClassWithTwoConstructor : ISimpleClass
     {
         public SimpleClassWithTwoConstructor()

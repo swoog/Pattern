@@ -46,6 +46,19 @@
             Assert.IsType<SimpleClassWithTwoConstructor>(instance);
         }
 
+        [NamedFact(nameof(Should_choice_biggest_constructor_type_When_have_more_than_one_constructor))]
+        public void Should_choice_biggest_constructor_type_When_have_more_than_one_constructor()
+        {
+            this.kernel.Bind(typeof(ISimpleClass), this.GetTypeFactory<SimpleClass>());
+            kernel.Bind(typeof(SimpleClassWithConstructors), this.GetTypeFactory<SimpleClassWithConstructors>());
+
+            var instance = kernel.Get(typeof(SimpleClassWithConstructors));
+
+            Assert.NotNull(instance);
+            var typedInstance = Assert.IsType<SimpleClassWithConstructors>(instance);
+            Assert.NotNull(typedInstance.SimpleClass);
+        }
+
         [NamedFact(nameof(Should_instanciate_type_When_have_static_constructor))]
         public void Should_instanciate_type_When_have_static_constructor()
         {
@@ -55,6 +68,18 @@
 
             Assert.NotNull(instance);
             Assert.IsType<SimpleClassWithStaticConstructor>(instance);
+        }
+
+        [NamedFact(nameof(Should_instanciate_type_When_have_static_constructor_and_an_injected_constructor))]
+        public void Should_instanciate_type_When_have_static_constructor_and_an_injected_constructor()
+        {
+            this.kernel.Bind(typeof(ISimpleClass), this.GetTypeFactory<SimpleClass>());
+            this.kernel.Bind(typeof(SimpleClassWithStaticConstructorAndInjectedConstructor), this.GetTypeFactory<SimpleClassWithStaticConstructorAndInjectedConstructor>());
+
+            var instance = kernel.Get(typeof(SimpleClassWithStaticConstructorAndInjectedConstructor));
+
+            Assert.NotNull(instance);
+            Assert.IsType<SimpleClassWithStaticConstructorAndInjectedConstructor>(instance);
         }
 
         [NamedFact(nameof(Should_instanciate_type_When_bind_self_type))]
@@ -158,6 +183,21 @@
         private TypeFactory GetTypeFactory<T>()
         {
             return new TypeFactory(typeof(T), this.kernel);
+        }
+    }
+
+    public class SimpleClassWithConstructors
+    {
+        public ISimpleClass SimpleClass { get; }
+
+        public SimpleClassWithConstructors()
+        {
+            
+        }
+
+        public SimpleClassWithConstructors(ISimpleClass simpleClass)
+        {
+            this.SimpleClass = simpleClass;
         }
     }
 }
