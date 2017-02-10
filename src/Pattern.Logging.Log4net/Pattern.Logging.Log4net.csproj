@@ -9,11 +9,6 @@
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="**\*.cs" />
-    <EmbeddedResource Include="**\*.resx" />
-    <EmbeddedResource Include="compiler\resources\**\*" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Pattern.Logging\Pattern.Logging.csproj" />
     <ProjectReference Include="..\Pattern.Core.Interfaces\Pattern.Core.Interfaces.csproj" />
   </ItemGroup>
