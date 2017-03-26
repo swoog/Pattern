@@ -2,7 +2,7 @@ Param(
   [string]$versionNumber
 )
 Write-Output "Pack all projects"
-$projects = Get-ChildItem -Path "src" -Recurse "Project.json"
+$projects = Get-ChildItem -Path "src" -Recurse "*.csproj"
 Write-Output $projects
 foreach($project in $projects){
 	Write-Output "Change version of $($project.FullName)"
