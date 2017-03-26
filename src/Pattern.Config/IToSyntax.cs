@@ -1,5 +1,7 @@
 namespace Pattern.Config
 {
+    using System;
+
     using Pattern.Core.Interfaces;
 
     public interface IToSyntax<TFrom>
@@ -16,5 +18,7 @@ namespace Pattern.Config
     public interface IScopeSyntax
     {
         void InSingletonScope();
+
+        void InScope(Func<IFactory, IFactory> factoryScope);
     }
 }

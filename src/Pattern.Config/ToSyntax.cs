@@ -58,7 +58,12 @@ namespace Pattern.Config
 
         public void InSingletonScope()
         {
-            this.componentFactory.Factory = new SingletonFactory(this.componentFactory.Factory);
+            this.InScope(f => new SingletonFactory(f));
+        }
+
+        public void InScope(Func<IFactory, IFactory> factoryScope)
+        {
+            this.componentFactory.Factory = factoryScope(this.componentFactory.Factory);
         }
     }
 }
