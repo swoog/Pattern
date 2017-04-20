@@ -4,8 +4,9 @@
 
     public interface IKernel
     {
-        void Bind(Type @from, Type to);
+        void Bind(Type @from, IFactory toFactory);
 
-        object Get(Type @from);
+        object Get(Type parentType, Type @from, params object[] parameters);
+        bool CanResolve(Type parentType, Type @from);
     }
 }
