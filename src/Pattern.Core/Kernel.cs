@@ -59,6 +59,11 @@
 
         public object Get(Type parentType, Type @from, params object[] parameters)
         {
+            if (@from == null)
+            {
+                throw new ArgumentException("From type cannot be null");
+            }
+
             var callContext = new CallContext(@from, parentType);
             if (callContext.InstanciatedType == typeof(IKernel))
             {

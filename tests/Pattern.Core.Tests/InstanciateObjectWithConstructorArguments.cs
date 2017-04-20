@@ -1,5 +1,7 @@
 ﻿namespace Pattern.Core.Tests
 {
+    using System;
+
     using Pattern.Core.Interfaces;
     using Pattern.Core.Interfaces.Factories;
     using Pattern.Core.Tests.Fakes;
@@ -46,6 +48,18 @@
                 });
 
             Assert.Equal("Can create instance of ObjectWithInjectedArguments.", exception.Message);
+        }
+
+        [NamedFact(nameof(Should_throw_argument_exception_When_instanciate_type_null))]
+        public void Should_throw_argument_exception_When_instanciate_type_null()
+        {
+            var exception = Assert.Throws<ArgumentNullException>(
+                () =>
+                    {
+                        this.kernel.Get(null, null);
+                    });
+
+            Assert.Equal("From type cannot be null", exception.Message);
         }
     }
 }
