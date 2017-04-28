@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.9
+VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{38133F35-7BEA-4C0C-AA6E-50EE8CDB7360}"
 EndProject
@@ -43,6 +43,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pattern.Mapper", "src\Pattern.Mapper\Pattern.Mapper.csproj", "{013B87E2-3EEE-40D5-90F2-6A30739F9CA3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pattern.Mapper.Tests", "tests\Pattern.Mapper.Tests\Pattern.Mapper.Tests.csproj", "{C6B8A30D-3DDF-4F55-BB3C-9C63CC0967D0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pattern.Web.Api", "src\Pattern.Web.Api\Pattern.Web.Api.csproj", "{375D0361-970A-4CE1-BA5D-6F57BBE8A1DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -234,6 +236,18 @@ Global
 		{C6B8A30D-3DDF-4F55-BB3C-9C63CC0967D0}.Release|x64.Build.0 = Release|Any CPU
 		{C6B8A30D-3DDF-4F55-BB3C-9C63CC0967D0}.Release|x86.ActiveCfg = Release|Any CPU
 		{C6B8A30D-3DDF-4F55-BB3C-9C63CC0967D0}.Release|x86.Build.0 = Release|Any CPU
+		{375D0361-970A-4CE1-BA5D-6F57BBE8A1DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{375D0361-970A-4CE1-BA5D-6F57BBE8A1DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{375D0361-970A-4CE1-BA5D-6F57BBE8A1DB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{375D0361-970A-4CE1-BA5D-6F57BBE8A1DB}.Debug|x64.Build.0 = Debug|Any CPU
+		{375D0361-970A-4CE1-BA5D-6F57BBE8A1DB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{375D0361-970A-4CE1-BA5D-6F57BBE8A1DB}.Debug|x86.Build.0 = Debug|Any CPU
+		{375D0361-970A-4CE1-BA5D-6F57BBE8A1DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{375D0361-970A-4CE1-BA5D-6F57BBE8A1DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{375D0361-970A-4CE1-BA5D-6F57BBE8A1DB}.Release|x64.ActiveCfg = Release|Any CPU
+		{375D0361-970A-4CE1-BA5D-6F57BBE8A1DB}.Release|x64.Build.0 = Release|Any CPU
+		{375D0361-970A-4CE1-BA5D-6F57BBE8A1DB}.Release|x86.ActiveCfg = Release|Any CPU
+		{375D0361-970A-4CE1-BA5D-6F57BBE8A1DB}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -254,5 +268,6 @@ Global
 		{4234429F-D5DD-488B-8531-739E0B7FA95D} = {38133F35-7BEA-4C0C-AA6E-50EE8CDB7360}
 		{013B87E2-3EEE-40D5-90F2-6A30739F9CA3} = {38133F35-7BEA-4C0C-AA6E-50EE8CDB7360}
 		{C6B8A30D-3DDF-4F55-BB3C-9C63CC0967D0} = {6E44F257-F107-4287-9026-48BAE6CC41E5}
+		{375D0361-970A-4CE1-BA5D-6F57BBE8A1DB} = {38133F35-7BEA-4C0C-AA6E-50EE8CDB7360}
 	EndGlobalSection
 EndGlobal
