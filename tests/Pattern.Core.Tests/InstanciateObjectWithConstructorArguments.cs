@@ -53,7 +53,7 @@
         [NamedFact(nameof(Should_throw_argument_exception_When_instanciate_type_null))]
         public void Should_throw_argument_exception_When_instanciate_type_null()
         {
-            var exception = Assert.Throws<ArgumentNullException>(
+            var exception = Assert.Throws<ArgumentException>(
                 () =>
                     {
                         this.kernel.Get(null, null);
