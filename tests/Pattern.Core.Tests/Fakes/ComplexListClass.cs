@@ -11,4 +11,14 @@
             this.SimpleClasses = simpleClasses;
         }
     }
+
+    public class ComplexEnumerableClass
+    {
+        public IEnumerable<ISimpleClass> SimpleClasses { get; set; }
+
+        public ComplexEnumerableClass(IEnumerable<ISimpleClass> simpleClasses)
+        {
+            this.SimpleClasses = simpleClasses;
+        }
+    }
 }

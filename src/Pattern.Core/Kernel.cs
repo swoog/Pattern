@@ -38,7 +38,13 @@
                 return true;
             }
 
-            var any = @from.GetTypeInfo().ImplementedInterfaces.FirstOrDefault(i => i.GetTypeInfo().IsGenericType && i.GetGenericTypeDefinition() == typeof(IEnumerable<>));
+            var typeInfo = @from.GetTypeInfo();
+            var any = IsEnumerable(typeInfo.ImplementedInterfaces);
+            if (any == null && IsEnumerable(typeInfo))
+            {
+                any = @from;
+            }
+
             if (any != null)
             {
                 var constructorInfo = @from.GetTypeInfo().DeclaredConstructors.FirstOrDefault();

@@ -60,6 +60,17 @@
             Assert.Equal(2, instance.SimpleClasses.Count);
         }
 
+        [NamedFact(nameof(Should_instanciate_a_collection_When_injected_in_an_enumerable))]
+        public void Should_instanciate_a_collection_When_injected_in_an_enumerable()
+        {
+            this.kernel.Bind(typeof(ComplexEnumerableClass), this.GetTypeFactory<ComplexEnumerableClass>());
+
+            var instance = this.kernel.Get<ComplexEnumerableClass>();
+
+            Assert.NotNull(instance.SimpleClasses);
+            Assert.Equal(2, instance.SimpleClasses.Count());
+        }
+
         [NamedFact(nameof(Should_throw_error_When_bind_two_class_same_interface))]
         public void Should_throw_error_When_bind_two_class_same_interface()
         {
