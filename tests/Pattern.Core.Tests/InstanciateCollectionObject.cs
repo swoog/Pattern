@@ -1,6 +1,7 @@
 ﻿namespace Pattern.Core.Tests
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     using Pattern.Core.Interfaces;
     using Pattern.Core.Interfaces.Factories;
@@ -28,6 +29,14 @@
             Assert.Equal(2, collection.Count);
             Assert.IsType<SimpleClass>(collection[0]);
             Assert.IsType<SimpleClass2>(collection[1]);
+        }
+
+        [NamedFact(nameof(Should_instanciate_an_empty_collection_When_no_bind_found_and_get_ienumerable))]
+        public void Should_instanciate_an_empty_collection_When_no_bind_found_and_get_ienumerable()
+        {
+            var collection = this.kernel.Get<IEnumerable<SimpleClass>>();
+
+            Assert.Equal(0, collection.Count());
         }
 
         [NamedFact(nameof(Should_instanciate_a_collection_When_get_interface_collection))]

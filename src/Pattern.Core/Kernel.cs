@@ -70,10 +70,16 @@
                 return this;
             }
 
-            var any = @from.GetTypeInfo().ImplementedInterfaces.FirstOrDefault(i => i.GetTypeInfo().IsGenericType && i.GetGenericTypeDefinition() == typeof(IEnumerable<>));
+            var typeInfo = @from.GetTypeInfo();
+            var any = IsEnumerable(typeInfo.ImplementedInterfaces);
+            if (any == null && IsEnumerable(typeInfo))
+            {
+                any = @from;
+            }
+
             if (any != null)
             {
-                var constructorInfo = @from.GetTypeInfo().DeclaredConstructors.FirstOrDefault();
+                var constructorInfo = typeInfo.DeclaredConstructors.FirstOrDefault();
 
                 if (constructorInfo == null)
                 {
@@ -83,10 +89,13 @@
                 var list = constructorInfo.Invoke(null) as IList;
 
                 callContext = new CallContext(any.GenericTypeArguments[0], parentType);
-                var factories = this.GetFactories(callContext);
-                foreach (var factory in factories)
+                if (this.ContainsFactory(callContext))
                 {
-                    list.Add(factory.Create(parameters));
+                    var factories = this.GetFactories(callContext);
+                    foreach (var factory in factories)
+                    {
+                        list.Add(factory.Create(parameters));
+                    }
                 }
 
                 return list;
@@ -100,6 +109,21 @@
             }
 
             return to.Select(t => t.Create(parameters)).Single();
+        }
+
+        private bool ContainsFactory(CallContext callContext)
+        {
+            return this.binds.ContainsKey(callContext.InstanciatedType);
+        }
+
+        private static Type IsEnumerable(IEnumerable<Type> typeInfoImplementedInterfaces)
+        {
+            return typeInfoImplementedInterfaces.FirstOrDefault(t => IsEnumerable(t.GetTypeInfo()));
+        }
+
+        private static bool IsEnumerable(TypeInfo t)
+        {
+            return t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IEnumerable<>);
         }
 
         private IList<IFactory> GetFactories(CallContext callContext)
