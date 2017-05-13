@@ -57,7 +57,7 @@
                 var list = constructorInfo.Invoke(null) as IList;
 
                 callContext = new CallContext(any.GenericTypeArguments[0], parentType);
-                return this.GetFactories(callContext).Count > 1;
+                return true;
             }
 
             return this.GetFactories(callContext).Count >= 1;

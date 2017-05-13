@@ -29,7 +29,7 @@ namespace Pattern.Core.Interfaces.Factories
 
             if (constructor == null)
             {
-                throw new ConstructiorSearchException(this.TypeToCreate);
+                throw new ConstructorSearchException(this.TypeToCreate);
             }
 
             var parameters = constructor.Parameters

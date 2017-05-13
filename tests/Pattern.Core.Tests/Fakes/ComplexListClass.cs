@@ -21,4 +21,17 @@
             this.SimpleClasses = simpleClasses;
         }
     }
+    public class ComplexEnumerableClassWithNotImplementedInterface
+    {
+        public IEnumerable<INotimplementedInterface> SimpleClasses { get; set; }
+
+        public ComplexEnumerableClassWithNotImplementedInterface(IEnumerable<INotimplementedInterface> simpleClasses)
+        {
+            this.SimpleClasses = simpleClasses;
+        }
+    }
+
+    public interface INotimplementedInterface
+    {
+    }
 }

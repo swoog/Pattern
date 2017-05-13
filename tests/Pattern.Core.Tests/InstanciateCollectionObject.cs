@@ -71,6 +71,17 @@
             Assert.Equal(2, instance.SimpleClasses.Count());
         }
 
+        [NamedFact(nameof(Should_instanciate_a_collection_When_injected_an_enumerable_and_interface_not_implemented))]
+        public void Should_instanciate_a_collection_When_injected_an_enumerable_and_interface_not_implemented()
+        {
+            this.kernel.Bind(typeof(ComplexEnumerableClassWithNotImplementedInterface), this.GetTypeFactory<ComplexEnumerableClassWithNotImplementedInterface>());
+
+            var instance = this.kernel.Get<ComplexEnumerableClassWithNotImplementedInterface>();
+
+            Assert.NotNull(instance.SimpleClasses);
+            Assert.Equal(0, instance.SimpleClasses.Count());
+        }
+
         [NamedFact(nameof(Should_throw_error_When_bind_two_class_same_interface))]
         public void Should_throw_error_When_bind_two_class_same_interface()
         {

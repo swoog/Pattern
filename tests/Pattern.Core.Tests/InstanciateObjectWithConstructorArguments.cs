@@ -41,7 +41,7 @@
         [NamedFact(nameof(Should_make_an_injection_error_When_custom_arguments_does_not_corresponding))]
         public void Should_make_an_injection_error_When_custom_arguments_does_not_corresponding()
         {
-            var exception = Assert.Throws<ConstructiorSearchException>(
+            var exception = Assert.Throws<ConstructorSearchException>(
                 () =>
                 {
                     this.kernel.Get(null, typeof(ObjectWithInjectedArguments), "Toto");
