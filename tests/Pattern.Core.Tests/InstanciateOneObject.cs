@@ -179,6 +179,13 @@
             Assert.Equal("Injection not found for AbstractSimpleClass when injected in ComplexInterfaceClassWithAbstractInject.", exception.Message);
         }
 
+        [NamedFact(nameof(Should_return_false_When_test_can_resolve_interface))]
+        public void Should_return_false_When_test_can_resolve_interface()
+        {
+            var canResolve = this.kernel.CanResolve(null, typeof(ISimpleClass));
+
+            Assert.False(canResolve);
+        }
 
         private TypeFactory GetTypeFactory<T>()
         {
@@ -192,7 +199,7 @@
 
         public SimpleClassWithConstructors()
         {
-            
+
         }
 
         public SimpleClassWithConstructors(ISimpleClass simpleClass)

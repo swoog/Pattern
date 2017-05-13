@@ -29,6 +29,16 @@ namespace Pattern.Core.Interfaces.Factories
 
             if (constructor == null)
             {
+                if (constructors.Count == 1)
+                {
+                    var typetoInject = constructors.First().Parameters.FirstOrDefault(p => !p.Can && p.IsInjectedType);
+
+                    if (typetoInject != null)
+                    {
+                        throw new InjectionException(typetoInject.Type, this.TypeToCreate);
+                    }
+                }
+
                 throw new ConstructorSearchException(this.TypeToCreate);
             }
 
@@ -62,6 +72,8 @@ namespace Pattern.Core.Interfaces.Factories
             public bool Can { get; set; }
             public Type Type { get; internal set; }
             public object Value { get; set; }
+
+            public bool IsInjectedType { get; set; }
         }
 
         private ResolveResult CanResolve(Queue<object> parameterQueue, Type parentType, ParameterInfo arg)
@@ -87,7 +99,7 @@ namespace Pattern.Core.Interfaces.Factories
                 return new ResolveResult() { Can = false };
             }
 
-            return new ResolveResult() { Can = this.kernel.CanResolve(parentType, arg.ParameterType), Type = arg.ParameterType };
+            return new ResolveResult() { Can = this.kernel.CanResolve(parentType, arg.ParameterType), Type = arg.ParameterType, IsInjectedType = true };
         }
 
         private object Resolve(Type parameterType, Type typeToInject, Queue<object> parameterQueue)

@@ -146,7 +146,7 @@
                     return this.binds[callContext.InstanciatedType];
                 }
 
-                throw new InjectionException(callContext.InstanciatedType, callContext.Parent);
+                return new List<IFactory>();
             }
 
             return this.binds[callContext.InstanciatedType];
