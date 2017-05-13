@@ -27,39 +27,36 @@ namespace Pattern.Core.Interfaces.Factories
                 .OrderByDescending(c => c.Parameters?.Count() ?? 0)
                 .FirstOrDefault(c => c.Can);
 
-            if (constructor == null)
+            if (constructor != null)
             {
-                if (constructors.Count == 1)
-                {
-                    var typetoInject = constructors.First().Parameters.FirstOrDefault(p => !p.Can && p.IsInjectedType);
+                var parameters = constructor.Parameters
+                    .Select(arg => arg.Value ?? this.Resolve(arg.Type, this.TypeToCreate)).ToArray();
 
-                    if (typetoInject != null)
-                    {
-                        throw new InjectionException(typetoInject.Type, this.TypeToCreate);
-                    }
-                }
-
-                throw new ConstructorSearchException(this.TypeToCreate);
+                return constructor.Constructor.Invoke(parameters);
             }
 
-            var parameters = constructor.Parameters
-                .Select(arg => arg.Value ?? this.Resolve(arg.Type, this.TypeToCreate, parameterQueue)).ToArray();
+            var typetoInject = constructors.First().Parameters.FirstOrDefault(p => !p.Can && p.IsInjectedType);
 
-            return constructor.Constructor.Invoke(parameters);
+            if (typetoInject != null)
+            {
+                throw new InjectionException(typetoInject.Type, this.TypeToCreate);
+            }
+
+            throw new ConstructorSearchException(this.TypeToCreate);
         }
 
         private ConstructorResult CanResolve(Queue<object> parameterQueue, ConstructorInfo constructorInfo)
         {
             if (constructorInfo.IsStatic)
             {
-                return new ConstructorResult() { Can = false };
+                return new ConstructorResult { Can = false };
             }
 
             var parameters = constructorInfo.GetParameters();
 
             var parametersResult = parameters.Select(p => CanResolve(parameterQueue, constructorInfo.DeclaringType, p)).ToList();
 
-            return new ConstructorResult()
+            return new ConstructorResult
             {
                 Can = parametersResult.All(p => p.Can),
                 Constructor = constructorInfo,
@@ -67,42 +64,31 @@ namespace Pattern.Core.Interfaces.Factories
             };
         }
 
-        public class ResolveResult
-        {
-            public bool Can { get; set; }
-            public Type Type { get; internal set; }
-            public object Value { get; set; }
-
-            public bool IsInjectedType { get; set; }
-        }
-
         private ResolveResult CanResolve(Queue<object> parameterQueue, Type parentType, ParameterInfo arg)
         {
-            if (arg.ParameterType == typeof(int))
-            {
-                object resolve;
-                if (ResolveParameterQueue(arg, parameterQueue, out resolve))
-                {
-                    return new ResolveResult() { Can = true, Value = resolve, Type = typeof(int) };
-                }
-
-                return new ResolveResult() { Can = false };
-            }
-            else if (arg.ParameterType == typeof(string))
-            {
-                object resolve;
-                if (ResolveParameterQueue(arg, parameterQueue, out resolve))
-                {
-                    return new ResolveResult() { Can = true, Value = resolve, Type = typeof(string) };
-                }
-
-                return new ResolveResult() { Can = false };
-            }
-
-            return new ResolveResult() { Can = this.kernel.CanResolve(parentType, arg.ParameterType), Type = arg.ParameterType, IsInjectedType = true };
+            return
+                ResolveResultStruct(parameterQueue, arg, typeof(int)) ??
+                ResolveResultStruct(parameterQueue, arg, typeof(string)) ??
+                new ResolveResult { Can = this.kernel.CanResolve(parentType, arg.ParameterType), Type = arg.ParameterType, IsInjectedType = true };
         }
 
-        private object Resolve(Type parameterType, Type typeToInject, Queue<object> parameterQueue)
+        private static ResolveResult ResolveResultStruct(Queue<object> parameterQueue, ParameterInfo arg, Type type)
+        {
+            if (arg.ParameterType == type)
+            {
+                object resolve;
+                if (ResolveParameterQueue(arg, parameterQueue, out resolve))
+                {
+                    return new ResolveResult { Can = true, Value = resolve, Type = type };
+                }
+
+                return new ResolveResult { Can = false };
+            }
+
+            return null;
+        }
+
+        private object Resolve(Type parameterType, Type typeToInject)
         {
             return this.kernel.Get(typeToInject, parameterType);
         }
@@ -113,16 +99,23 @@ namespace Pattern.Core.Interfaces.Factories
             {
                 if (arg.ParameterType == parameterQueue.Peek().GetType())
                 {
-                    {
-                        resolve = parameterQueue.Dequeue();
-                        return true;
-                    }
+                    resolve = parameterQueue.Dequeue();
+                    return true;
                 }
             }
 
             resolve = null;
 
             return false;
+        }
+
+        public class ResolveResult
+        {
+            public bool Can { get; set; }
+            public Type Type { get; internal set; }
+            public object Value { get; set; }
+
+            public bool IsInjectedType { get; set; }
         }
 
         public class ConstructorResult
