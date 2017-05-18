@@ -82,6 +82,11 @@
                 throw new FactoryException(callContext.InstanciatedType);
             }
 
+            if (factories.Count == 0)
+            {
+                return null;
+            }
+
             return instanciateValues.Single();
         }
 

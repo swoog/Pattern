@@ -50,6 +50,14 @@
             Assert.Equal("Can create instance of ObjectWithInjectedArguments.", exception.Message);
         }
 
+        [NamedFact(nameof(Should_return_null_When_binding_does_not_exists))]
+        public void Should_return_null_When_binding_does_not_exists()
+        {
+            var actual = this.kernel.Get(null, typeof(ISimpleClass));
+
+            Assert.Null(actual);
+        }
+
         [NamedFact(nameof(Should_throw_argument_exception_When_instanciate_type_null))]
         public void Should_throw_argument_exception_When_instanciate_type_null()
         {
