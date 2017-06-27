@@ -1,7 +1,9 @@
 ﻿namespace Pattern.Core.Interfaces
 {
+    using Pattern.Core.Interfaces.Factories;
+
     public interface IFactory
     {
-        object Create(object[] parameters);
+        object Create(CallContext callContext, object[] parameters);
     }
 }

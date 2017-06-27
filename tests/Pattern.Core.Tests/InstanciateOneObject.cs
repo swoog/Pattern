@@ -142,7 +142,7 @@
         public void Should_instanciate_type_When_use_custom_factory()
         {
             this.kernel.Bind(typeof(ComplexInterfaceClass), this.GetTypeFactory<ComplexInterfaceClass>());
-            this.kernel.Bind(typeof(ISimpleClass), new LambdaFactory(() => new SimpleClass()));
+            this.kernel.Bind(typeof(ISimpleClass), new LambdaFactory(c => new SimpleClass()));
 
             var instance = this.kernel.Get(typeof(ComplexInterfaceClass));
 
@@ -187,10 +187,29 @@
             Assert.False(canResolve);
         }
 
+        [NamedFact(nameof(Should_instanciate_generic_type_When_have_a_generic_parameter))]
+        public void Should_instanciate_generic_type_When_have_a_generic_parameter()
+        {
+            kernel.Bind(typeof(IOptions<>), new TypeFactory(typeof(Options<>), this.kernel));
+
+            var instance = kernel.Get(typeof(IOptions<SimpleClass>));
+
+            Assert.NotNull(instance);
+            Assert.IsType<Options<SimpleClass>>(instance);
+        }
+
         private TypeFactory GetTypeFactory<T>()
         {
             return new TypeFactory(typeof(T), this.kernel);
         }
+    }
+
+    public class Options<T> : IOptions<T>
+    {
+    }
+
+    public interface IOptions<T>
+    {
     }
 
     public class SimpleClassWithConstructors

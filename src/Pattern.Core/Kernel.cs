@@ -45,7 +45,7 @@
                 return true;
             }
 
-            return this.GetFactories(callContext).Count >= 1;
+            return this.GetFactories(ref callContext).Count >= 1;
         }
 
         public object Get(Type parentType, Type @from, params object[] parameters)
@@ -62,9 +62,9 @@
                 return this;
             }
 
-            var factories = this.GetFactories(callContext);
+            var factories = this.GetFactories(ref callContext);
 
-            var instanciateValues = factories.Select(t => t.Create(parameters));
+            var instanciateValues = factories.Select(t => t.Create(callContext, parameters));
             if (callContext.EnumerableType != null)
             {
                 var list = CreateList(callContext);
@@ -92,7 +92,7 @@
 
         private static IList CreateList(CallContext callContext)
         {
-            var constructorInfo = GetConstructorInfo(callContext.EnumerableType) 
+            var constructorInfo = GetConstructorInfo(callContext.EnumerableType)
                 ?? GetConstructorInfo(typeof(List<>).MakeGenericType(callContext.InstanciatedType));
 
             return constructorInfo.Invoke(null) as IList;
@@ -137,13 +137,25 @@
             return t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IEnumerable<>);
         }
 
-        private IList<IFactory> GetFactories(CallContext callContext)
+        private IList<IFactory> GetFactories(ref CallContext callContext)
         {
             if (!this.ContainsFactory(callContext))
             {
                 var typeInfo = callContext.InstanciatedType.GetTypeInfo();
                 if (!typeInfo.IsClass || typeInfo.IsAbstract || !callContext.AutomaticInstance)
                 {
+                    if (typeInfo.IsInterface && typeInfo.IsGenericType)
+                    {
+                        callContext = new CallContext(
+                            typeInfo.GetGenericTypeDefinition(),
+                            callContext.Parent,
+                            callContext.AutomaticInstance,
+                            callContext.EnumerableType,
+                            genericTypes: typeInfo.GenericTypeArguments);
+
+                        return GetFactories(ref callContext);
+                    }
+
                     return new List<IFactory>();
                 }
 

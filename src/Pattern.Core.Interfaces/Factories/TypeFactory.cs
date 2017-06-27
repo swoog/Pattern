@@ -5,6 +5,8 @@ namespace Pattern.Core.Interfaces.Factories
     using System.Linq;
     using System.Reflection;
 
+    using Pattern.Core.Interfaces;
+
     public class TypeFactory : IFactory
     {
         public Type TypeToCreate { get; }
@@ -17,11 +19,18 @@ namespace Pattern.Core.Interfaces.Factories
             this.kernel = kernel;
         }
 
-        public virtual object Create(object[] parameters1)
+        public virtual object Create(CallContext callContext, object[] parameters1)
         {
             var parameterQueue = new Queue<object>(parameters1);
 
-            var constructors = this.TypeToCreate.GetTypeInfo().DeclaredConstructors.Select(c => CanResolve(parameterQueue, c)).ToList();
+            var typeToCreate = this.GetType();
+
+            if (typeToCreate.GetTypeInfo().IsGenericType)
+            {
+                typeToCreate = typeToCreate.MakeGenericType(callContext.GenericTypes);
+            }
+
+            var constructors = typeToCreate.GetTypeInfo().DeclaredConstructors.Select(c => CanResolve(parameterQueue, c)).ToList();
 
             var constructor = constructors
                 .OrderByDescending(c => c.Parameters?.Count() ?? 0)
@@ -30,7 +39,7 @@ namespace Pattern.Core.Interfaces.Factories
             if (constructor != null)
             {
                 var parameters = constructor.Parameters
-                    .Select(arg => arg.Value ?? this.Resolve(arg.Type, this.TypeToCreate)).ToArray();
+                    .Select(arg => arg.Value ?? this.Resolve(arg.Type, typeToCreate)).ToArray();
 
                 return constructor.Constructor.Invoke(parameters);
             }
@@ -39,10 +48,15 @@ namespace Pattern.Core.Interfaces.Factories
 
             if (typetoInject != null)
             {
-                throw new InjectionException(typetoInject.Type, this.TypeToCreate);
+                throw new InjectionException(typetoInject.Type, typeToCreate);
             }
 
-            throw new ConstructorSearchException(this.TypeToCreate);
+            throw new ConstructorSearchException(typeToCreate);
+        }
+
+        private Type GetType()
+        {
+            return this.TypeToCreate;
         }
 
         private ConstructorResult CanResolve(Queue<object> parameterQueue, ConstructorInfo constructorInfo)

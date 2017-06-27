@@ -35,7 +35,7 @@ namespace Pattern.Config
 
         public void ToMethod<TTo>(Func<TTo> p) where TTo : TFrom
         {
-            this.kernel.Bind(typeof(TFrom), new LambdaFactory(() => p()));
+            this.kernel.Bind(typeof(TFrom), new LambdaFactory(c => p()));
         }
 
         public void ToFactory<T>()

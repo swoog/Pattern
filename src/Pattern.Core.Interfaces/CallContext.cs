@@ -1,9 +1,11 @@
-namespace Pattern.Core
+namespace Pattern.Core.Interfaces
 {
     using System;
 
     public class CallContext
     {
+        public Type[] GenericTypes { get; }
+
         public Type InstanciatedType { get; }
 
         public Type Parent { get; }
@@ -12,17 +14,18 @@ namespace Pattern.Core
 
         public Type EnumerableType { get; }
 
-        public CallContext(Type instanciatedType, Type parent, bool automaticInstance = true, Type enumerableType = null)
+        public CallContext(
+            Type instanciatedType,
+            Type parent,
+            bool automaticInstance = true,
+            Type enumerableType = null,
+            Type[] genericTypes = null)
         {
             this.InstanciatedType = instanciatedType;
             this.Parent = parent;
             this.AutomaticInstance = automaticInstance;
             this.EnumerableType = enumerableType;
-        }
-
-        public CallContext(Type instanciatedType)
-        {
-            this.InstanciatedType = instanciatedType;
+            this.GenericTypes = genericTypes;
         }
     }
 }
