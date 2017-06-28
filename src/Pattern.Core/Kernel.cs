@@ -109,17 +109,21 @@
 
             var typeInfo = @from.GetTypeInfo();
             var enumerableType = GetEnumerableType(typeInfo.ImplementedInterfaces);
-            if (enumerableType == null && IsEnumerable(typeInfo))
+            if (enumerableType == null)
             {
-                enumerableType = @from;
+                if (IsEnumerable(typeInfo))
+                {
+                    return new CallContext(@from.GenericTypeArguments[0], parentType, false, @from);
+                }
+
+                return callContext;
             }
 
-            if (enumerableType != null)
-            {
-                callContext = new CallContext(enumerableType.GenericTypeArguments[0], parentType, false, enumerableType);
-            }
-
-            return callContext;
+            return new CallContext(
+                enumerableType.GenericTypeArguments[0],
+                parentType,
+                false,
+                enumerableType);
         }
 
         private bool ContainsFactory(CallContext callContext)
@@ -129,7 +133,15 @@
 
         private static Type GetEnumerableType(IEnumerable<Type> typeInfoImplementedInterfaces)
         {
-            return typeInfoImplementedInterfaces.FirstOrDefault(t => IsEnumerable(t.GetTypeInfo()));
+            foreach (var typeInfoImplementedInterface in typeInfoImplementedInterfaces)
+            {
+                if (IsEnumerable(typeInfoImplementedInterface.GetTypeInfo()))
+                {
+                    return typeInfoImplementedInterface;
+                }
+            }
+
+            return default(Type);
         }
 
         private static bool IsEnumerable(TypeInfo t)
