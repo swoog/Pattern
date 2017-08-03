@@ -13,6 +13,7 @@ namespace Pattern.Perf
     using Pattern.Core.Interfaces;
     using Pattern.Core.Interfaces.Factories;
     using Pattern.Core.Ninject;
+    using Pattern.Core.SimpleIoc;
     using Pattern.Core.Unity;
 
     public class MyClass : IMyClass
@@ -29,7 +30,7 @@ namespace Pattern.Perf
     {
         static void Main(string[] args)
         {
-            var numbers = new int[] { 1, 1000, 10000, 100000 };
+            var numbers = new int[] { 100000, 10000, 1000, 1 };
 
             var perfsNumbers = new List<PerfNumber>();
 
@@ -76,6 +77,7 @@ namespace Pattern.Perf
                                   new NinjectStandardKernel(),
                                   new UnityStandardKernel(),
                                   new AutofacKernel(),
+                                  new SimpleIocKernel(),
                                   new Kernel()
                               };
 
@@ -115,7 +117,7 @@ namespace Pattern.Perf
 
             for (int i = 0; i < l; i++)
             {
-                var c = kernel.Get(typeof(IMyClass));
+                var c = kernel.Get(null, typeof(IMyClass));
             }
 
             stopWatch.Stop();

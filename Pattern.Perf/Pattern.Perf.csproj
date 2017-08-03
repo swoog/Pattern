@@ -8,6 +8,7 @@
   <ItemGroup>
     <ProjectReference Include="..\src\Pattern.Core.Autofac\Pattern.Core.Autofac.csproj" />
     <ProjectReference Include="..\src\Pattern.Core.Ninject\Pattern.Core.Ninject.csproj" />
+    <ProjectReference Include="..\src\Pattern.Core.SimpleIoc\Pattern.Core.SimpleIoc.csproj" />
     <ProjectReference Include="..\src\Pattern.Core.Unity\Pattern.Core.Unity.csproj" />
     <ProjectReference Include="..\src\Pattern.Core\Pattern.Core.csproj" />
   </ItemGroup>

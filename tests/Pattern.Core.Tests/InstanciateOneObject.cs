@@ -198,6 +198,14 @@
             Assert.IsType<Options<SimpleClass>>(instance);
         }
 
+        [NamedFact(nameof(Should_return_null_When_have_a_generic_parameter_and_no_binding))]
+        public void Should_return_null_When_have_a_generic_parameter_and_no_binding()
+        {
+            var instance = kernel.Get(typeof(IOptions<SimpleClass>));
+
+            Assert.Null(instance);
+        }
+
         private TypeFactory GetTypeFactory<T>()
         {
             return new TypeFactory(typeof(T), this.kernel);

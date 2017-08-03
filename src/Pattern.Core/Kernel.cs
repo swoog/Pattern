@@ -17,6 +17,7 @@
         public Kernel()
         {
             this.binds = new Dictionary<Type, IList<IFactory>>();
+            this.Bind(typeof(IKernel), new LambdaFactory(c => this));
         }
 
         public void Bind(Type @from, IFactory toFactory)
@@ -57,16 +58,11 @@
 
             var callContext = CreateCallContext(parentType, @from);
 
-            if (callContext.InstanciatedType == typeof(IKernel))
-            {
-                return this;
-            }
-
             var factories = this.GetFactories(ref callContext);
 
-            var instanciateValues = factories.Select(t => t.Create(callContext, parameters));
             if (callContext.EnumerableType != null)
             {
+                var instanciateValues = factories.Select(t => t.Create(callContext, parameters));
                 var list = CreateList(callContext);
 
                 foreach (var value in instanciateValues)
@@ -87,7 +83,7 @@
                 return null;
             }
 
-            return instanciateValues.Single();
+            return factories.Select(t => t.Create(callContext, parameters)).Single();
         }
 
         private static IList CreateList(CallContext callContext)
@@ -103,27 +99,39 @@
             return enumerableType.GetTypeInfo().DeclaredConstructors.FirstOrDefault();
         }
 
-        private static CallContext CreateCallContext(Type parentType, Type @from)
+        private Dictionary<string, CallContext> callContextCache = new Dictionary<string, CallContext>();
+
+        private CallContext CreateCallContext(Type parentType, Type @from)
         {
-            var callContext = new CallContext(@from, parentType);
+            var key = $"{parentType?.FullName}_{@from.FullName}";
 
-            var typeInfo = @from.GetTypeInfo();
-            var enumerableType = GetEnumerableType(typeInfo.ImplementedInterfaces);
-            if (enumerableType == null)
+            if (this.callContextCache.ContainsKey(key))
             {
-                if (IsEnumerable(typeInfo))
-                {
-                    return new CallContext(@from.GenericTypeArguments[0], parentType, false, @from);
-                }
-
-                return callContext;
+                return this.callContextCache[key];
             }
 
-            return new CallContext(
-                enumerableType.GenericTypeArguments[0],
-                parentType,
-                false,
-                enumerableType);
+            var callContext = CreateInternalCallContext(parentType, @from);
+
+            this.callContextCache.Add(key, callContext);
+
+            return callContext;
+        }
+
+        private static CallContext CreateInternalCallContext(Type parentType, Type @from)
+        {
+            var typeInfo = @from.GetTypeInfo();
+            var enumerableType = GetEnumerableType(typeInfo.ImplementedInterfaces);
+            if (enumerableType != null)
+            {
+                return new CallContext(enumerableType.GenericTypeArguments[0], parentType, false, enumerableType);
+            }
+
+            if (IsEnumerable(typeInfo))
+            {
+                return new CallContext(@from.GenericTypeArguments[0], parentType, false, @from);
+            }
+
+            return new CallContext(@from, parentType);
         }
 
         private bool ContainsFactory(CallContext callContext)
@@ -151,28 +159,33 @@
 
         private IList<IFactory> GetFactories(ref CallContext callContext)
         {
-            if (!this.ContainsFactory(callContext))
+            if (this.ContainsFactory(callContext))
             {
-                var typeInfo = callContext.InstanciatedType.GetTypeInfo();
-                if (!typeInfo.IsClass || typeInfo.IsAbstract || !callContext.AutomaticInstance)
+                return this.binds[callContext.InstanciatedType];
+            }
+
+            var typeInfo = callContext.InstanciatedType.GetTypeInfo();
+            if (!typeInfo.IsClass || typeInfo.IsAbstract || !callContext.AutomaticInstance)
+            {
+                if (typeInfo.IsInterface && typeInfo.IsGenericType)
                 {
-                    if (typeInfo.IsInterface && typeInfo.IsGenericType)
+                    callContext = new CallContext(
+                        typeInfo.GetGenericTypeDefinition(),
+                        callContext.Parent,
+                        callContext.AutomaticInstance,
+                        callContext.EnumerableType,
+                        genericTypes: typeInfo.GenericTypeArguments);
+
+                    if (this.ContainsFactory(callContext))
                     {
-                        callContext = new CallContext(
-                            typeInfo.GetGenericTypeDefinition(),
-                            callContext.Parent,
-                            callContext.AutomaticInstance,
-                            callContext.EnumerableType,
-                            genericTypes: typeInfo.GenericTypeArguments);
-
-                        return GetFactories(ref callContext);
+                        return this.binds[callContext.InstanciatedType];
                     }
-
-                    return new List<IFactory>();
                 }
 
-                this.Bind(callContext.InstanciatedType, new TypeFactory(callContext.InstanciatedType, this));
+                return new List<IFactory>();
             }
+
+            this.Bind(callContext.InstanciatedType, new TypeFactory(callContext.InstanciatedType, this));
 
             return this.binds[callContext.InstanciatedType];
         }

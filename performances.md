@@ -1,36 +1,40 @@
-For 1 instance :
+For 100000 instances :
 
 | Container | Milisecondes | Coef |
 | - | - | -: |
-| Kernel | 10 | x1,00 |
-| AutofacKernel | 37 | x3,70 |
-| NinjectStandardKernel | 326 | x32,60 |
-| UnityStandardKernel | 425 | x42,50 |
-
-For 1000 instances :
-
-| Container | Milisecondes | Coef |
-| - | - | -: |
-| AutofacKernel | 1 | x1,00 |
-| UnityStandardKernel | 3 | x3,00 |
-| Kernel | 3 | x3,00 |
-| NinjectStandardKernel | 23 | x23,00 |
+| SimpleIocKernel | 25 | x1,00 |
+| AutofacKernel | 124 | x4,96 |
+| UnityStandardKernel | 260 | x10,40 |
+| Kernel | 265 | x10,60 |
+| NinjectStandardKernel | 1736 | x69,44 |
 
 For 10000 instances :
 
 | Container | Milisecondes | Coef |
 | - | - | -: |
-| AutofacKernel | 13 | x1,00 |
-| Kernel | 40 | x3,08 |
-| UnityStandardKernel | 48 | x3,69 |
-| NinjectStandardKernel | 324 | x24,92 |
+| SimpleIocKernel | 1 | x1,00 |
+| AutofacKernel | 5 | x5,00 |
+| UnityStandardKernel | 12 | x12,00 |
+| Kernel | 21 | x21,00 |
+| NinjectStandardKernel | 128 | x128,00 |
 
-For 100000 instances :
+For 1000 instances :
 
 | Container | Milisecondes | Coef |
 | - | - | -: |
-| AutofacKernel | 109 | x1,00 |
-| UnityStandardKernel | 261 | x2,39 |
-| Kernel | 432 | x3,96 |
-| NinjectStandardKernel | 1902 | x17,45 |
+| AutofacKernel | 0 | xNaN |
+| SimpleIocKernel | 0 | xNaN |
+| UnityStandardKernel | 1 | x∞ |
+| Kernel | 2 | x∞ |
+| NinjectStandardKernel | 9 | x∞ |
+
+For 1 instance :
+
+| Container | Milisecondes | Coef |
+| - | - | -: |
+| NinjectStandardKernel | 0 | xNaN |
+| UnityStandardKernel | 0 | xNaN |
+| AutofacKernel | 0 | xNaN |
+| SimpleIocKernel | 0 | xNaN |
+| Kernel | 0 | xNaN |
 
