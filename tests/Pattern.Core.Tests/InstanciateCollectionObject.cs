@@ -19,6 +19,7 @@
             this.kernel = new Kernel();
             this.kernel.Bind(typeof(ISimpleClass), this.GetTypeFactory<SimpleClass>());
             this.kernel.Bind(typeof(ISimpleClass), this.GetTypeFactory<SimpleClass2>());
+            this.kernel.Bind(typeof(IGenericClass<ISimpleClass>), this.GetTypeFactory<SimpleClass>());
         }
 
         [NamedFact(nameof(Should_instanciate_a_collection_When_bind_two_class_on_same_interface))]
@@ -47,6 +48,15 @@
             Assert.Equal(2, collection.Count);
             Assert.IsType<SimpleClass>(collection[0]);
             Assert.IsType<SimpleClass2>(collection[1]);
+        }
+
+        [NamedFact(nameof(Should_instanciate_a_collection_of_generic_interface_When_get_interface_collection))]
+        public void Should_instanciate_a_collection_of_generic_interface_When_get_interface_collection()
+        {
+            var collection = this.kernel.Get<IList<IGenericClass<ISimpleClass>>>();
+
+            Assert.Equal(1, collection.Count);
+            Assert.IsType<SimpleClass>(collection[0]);
         }
 
         [NamedFact(nameof(Should_instanciate_a_collection_When_injected))]
@@ -98,5 +108,9 @@
         {
             return new TypeFactory(typeof(T), this.kernel);
         }
+    }
+
+    public interface IGenericClass<T>
+    {
     }
 }

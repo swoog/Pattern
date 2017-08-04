@@ -167,7 +167,7 @@
             var typeInfo = callContext.InstanciatedType.GetTypeInfo();
             if (!typeInfo.IsClass || typeInfo.IsAbstract || !callContext.AutomaticInstance)
             {
-                if (typeInfo.IsInterface && typeInfo.IsGenericType)
+                if (typeInfo.IsInterface && typeInfo.IsGenericType && callContext.EnumerableType == null)
                 {
                     callContext = new CallContext(
                         typeInfo.GetGenericTypeDefinition(),
