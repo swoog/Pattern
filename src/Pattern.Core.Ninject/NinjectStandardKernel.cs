@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 namespace Pattern.Core.Ninject
 {
     using global::Ninject;
-    using global::Ninject.Parameters;
 
     using Pattern.Core.Interfaces;
+    using Pattern.Core.Interfaces.Factories;
 
     public class NinjectStandardKernel : Pattern.Core.Interfaces.IKernel
     {
@@ -28,7 +28,15 @@ namespace Pattern.Core.Ninject
 
         public void Bind(Type @from, IFactory toFactory)
         {
-            this.standardKernel.Bind(@from).ToMethod(c => toFactory.Create(new object[0]));
+            switch (toFactory)
+            {
+                case TypeFactory typeFactory:
+                    this.standardKernel.Bind(@from).To(typeFactory.TypeToCreate);
+                    break;
+                default:
+                    this.standardKernel.Bind(@from).ToMethod(c => toFactory.Create(new CallContext(c.Request.ParentContext.Plan.Type, c.Plan.Type, false), new object[0]));
+                    break;
+            }
         }
 
         public bool CanResolve(Type parent, Type @from)

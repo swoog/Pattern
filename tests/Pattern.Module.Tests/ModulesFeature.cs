@@ -20,7 +20,17 @@ namespace Pattern.Module.Tests
 
             kernel.LoadModule<FakeModule>();
 
-            kernel.Bind(typeof(IModule), Arg.Is<TypeFactory>(t => t.TypeToCreate == typeof(FakeModule)));
+            kernel.Received(1).Bind(typeof(IModule), Arg.Is<TypeFactory>(t => t.TypeToCreate == typeof(FakeModule)));
+        }
+
+        [NamedFact(nameof(Should_return_kernel_for_fluent_syntax_when_add_module_to_kernel))]
+        public void Should_return_kernel_for_fluent_syntax_when_add_module_to_kernel()
+        {
+            var kernel = Substitute.For<IKernel>();
+
+            var kernelWithModule = kernel.LoadModule<FakeModule>();
+
+            Assert.Equal(kernel, kernelWithModule);
         }
 
         [NamedFact(nameof(Should_load_module_when_start_module_on_kernel))]
@@ -33,6 +43,18 @@ namespace Pattern.Module.Tests
             kernel.StartModules();
 
             module.Received(1).Load(kernel);
+        }
+
+        [NamedFact(nameof(Should_return_kernel_for_fluent_syntax_when_start_module_on_kernel))]
+        public void Should_return_kernel_for_fluent_syntax_when_start_module_on_kernel()
+        {
+            var module = Substitute.For<IModule>();
+            var kernel = Substitute.For<IKernel>();
+            kernel.Get<List<IModule>>().Returns(new List<IModule> { module });
+
+            var kernelWithModule = kernel.StartModules();
+
+            Assert.Equal(kernel, kernelWithModule);
         }
     }
 }

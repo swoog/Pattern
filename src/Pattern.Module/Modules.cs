@@ -5,13 +5,15 @@ namespace Pattern.Module
 {
     public static class Modules
     {
-        public static void LoadModule<T>(this IKernel kernel)
+        public static IKernel LoadModule<T>(this IKernel kernel)
             where T : IModule
         {
             kernel.Bind(typeof(IModule), new Pattern.Core.Interfaces.Factories.TypeFactory(typeof(T), kernel));
+
+            return kernel;
         }
 
-        public static void StartModules(this IKernel kernel)
+        public static IKernel StartModules(this IKernel kernel)
         {
             var modules = kernel.Get<List<IModule>>();
 
@@ -19,6 +21,8 @@ namespace Pattern.Module
             {
                 module.Load(kernel);
             }
+
+            return kernel;
         }
     }
 }

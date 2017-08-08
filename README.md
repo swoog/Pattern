@@ -4,6 +4,8 @@ This projects is libraries to abstract different patterns.
 
 Beta package are publish in [https://www.myget.org/F/swoog/api/v3/index.json]
 
+![alt text](https://neobd.visualstudio.com/_apis/public/build/definitions/478c14b3-24a1-461b-afbc-95bbcc413b21/20/badge "Build status")
+
 ## Pattern.Core.Interfaces
 This package contains a very simple abstraction of an injector.
 

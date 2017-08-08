@@ -142,7 +142,7 @@
         public void Should_instanciate_type_When_use_custom_factory()
         {
             this.kernel.Bind(typeof(ComplexInterfaceClass), this.GetTypeFactory<ComplexInterfaceClass>());
-            this.kernel.Bind(typeof(ISimpleClass), new LambdaFactory(() => new SimpleClass()));
+            this.kernel.Bind(typeof(ISimpleClass), new LambdaFactory(c => new SimpleClass()));
 
             var instance = this.kernel.Get(typeof(ComplexInterfaceClass));
 
@@ -179,11 +179,45 @@
             Assert.Equal("Injection not found for AbstractSimpleClass when injected in ComplexInterfaceClassWithAbstractInject.", exception.Message);
         }
 
+        [NamedFact(nameof(Should_return_false_When_test_can_resolve_interface))]
+        public void Should_return_false_When_test_can_resolve_interface()
+        {
+            var canResolve = this.kernel.CanResolve(null, typeof(ISimpleClass));
+
+            Assert.False(canResolve);
+        }
+
+        [NamedFact(nameof(Should_instanciate_generic_type_When_have_a_generic_parameter))]
+        public void Should_instanciate_generic_type_When_have_a_generic_parameter()
+        {
+            kernel.Bind(typeof(IOptions<>), new TypeFactory(typeof(Options<>), this.kernel));
+
+            var instance = kernel.Get(typeof(IOptions<SimpleClass>));
+
+            Assert.NotNull(instance);
+            Assert.IsType<Options<SimpleClass>>(instance);
+        }
+
+        [NamedFact(nameof(Should_return_null_When_have_a_generic_parameter_and_no_binding))]
+        public void Should_return_null_When_have_a_generic_parameter_and_no_binding()
+        {
+            var instance = kernel.Get(typeof(IOptions<SimpleClass>));
+
+            Assert.Null(instance);
+        }
 
         private TypeFactory GetTypeFactory<T>()
         {
             return new TypeFactory(typeof(T), this.kernel);
         }
+    }
+
+    public class Options<T> : IOptions<T>
+    {
+    }
+
+    public interface IOptions<T>
+    {
     }
 
     public class SimpleClassWithConstructors
@@ -192,7 +226,7 @@
 
         public SimpleClassWithConstructors()
         {
-            
+
         }
 
         public SimpleClassWithConstructors(ISimpleClass simpleClass)

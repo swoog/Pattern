@@ -11,7 +11,7 @@ namespace Pattern.Core.Interfaces.Factories
             this.factory = factory;
         }
 
-        public object Create(object[] parameters)
+        public object Create(CallContext callContext, object[] parameters)
         {
             if (this.instance == null)
             {
@@ -19,7 +19,7 @@ namespace Pattern.Core.Interfaces.Factories
                 {
                     if (this.instance == null)
                     {
-                        this.instance = this.factory.Create(parameters);
+                        this.instance = this.factory.Create(callContext, parameters);
                     }
                 }
             }
