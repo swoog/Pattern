@@ -63,7 +63,7 @@ namespace Pattern.Mvvm.Forms
             await this.navigationPage.PopAsync(true);
         }
 
-        private object Resolve(string path, string formatName)
+        private object Resolve(string path, string formatName, Assembly assembly)
         {
             var regex = new Regex(@"^/(.+)\.xaml([\?&][a-zA-Z]+=.+)*$");
 
@@ -74,7 +74,7 @@ namespace Pattern.Mvvm.Forms
 
                 this.QueryString = queryString;
 
-                return this.Instantiate(formatName, match.Groups[1].Value);
+                return this.Instantiate(formatName, match.Groups[1].Value, assembly);
             }
 
             throw new PageNotFoundException(path);
@@ -100,9 +100,8 @@ namespace Pattern.Mvvm.Forms
             return queryString;
         }
 
-        private object Instantiate(string formatName, string name)
+        private object Instantiate(string formatName, string name, Assembly assembly)
         {
-            var assembly = typeof(NavigationService).GetTypeInfo().Assembly;
             var type = assembly.GetType(string.Format(formatName, name));
 
             return this.kernel.Get(type);
@@ -110,7 +109,7 @@ namespace Pattern.Mvvm.Forms
 
         private Page ResolveView(string path)
         {
-            return this.Resolve(path, config.PagePattern) as Page;
+            return this.Resolve(path, config.PagePattern, config.PageAssembly) as Page;
         }
 
         public async Task NavigateRoot(string path)
