@@ -63,6 +63,17 @@
             }
         }
 
+        protected async Task PostAsync(string uri)
+        {
+            var baseUrl = this.GetBaseUrl();
+
+            using (var client = this.CreateClient())
+            {
+                await client.PostAsync($"{baseUrl}{uri}", new StringContent(string.Empty, Encoding.UTF8, "application/json"));
+            }
+        }
+
+
         protected virtual HttpClient CreateClient()
         {
             return new HttpClient();
