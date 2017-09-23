@@ -8,6 +8,11 @@
 
     public abstract class BaseApi
     {
+        protected Task Prepost(HttpClient client, string url, string data)
+        {
+            return Task.FromResult(0);
+        }
+
         protected async Task<T> GetAsync<T>(string uri)
         {
             var baseUrl = this.GetBaseUrl();
@@ -26,7 +31,9 @@
             using (var client = this.CreateClient())
             {
                 var postData = JsonConvert.SerializeObject(value);
-                await client.PostAsync($"{baseUrl}{uri}", new StringContent(postData, Encoding.UTF8, "application/json"));
+                var url = $"{baseUrl}{uri}";
+                await Prepost(client, url, postData);
+                await client.PostAsync(url, new StringContent(postData, Encoding.UTF8, "application/json"));
             }
         }
 
@@ -46,7 +53,9 @@
 
             using (var client = this.CreateClient())
             {
-                var result = await client.PostAsync($"{baseUrl}{uri}", new StringContent(value, Encoding.UTF8, "application/x-www-form-urlencoded"));
+                var url = $"{baseUrl}{uri}";
+                await Prepost(client, url, value);
+                var result = await client.PostAsync(url, new StringContent(value, Encoding.UTF8, "application/x-www-form-urlencoded"));
                 return JsonConvert.DeserializeObject<TResult>(await result.Content.ReadAsStringAsync());
             }
         }
@@ -57,8 +66,10 @@
 
             using (var client = this.CreateClient())
             {
+                var url = $"{baseUrl}{uri}";
                 var postData = JsonConvert.SerializeObject(value);
-                var result = await client.PostAsync($"{baseUrl}{uri}", new StringContent(postData, Encoding.UTF8, "application/json"));
+                await Prepost(client, uri, postData);
+                var result = await client.PostAsync(url, new StringContent(postData, Encoding.UTF8, "application/json"));
                 return JsonConvert.DeserializeObject<TResult>(await result.Content.ReadAsStringAsync());
             }
         }
@@ -69,7 +80,9 @@
 
             using (var client = this.CreateClient())
             {
-                await client.PostAsync($"{baseUrl}{uri}", new StringContent(string.Empty, Encoding.UTF8, "application/json"));
+                var url = $"{baseUrl}{uri}";
+                await Prepost(client, uri, string.Empty);
+                await client.PostAsync(url, new StringContent(string.Empty, Encoding.UTF8, "application/json"));
             }
         }
 
