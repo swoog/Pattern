@@ -61,6 +61,9 @@ namespace Pattern.Mvvm.Forms
             this.navigationHandler?.NavigateBack();
 
             await this.navigationPage.PopAsync(true);
+            var viewmodel = this.navigationPage.CurrentPage.BindingContext as ViewModelBase;
+
+            viewmodel?.Resume();
         }
 
         private object Resolve(string path, string formatName, Assembly assembly)

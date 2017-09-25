@@ -7,6 +7,8 @@ namespace Pattern.Mvvm.Forms
     {
         public abstract Task InitAsync();
 
+        public abstract Task Resume();
+
         public abstract void StartLoading();
 
         public abstract void StopLoading();
