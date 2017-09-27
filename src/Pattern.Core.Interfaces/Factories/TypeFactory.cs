@@ -25,7 +25,7 @@ namespace Pattern.Core.Interfaces.Factories
 
             var typeToCreate = this.GetType();
 
-            if (typeToCreate.GetTypeInfo().IsGenericType)
+            if (typeToCreate.GetTypeInfo().IsGenericTypeDefinition)
             {
                 typeToCreate = typeToCreate.MakeGenericType(callContext.GenericTypes);
             }

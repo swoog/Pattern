@@ -24,7 +24,7 @@
         {
             if (!this.binds.ContainsKey(@from))
             {
-                this.binds.Add(@from, new List<IFactory>() { toFactory });
+                this.binds.Add(@from, new List<IFactory> { toFactory });
             }
             else
             {

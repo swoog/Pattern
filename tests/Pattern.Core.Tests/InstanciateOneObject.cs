@@ -198,6 +198,17 @@
             Assert.IsType<Options<SimpleClass>>(instance);
         }
 
+        [NamedFact(nameof(Should_instanciate_generic_type_When_have_a_generic_but_no_parameter))]
+        public void Should_instanciate_generic_type_When_have_a_generic_but_no_parameter()
+        {
+            kernel.Bind(typeof(IOptions<SimpleClass>), new TypeFactory(typeof(Options<SimpleClass>), this.kernel));
+
+            var instance = kernel.Get(typeof(IOptions<SimpleClass>));
+
+            Assert.NotNull(instance);
+            Assert.IsType<Options<SimpleClass>>(instance);
+        }
+
         [NamedFact(nameof(Should_return_null_When_have_a_generic_parameter_and_no_binding))]
         public void Should_return_null_When_have_a_generic_parameter_and_no_binding()
         {
