@@ -8,7 +8,7 @@
 
     public abstract class BaseApi
     {
-        protected Task Prepost(HttpClient client, string url, string data)
+        protected virtual Task Prepost(HttpClient client, string url, string data)
         {
             return Task.FromResult(0);
         }
