@@ -46,24 +46,4 @@ namespace Pattern.Config
             this.kernel.Bind(typeof(TFrom), factory);
         }
     }
-
-    public class ScopeSyntax : IScopeSyntax
-    {
-        private readonly ComponentFactory componentFactory;
-
-        public ScopeSyntax(ComponentFactory componentFactory)
-        {
-            this.componentFactory = componentFactory;
-        }
-
-        public void InSingletonScope()
-        {
-            this.InScope(f => new SingletonFactory(f));
-        }
-
-        public void InScope(Func<IFactory, IFactory> factoryScope)
-        {
-            this.componentFactory.Factory = factoryScope(this.componentFactory.Factory);
-        }
-    }
 }
