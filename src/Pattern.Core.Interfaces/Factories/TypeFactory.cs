@@ -19,18 +19,16 @@ namespace Pattern.Core.Interfaces.Factories
             this.kernel = kernel;
         }
 
-        public virtual object Create(CallContext callContext, object[] parameters1)
+        public virtual object Create(CallContext callContext)
         {
-            var parameterQueue = new Queue<object>(parameters1);
-
-            var typeToCreate = this.GetType();
+            var typeToCreate = this.TypeToCreate;
 
             if (typeToCreate.GetTypeInfo().IsGenericTypeDefinition)
             {
                 typeToCreate = typeToCreate.MakeGenericType(callContext.GenericTypes);
             }
 
-            var constructors = typeToCreate.GetTypeInfo().DeclaredConstructors.Select(c => CanResolve(parameterQueue, c)).ToList();
+            var constructors = typeToCreate.GetTypeInfo().DeclaredConstructors.Select(CanResolve).ToList();
 
             var constructor = constructors
                 .OrderByDescending(c => c.Parameters?.Count() ?? 0)
@@ -54,12 +52,7 @@ namespace Pattern.Core.Interfaces.Factories
             throw new ConstructorSearchException(typeToCreate);
         }
 
-        private Type GetType()
-        {
-            return this.TypeToCreate;
-        }
-
-        private ConstructorResult CanResolve(Queue<object> parameterQueue, ConstructorInfo constructorInfo)
+        private ConstructorResult CanResolve(ConstructorInfo constructorInfo)
         {
             if (constructorInfo.IsStatic)
             {
@@ -68,7 +61,7 @@ namespace Pattern.Core.Interfaces.Factories
 
             var parameters = constructorInfo.GetParameters();
 
-            var parametersResult = parameters.Select(p => CanResolve(parameterQueue, constructorInfo.DeclaringType, p)).ToList();
+            var parametersResult = parameters.Select(p => CanResolve(constructorInfo.DeclaringType, p)).ToList();
 
             return new ConstructorResult
             {
@@ -78,24 +71,18 @@ namespace Pattern.Core.Interfaces.Factories
             };
         }
 
-        private ResolveResult CanResolve(Queue<object> parameterQueue, Type parentType, ParameterInfo arg)
+        private ResolveResult CanResolve(Type parentType, ParameterInfo arg)
         {
             return
-                ResolveResultStruct(parameterQueue, arg, typeof(int)) ??
-                ResolveResultStruct(parameterQueue, arg, typeof(string)) ??
+                ResolveResultStruct(arg, typeof(int)) ??
+                ResolveResultStruct(arg, typeof(string)) ??
                 new ResolveResult { Can = this.kernel.CanResolve(parentType, arg.ParameterType), Type = arg.ParameterType, IsInjectedType = true };
         }
 
-        private static ResolveResult ResolveResultStruct(Queue<object> parameterQueue, ParameterInfo arg, Type type)
+        private static ResolveResult ResolveResultStruct(ParameterInfo arg, Type type)
         {
             if (arg.ParameterType == type)
             {
-                object resolve;
-                if (ResolveParameterQueue(arg, parameterQueue, out resolve))
-                {
-                    return new ResolveResult { Can = true, Value = resolve, Type = type };
-                }
-
                 return new ResolveResult { Can = false };
             }
 
@@ -107,26 +94,12 @@ namespace Pattern.Core.Interfaces.Factories
             return this.kernel.Get(typeToInject, parameterType);
         }
 
-        private static bool ResolveParameterQueue(ParameterInfo arg, Queue<object> parameterQueue, out object resolve)
-        {
-            if (parameterQueue.Count != 0)
-            {
-                if (arg.ParameterType == parameterQueue.Peek().GetType())
-                {
-                    resolve = parameterQueue.Dequeue();
-                    return true;
-                }
-            }
-
-            resolve = null;
-
-            return false;
-        }
-
         public class ResolveResult
         {
             public bool Can { get; set; }
+
             public Type Type { get; internal set; }
+
             public object Value { get; set; }
 
             public bool IsInjectedType { get; set; }
@@ -135,7 +108,9 @@ namespace Pattern.Core.Interfaces.Factories
         public class ConstructorResult
         {
             public bool Can { get; set; }
+
             public ConstructorInfo Constructor { get; set; }
+
             public IEnumerable<ResolveResult> Parameters { get; internal set; }
         }
     }

@@ -17,9 +17,9 @@ namespace Pattern.Mvvm.Forms
             this.viewModelType = viewModelType;
         }
 
-        public override object Create(CallContext context, object[] parameters)
+        public override object Create(CallContext context)
         {
-            var instancePage = base.Create(context, parameters) as Page;
+            var instancePage = base.Create(context) as Page;
 
             if (instancePage != null)
             {

@@ -19,34 +19,13 @@ namespace Pattern.Core.Tests
             this.kernel = new Kernel();
         }
 
-        [NamedFact(nameof(Should_instanciate_object_When_have_custom_arguments))]
-        public void Should_instanciate_object_When_have_custom_arguments()
-        {
-            var instance = this.kernel.Get(null, typeof(ObjectWithArguments), 1, "Toto");
-
-            var instanceOfObjsctWithArguments = Assert.IsType<ObjectWithArguments>(instance);
-            Assert.Equal("Toto", instanceOfObjsctWithArguments.StringValue);
-            Assert.Equal(1, instanceOfObjsctWithArguments.IntValue);
-        }
-
-        [NamedFact(nameof(Should_instanciate_object_When_have_custom_arguments_with_an_injected_argument))]
-        public void Should_instanciate_object_When_have_custom_arguments_with_an_injected_argument()
-        {
-            var instance = this.kernel.Get(null, typeof(ObjectWithInjectedArguments), 1, "Toto");
-
-            var instanceOfObjsctWithArguments = Assert.IsType<ObjectWithInjectedArguments>(instance);
-            Assert.Equal("Toto", instanceOfObjsctWithArguments.StringValue);
-            Assert.Equal(1, instanceOfObjsctWithArguments.IntValue);
-            Assert.NotNull(instanceOfObjsctWithArguments.ElectricMotor);
-        }
-
         [NamedFact(nameof(Should_make_an_injection_error_When_custom_arguments_does_not_corresponding))]
         public void Should_make_an_injection_error_When_custom_arguments_does_not_corresponding()
         {
             var exception = Assert.Throws<ConstructorSearchException>(
                 () =>
                 {
-                    this.kernel.Get(null, typeof(ObjectWithInjectedArguments), "Toto");
+                    this.kernel.Get(null, typeof(ObjectWithInjectedArguments));
                 });
 
             Assert.Equal("Can create instance of ObjectWithInjectedArguments.", exception.Message);

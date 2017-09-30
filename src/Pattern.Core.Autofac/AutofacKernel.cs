@@ -43,7 +43,7 @@ namespace Pattern.Core.Autofac
             this.container = this.containerBuilder.Build();
         }
 
-        public object Get(Type parentType, Type @from, params object[] parameters)
+        public object Get(Type parentType, Type @from)
         {
             return this.container.Resolve(@from);
         }

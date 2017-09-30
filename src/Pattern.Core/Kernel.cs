@@ -49,7 +49,7 @@
             return this.GetFactories(ref callContext).Count >= 1;
         }
 
-        public object Get(Type parentType, Type @from, params object[] parameters)
+        public object Get(Type parentType, Type @from)
         {
             if (@from == null)
             {
@@ -62,7 +62,7 @@
 
             if (callContext.EnumerableType != null)
             {
-                var instanciateValues = factories.Select(t => t.Create(callContext, parameters));
+                var instanciateValues = factories.Select(t => t.Create(callContext));
                 var list = CreateList(callContext);
 
                 foreach (var value in instanciateValues)
@@ -83,7 +83,7 @@
                 return null;
             }
 
-            return factories.Select(t => t.Create(callContext, parameters)).Single();
+            return factories.Select(t => t.Create(callContext)).Single();
         }
 
         private static IList CreateList(CallContext callContext)
