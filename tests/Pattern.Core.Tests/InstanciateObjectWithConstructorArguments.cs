@@ -1,4 +1,6 @@
-﻿namespace Pattern.Core.Tests
+﻿using Pattern.Core.Tests.Example;
+
+namespace Pattern.Core.Tests
 {
     using System;
 
@@ -35,7 +37,7 @@
             var instanceOfObjsctWithArguments = Assert.IsType<ObjectWithInjectedArguments>(instance);
             Assert.Equal("Toto", instanceOfObjsctWithArguments.StringValue);
             Assert.Equal(1, instanceOfObjsctWithArguments.IntValue);
-            Assert.NotNull(instanceOfObjsctWithArguments.SimpleClass);
+            Assert.NotNull(instanceOfObjsctWithArguments.ElectricMotor);
         }
 
         [NamedFact(nameof(Should_make_an_injection_error_When_custom_arguments_does_not_corresponding))]
@@ -53,7 +55,7 @@
         [NamedFact(nameof(Should_return_null_When_binding_does_not_exists))]
         public void Should_return_null_When_binding_does_not_exists()
         {
-            var actual = this.kernel.Get(null, typeof(ISimpleClass));
+            var actual = this.kernel.Get(null, typeof(IMotor));
 
             Assert.Null(actual);
         }

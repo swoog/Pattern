@@ -1,4 +1,6 @@
-﻿namespace Pattern.Core.Tests
+﻿using Pattern.Core.Tests.Example;
+
+namespace Pattern.Core.Tests
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -17,25 +19,25 @@
         public InstanciateCollectionObject()
         {
             this.kernel = new Kernel();
-            this.kernel.Bind(typeof(ISimpleClass), this.GetTypeFactory<SimpleClass>());
-            this.kernel.Bind(typeof(ISimpleClass), this.GetTypeFactory<SimpleClass2>());
-            this.kernel.Bind(typeof(IGenericClass<ISimpleClass>), this.GetTypeFactory<SimpleClass>());
+            this.kernel.Bind(typeof(IMotor), this.GetTypeFactory<ElectricMotor>());
+            this.kernel.Bind(typeof(IMotor), this.GetTypeFactory<GazoilMotor>());
+            this.kernel.Bind(typeof(IGenericMotor<IMotor>), this.GetTypeFactory<ElectricMotor>());
         }
 
         [NamedFact(nameof(Should_instanciate_a_collection_When_bind_two_class_on_same_interface))]
         public void Should_instanciate_a_collection_When_bind_two_class_on_same_interface()
         {
-            var collection = this.kernel.Get<List<ISimpleClass>>();
+            var collection = this.kernel.Get<List<IMotor>>();
 
             Assert.Equal(2, collection.Count);
-            Assert.IsType<SimpleClass>(collection[0]);
-            Assert.IsType<SimpleClass2>(collection[1]);
+            Assert.IsType<ElectricMotor>(collection[0]);
+            Assert.IsType<GazoilMotor>(collection[1]);
         }
 
         [NamedFact(nameof(Should_instanciate_an_empty_collection_When_no_bind_found_and_get_ienumerable))]
         public void Should_instanciate_an_empty_collection_When_no_bind_found_and_get_ienumerable()
         {
-            var collection = this.kernel.Get<IEnumerable<SimpleClass>>();
+            var collection = this.kernel.Get<IEnumerable<ElectricMotor>>();
 
             Assert.Equal(0, collection.Count());
         }
@@ -43,20 +45,20 @@
         [NamedFact(nameof(Should_instanciate_a_collection_When_get_interface_collection))]
         public void Should_instanciate_a_collection_When_get_interface_collection()
         {
-            var collection = this.kernel.Get<IList<ISimpleClass>>();
+            var collection = this.kernel.Get<IList<IMotor>>();
 
             Assert.Equal(2, collection.Count);
-            Assert.IsType<SimpleClass>(collection[0]);
-            Assert.IsType<SimpleClass2>(collection[1]);
+            Assert.IsType<ElectricMotor>(collection[0]);
+            Assert.IsType<GazoilMotor>(collection[1]);
         }
 
         [NamedFact(nameof(Should_instanciate_a_collection_of_generic_interface_When_get_interface_collection))]
         public void Should_instanciate_a_collection_of_generic_interface_When_get_interface_collection()
         {
-            var collection = this.kernel.Get<IList<IGenericClass<ISimpleClass>>>();
+            var collection = this.kernel.Get<IList<IGenericMotor<IMotor>>>();
 
             Assert.Equal(1, collection.Count);
-            Assert.IsType<SimpleClass>(collection[0]);
+            Assert.IsType<ElectricMotor>(collection[0]);
         }
 
         [NamedFact(nameof(Should_instanciate_a_collection_When_injected))]
@@ -98,19 +100,15 @@
             var exception = Assert.Throws<FactoryException>(
                 () =>
                 {
-                    this.kernel.Get(typeof(ISimpleClass));
+                    this.kernel.Get(typeof(IMotor));
                 });
 
-            Assert.Equal("Injection have found many factories for ISimpleClass.", exception.Message);
+            Assert.Equal("Injection have found many factories for IMotor.", exception.Message);
         }
 
         private TypeFactory GetTypeFactory<T>()
         {
             return new TypeFactory(typeof(T), this.kernel);
         }
-    }
-
-    public interface IGenericClass<T>
-    {
     }
 }
