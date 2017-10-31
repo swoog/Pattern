@@ -1,6 +1,8 @@
 ﻿namespace Pattern.Api
 {
+    using System.Globalization;
     using System.Net.Http;
+    using System.Net.Http.Headers;
     using System.Text;
     using System.Threading.Tasks;
 
@@ -32,7 +34,7 @@
             {
                 var postData = JsonConvert.SerializeObject(value);
                 var url = $"{baseUrl}{uri}";
-                await Prepost(client, url, ref postData);
+                await this.Prepost(client, url, ref postData);
                 await client.PostAsync(url, new StringContent(postData, Encoding.UTF8, "application/json"));
             }
         }
@@ -54,7 +56,7 @@
             using (var client = this.CreateClient())
             {
                 var url = $"{baseUrl}{uri}";
-                await Prepost(client, url, ref value);
+                await this.Prepost(client, url, ref value);
                 var result = await client.PostAsync(url, new StringContent(value, Encoding.UTF8, "application/x-www-form-urlencoded"));
                 return JsonConvert.DeserializeObject<TResult>(await result.Content.ReadAsStringAsync());
             }
@@ -68,7 +70,7 @@
             {
                 var url = $"{baseUrl}{uri}";
                 var postData = JsonConvert.SerializeObject(value);
-                await Prepost(client, uri, ref postData);
+                await this.Prepost(client, uri, ref postData);
                 var result = await client.PostAsync(url, new StringContent(postData, Encoding.UTF8, "application/json"));
                 return JsonConvert.DeserializeObject<TResult>(await result.Content.ReadAsStringAsync());
             }
@@ -82,7 +84,7 @@
             {
                 var url = $"{baseUrl}{uri}";
                 var content = string.Empty;
-                await Prepost(client, uri, ref content);
+                await this.Prepost(client, uri, ref content);
                 await client.PostAsync(url, new StringContent(content, Encoding.UTF8, "application/json"));
             }
         }
@@ -90,7 +92,11 @@
 
         protected virtual HttpClient CreateClient()
         {
-            return new HttpClient();
+            var httpClient = new HttpClient();
+
+            httpClient.DefaultRequestHeaders.AcceptLanguage.TryParseAdd(CultureInfo.CurrentUICulture.TwoLetterISOLanguageName);
+
+            return httpClient;
         }
 
         protected abstract string GetBaseUrl();
