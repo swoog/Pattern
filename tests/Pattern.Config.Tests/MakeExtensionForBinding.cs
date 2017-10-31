@@ -69,7 +69,7 @@ namespace Pattern.Config.Tests
         {
             this.kernel.Bind<ISimpleClass>().ToMethod(() => new SimpleClass());
 
-            this.kernel.Received(1).Bind(typeof(ISimpleClass), Arg.Any<LambdaFactory>());
+            this.kernel.Received(1).Bind(typeof(ISimpleClass), Arg.Is<ComponentFactory>(c => c.Factory.GetType() == typeof(LambdaFactory)));
         }
 
         [NamedFact(nameof(Should_bind_class_When_bind_to_factory))]
