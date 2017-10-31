@@ -4,7 +4,7 @@ namespace Pattern.Config
 
     public class FakeFactory : IFactory
     {
-        public object Create(CallContext callContext, object[] parameters)
+        public object Create(CallContext callContext)
         {
             throw new System.NotImplementedException();
         }

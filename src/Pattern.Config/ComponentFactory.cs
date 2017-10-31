@@ -6,9 +6,9 @@ namespace Pattern.Config
     {
         public IFactory Factory { get; set; }
 
-        public object Create(CallContext callContext, object[] parameters)
+        public object Create(CallContext callContext)
         {
-            return this.Factory.Create(callContext, parameters);
+            return this.Factory.Create(callContext);
         }
     }
 }

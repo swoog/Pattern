@@ -11,7 +11,7 @@ namespace Pattern.Core.Interfaces.Factories
             this.create = create;
         }
 
-        public virtual object Create(CallContext callContext, object[] parameters)
+        public virtual object Create(CallContext callContext)
         {
             return this.create(callContext);
         }

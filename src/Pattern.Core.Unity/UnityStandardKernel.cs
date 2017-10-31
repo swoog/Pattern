@@ -33,7 +33,7 @@ namespace Pattern.Core.Unity
             }
         }
 
-        public object Get(Type parentType, Type @from, params object[] parameters)
+        public object Get(Type parentType, Type @from)
         {
             return this.unityContainer.Resolve(@from);
         }

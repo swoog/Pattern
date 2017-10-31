@@ -45,7 +45,7 @@ namespace Pattern.Core.SimpleIoc
             }
         }
 
-        public object Get(Type parentType, Type @from, params object[] parameters)
+        public object Get(Type parentType, Type @from)
         {
             return this.simpleIoc.GetInstance(@from);
         }

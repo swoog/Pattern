@@ -34,7 +34,7 @@ namespace Pattern.Core.Ninject
                     this.standardKernel.Bind(@from).To(typeFactory.TypeToCreate);
                     break;
                 default:
-                    this.standardKernel.Bind(@from).ToMethod(c => toFactory.Create(new CallContext(c.Request.ParentContext.Plan.Type, c.Plan.Type, false), new object[0]));
+                    this.standardKernel.Bind(@from).ToMethod(c => toFactory.Create(new CallContext(c.Request.ParentContext.Plan.Type, c.Plan.Type, false)));
                     break;
             }
         }
@@ -44,13 +44,8 @@ namespace Pattern.Core.Ninject
             return (bool)this.standardKernel.CanResolve(@from);
         }
 
-        public object Get(Type parentType, Type @from, params object[] parameters)
+        public object Get(Type parentType, Type @from)
         {
-            if (parameters.Length > 0)
-            {
-                throw new NotSupportedException();
-            }
-
             return this.standardKernel.Get(@from);
         }
     }
