@@ -55,12 +55,21 @@ namespace Pattern.Config.Tests
                 .Bind(typeof(ISimpleClass), Arg.Is<ComponentFactory>(f => f.Factory.GetType() == typeof(SingletonFactory)));
         }
 
+        [NamedFact(nameof(Should_scope_to_singleton_class_When_bind_interface_to_method))]
+        public void Should_scope_to_singleton_class_When_bind_interface_to_method()
+        {
+            this.kernel.Bind<ISimpleClass>().ToMethod(() => new SimpleClass()).InSingletonScope();
+
+            this.kernel.Received(1)
+                .Bind(typeof(ISimpleClass), Arg.Is<ComponentFactory>(f => f.Factory.GetType() == typeof(SingletonFactory)));
+        }
+
         [NamedFact(nameof(Should_bind_class_with_a_lambda_factory_When_bind_to_method))]
         public void Should_bind_class_with_a_lambda_factory_When_bind_to_method()
         {
             this.kernel.Bind<ISimpleClass>().ToMethod(() => new SimpleClass());
 
-            this.kernel.Received(1).Bind(typeof(ISimpleClass), Arg.Any<LambdaFactory>());
+            this.kernel.Received(1).Bind(typeof(ISimpleClass), Arg.Is<ComponentFactory>(c => c.Factory.GetType() == typeof(LambdaFactory)));
         }
 
         [NamedFact(nameof(Should_bind_class_When_bind_to_factory))]
