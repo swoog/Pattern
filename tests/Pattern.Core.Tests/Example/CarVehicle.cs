@@ -1,7 +1,14 @@
-﻿namespace Pattern.Core.Tests.Example
+﻿using System;
+
+namespace Pattern.Core.Tests.Example
 {
     public class CarVehicle
     {
+        public CarVehicle(IntPtr pt1, IntPtr pt2)
+        {
+            // For constructor selection when constructor have ptr
+        }
+
         public CarVehicle(IMotor motor)
         {
             this.Motor = motor;

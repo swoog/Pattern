@@ -42,7 +42,7 @@ namespace Pattern.Core.Interfaces.Factories
                 return constructor.Constructor.Invoke(parameters);
             }
 
-            var typetoInject = constructors.First().Parameters.FirstOrDefault(p => !p.Can && p.IsInjectedType);
+            var typetoInject = constructors.FirstOrDefault(c => c.Parameters.All(p => p.IsInjectedType))?.Parameters?.FirstOrDefault(p => !p.Can && p.IsInjectedType);
 
             if (typetoInject != null)
             {
@@ -76,6 +76,7 @@ namespace Pattern.Core.Interfaces.Factories
             return
                 ResolveResultStruct(arg, typeof(int)) ??
                 ResolveResultStruct(arg, typeof(string)) ??
+                ResolveResultStruct(arg, typeof(IntPtr)) ??
                 new ResolveResult { Can = this.kernel.CanResolve(parentType, arg.ParameterType), Type = arg.ParameterType, IsInjectedType = true };
         }
 

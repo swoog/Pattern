@@ -3,7 +3,7 @@
   <PropertyGroup>
     <VersionPrefix>99.99.99.99</VersionPrefix>
     <TargetFramework>net45</TargetFramework>
-    <AssemblyName>Pattern.Core</AssemblyName>
+    <AssemblyName>Pattern.Core.SimpleIoc</AssemblyName>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
