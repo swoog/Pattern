@@ -39,7 +39,7 @@ namespace Pattern.Core.Tests
         {
             var collection = this.kernel.Get<IEnumerable<ElectricMotor>>();
 
-            Assert.Equal(0, collection.Count());
+            Assert.Empty(collection);
         }
 
         [NamedFact(nameof(Should_instanciate_a_collection_When_get_interface_collection))]
@@ -91,7 +91,7 @@ namespace Pattern.Core.Tests
             var instance = this.kernel.Get<ComplexEnumerableClassWithNotImplementedInterface>();
 
             Assert.NotNull(instance.SimpleClasses);
-            Assert.Equal(0, instance.SimpleClasses.Count());
+            Assert.Empty(instance.SimpleClasses);
         }
 
         [NamedFact(nameof(Should_throw_error_When_bind_two_class_same_interface))]
