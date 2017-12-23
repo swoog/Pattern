@@ -42,7 +42,10 @@ namespace Pattern.Core.Interfaces.Factories
                 return constructor.Constructor.Invoke(parameters);
             }
 
-            var typetoInject = constructors.FirstOrDefault(c => c.Parameters.All(p => p.IsInjectedType))?.Parameters?.FirstOrDefault(p => !p.Can && p.IsInjectedType);
+            var typetoInject = constructors
+                .FirstOrDefault(c => c.Parameters?.All(p => p.IsInjectedType) ?? false)
+                ?.Parameters
+                ?.FirstOrDefault(p => !p.Can && p.IsInjectedType);
 
             if (typetoInject != null)
             {

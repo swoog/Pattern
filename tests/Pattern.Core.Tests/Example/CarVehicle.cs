@@ -4,6 +4,11 @@ namespace Pattern.Core.Tests.Example
 {
     public class CarVehicle
     {
+        static CarVehicle()
+        {
+            // For constructor selection when have static constructor
+        }
+
         public CarVehicle(bool b, bool b2)
         {
             // For constructor selection when constructor have bool
