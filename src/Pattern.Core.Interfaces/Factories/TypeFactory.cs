@@ -77,12 +77,23 @@ namespace Pattern.Core.Interfaces.Factories
                 ResolveResultStruct(arg, typeof(int)) ??
                 ResolveResultStruct(arg, typeof(string)) ??
                 ResolveResultStruct(arg, typeof(IntPtr)) ??
+                ResolveResultFunc(arg) ??
                 new ResolveResult { Can = this.kernel.CanResolve(parentType, arg.ParameterType), Type = arg.ParameterType, IsInjectedType = true };
         }
 
         private static ResolveResult ResolveResultStruct(ParameterInfo arg, Type type)
         {
             if (arg.ParameterType == type)
+            {
+                return new ResolveResult { Can = false };
+            }
+
+            return null;
+        }
+
+        private static ResolveResult ResolveResultFunc(ParameterInfo arg)
+        {
+            if (arg.ParameterType.Name.StartsWith("Func"))
             {
                 return new ResolveResult { Can = false };
             }
