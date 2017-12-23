@@ -4,6 +4,11 @@ namespace Pattern.Core.Tests.Example
 {
     public class CarVehicle
     {
+        public CarVehicle(bool b, bool b2)
+        {
+            // For constructor selection when constructor have bool
+        }
+
         public CarVehicle(Func<int> f)
         {
             // For constructor selection when constructor have Func

@@ -76,6 +76,7 @@ namespace Pattern.Core.Interfaces.Factories
             return
                 ResolveResultStruct(arg, typeof(int)) ??
                 ResolveResultStruct(arg, typeof(string)) ??
+                ResolveResultStruct(arg, typeof(bool)) ??
                 ResolveResultStruct(arg, typeof(IntPtr)) ??
                 ResolveResultFunc(arg) ??
                 new ResolveResult { Can = this.kernel.CanResolve(parentType, arg.ParameterType), Type = arg.ParameterType, IsInjectedType = true };
