@@ -28,7 +28,11 @@ namespace Pattern.Core.Interfaces.Factories
                 typeToCreate = typeToCreate.MakeGenericType(callContext.GenericTypes);
             }
 
-            var constructors = typeToCreate.GetTypeInfo().DeclaredConstructors.Select(CanResolve).ToList();
+            var constructors = typeToCreate
+                .GetTypeInfo()
+                .DeclaredConstructors
+                .Where(c => c.IsPublic)
+                .Select(CanResolve).ToList();
 
             var constructor = constructors
                 .OrderByDescending(c => c.Parameters?.Count() ?? 0)

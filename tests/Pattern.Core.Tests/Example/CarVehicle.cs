@@ -9,6 +9,11 @@ namespace Pattern.Core.Tests.Example
             // For constructor selection when have static constructor
         }
 
+        internal CarVehicle(IMotor motor1, IMotor motor2)
+        {
+            // For constructor selection when constructor is internal
+        }
+
         public CarVehicle(bool b, bool b2)
         {
             // For constructor selection when constructor have bool
