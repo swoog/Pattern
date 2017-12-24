@@ -4,16 +4,6 @@ namespace Pattern.Core.Interfaces
 
     public class CallContext
     {
-        public Type[] GenericTypes { get; }
-
-        public Type InstanciatedType { get; }
-
-        public Type Parent { get; }
-
-        public bool AutomaticInstance { get; }
-
-        public Type EnumerableType { get; }
-
         public CallContext(
             Type instanciatedType,
             Type parent,
@@ -27,5 +17,15 @@ namespace Pattern.Core.Interfaces
             this.EnumerableType = enumerableType;
             this.GenericTypes = genericTypes;
         }
+
+        public Type[] GenericTypes { get; }
+
+        public Type InstanciatedType { get; }
+
+        public Type Parent { get; }
+
+        public bool AutomaticInstance { get; }
+
+        public Type EnumerableType { get; }
     }
 }

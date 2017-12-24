@@ -20,6 +20,8 @@
             this.Bind(typeof(IKernel), new LambdaFactory(c => this));
         }
 
+        public Action<CallContext> Log { get; set; }
+
         public void Bind(Type @from, IFactory toFactory)
         {
             if (!this.binds.ContainsKey(@from))
@@ -57,6 +59,8 @@
             }
 
             var callContext = CreateCallContext(parentType, @from);
+
+            this.Log?.Invoke(callContext);
 
             var factories = this.GetFactories(ref callContext);
 

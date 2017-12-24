@@ -28,7 +28,7 @@ namespace Pattern.Core.Tests
                     this.kernel.Get(null, typeof(ObjectWithInjectedArguments));
                 });
 
-            Assert.Equal("Can create instance of ObjectWithInjectedArguments.", exception.Message);
+            Assert.Equal("Can not create instance of ObjectWithInjectedArguments.", exception.Message);
         }
 
         [NamedFact(nameof(Should_return_null_When_binding_does_not_exists))]

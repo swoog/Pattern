@@ -211,6 +211,21 @@ namespace Pattern.Core.Tests
             Assert.IsType<Options<ElectricMotor>>(instance);
         }
 
+        [NamedFact(nameof(Should_instanciate_a_second_generic_type_When_have_two_generic_but_no_parameter))]
+        public void Should_instanciate_a_second_generic_type_When_have_two_generic_but_no_parameter()
+        {
+            kernel.Bind(
+                typeof(IOptions<>),
+                new SingletonFactory(new TypeFactory(typeof(Options<>), this.kernel)));
+
+            var firstInstance = this.kernel.Get(typeof(IOptions<GazoilMotor>));
+
+            var instance = kernel.Get(typeof(IOptions<ElectricMotor>));
+
+            Assert.NotNull(instance);
+            Assert.IsType<Options<ElectricMotor>>(instance);
+        }
+
         [NamedFact(nameof(Should_return_null_When_have_a_generic_parameter_and_no_binding))]
         public void Should_return_null_When_have_a_generic_parameter_and_no_binding()
         {

@@ -28,7 +28,11 @@ namespace Pattern.Core.Interfaces.Factories
                 typeToCreate = typeToCreate.MakeGenericType(callContext.GenericTypes);
             }
 
-            var constructors = typeToCreate.GetTypeInfo().DeclaredConstructors.Select(CanResolve).ToList();
+            var constructors = typeToCreate
+                .GetTypeInfo()
+                .DeclaredConstructors
+                .Where(c => c.IsPublic)
+                .Select(CanResolve).ToList();
 
             var constructor = constructors
                 .OrderByDescending(c => c.Parameters?.Count() ?? 0)
@@ -42,7 +46,10 @@ namespace Pattern.Core.Interfaces.Factories
                 return constructor.Constructor.Invoke(parameters);
             }
 
-            var typetoInject = constructors.First().Parameters.FirstOrDefault(p => !p.Can && p.IsInjectedType);
+            var typetoInject = constructors
+                .FirstOrDefault(c => c.Parameters?.All(p => p.IsInjectedType) ?? false)
+                ?.Parameters
+                ?.FirstOrDefault(p => !p.Can && p.IsInjectedType);
 
             if (typetoInject != null)
             {
@@ -76,12 +83,25 @@ namespace Pattern.Core.Interfaces.Factories
             return
                 ResolveResultStruct(arg, typeof(int)) ??
                 ResolveResultStruct(arg, typeof(string)) ??
+                ResolveResultStruct(arg, typeof(bool)) ??
+                ResolveResultStruct(arg, typeof(IntPtr)) ??
+                ResolveResultFunc(arg) ??
                 new ResolveResult { Can = this.kernel.CanResolve(parentType, arg.ParameterType), Type = arg.ParameterType, IsInjectedType = true };
         }
 
         private static ResolveResult ResolveResultStruct(ParameterInfo arg, Type type)
         {
             if (arg.ParameterType == type)
+            {
+                return new ResolveResult { Can = false };
+            }
+
+            return null;
+        }
+
+        private static ResolveResult ResolveResultFunc(ParameterInfo arg)
+        {
+            if (arg.ParameterType.Name.StartsWith("Func"))
             {
                 return new ResolveResult { Can = false };
             }

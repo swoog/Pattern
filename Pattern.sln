@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.10
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{38133F35-7BEA-4C0C-AA6E-50EE8CDB7360}"
 EndProject
@@ -31,35 +31,37 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pattern.Config.Tests", "tes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pattern.Core.Tests", "tests\Pattern.Core.Tests\Pattern.Core.Tests.csproj", "{642F842D-0336-4C9E-A48B-478FB82F4207}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pattern.Mvvm", "src\Pattern.Mvvm\Pattern.Mvvm.csproj", "{F0BBE62E-CCBA-45FC-A08B-F1AB95CDD498}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pattern.Mvvm", "src\Pattern.Mvvm\Pattern.Mvvm.csproj", "{F0BBE62E-CCBA-45FC-A08B-F1AB95CDD498}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pattern.Mvvm.Tests", "tests\Pattern.Mvvm.Tests\Pattern.Mvvm.Tests.csproj", "{AEEA2B74-2035-4483-8273-506132F77D17}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pattern.Mvvm.Tests", "tests\Pattern.Mvvm.Tests\Pattern.Mvvm.Tests.csproj", "{AEEA2B74-2035-4483-8273-506132F77D17}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pattern.Tests.Xunit", "src\Pattern.Tests.Xunit\Pattern.Tests.Xunit.csproj", "{5DBE3FBD-110A-43BD-AE68-A304384FDCBB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pattern.Tests.Xunit", "src\Pattern.Tests.Xunit\Pattern.Tests.Xunit.csproj", "{5DBE3FBD-110A-43BD-AE68-A304384FDCBB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pattern.Module.Tests", "tests\Pattern.Module.Tests\Pattern.Module.Tests.csproj", "{AC5AE118-A856-4D01-B2DD-A83E423785D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pattern.Module.Tests", "tests\Pattern.Module.Tests\Pattern.Module.Tests.csproj", "{AC5AE118-A856-4D01-B2DD-A83E423785D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pattern.Module", "src\Pattern.Module\Pattern.Module.csproj", "{4234429F-D5DD-488B-8531-739E0B7FA95D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pattern.Module", "src\Pattern.Module\Pattern.Module.csproj", "{4234429F-D5DD-488B-8531-739E0B7FA95D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pattern.Mapper", "src\Pattern.Mapper\Pattern.Mapper.csproj", "{013B87E2-3EEE-40D5-90F2-6A30739F9CA3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pattern.Mapper", "src\Pattern.Mapper\Pattern.Mapper.csproj", "{013B87E2-3EEE-40D5-90F2-6A30739F9CA3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pattern.Mapper.Tests", "tests\Pattern.Mapper.Tests\Pattern.Mapper.Tests.csproj", "{C6B8A30D-3DDF-4F55-BB3C-9C63CC0967D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pattern.Mapper.Tests", "tests\Pattern.Mapper.Tests\Pattern.Mapper.Tests.csproj", "{C6B8A30D-3DDF-4F55-BB3C-9C63CC0967D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pattern.Web.Api", "src\Pattern.Web.Api\Pattern.Web.Api.csproj", "{375D0361-970A-4CE1-BA5D-6F57BBE8A1DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pattern.Web.Api", "src\Pattern.Web.Api\Pattern.Web.Api.csproj", "{375D0361-970A-4CE1-BA5D-6F57BBE8A1DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pattern.Perf", "Pattern.Perf\Pattern.Perf.csproj", "{865CF23D-2A6E-4DB7-9DE1-02B31E98E7E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pattern.Perf", "Pattern.Perf\Pattern.Perf.csproj", "{865CF23D-2A6E-4DB7-9DE1-02B31E98E7E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pattern.Core.Unity", "src\Pattern.Core.Unity\Pattern.Core.Unity.csproj", "{8E6E9CDE-E344-4C18-B6F8-3E15FD902969}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pattern.Core.Unity", "src\Pattern.Core.Unity\Pattern.Core.Unity.csproj", "{8E6E9CDE-E344-4C18-B6F8-3E15FD902969}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pattern.Core.Autofac", "src\Pattern.Core.Autofac\Pattern.Core.Autofac.csproj", "{4861177D-BFCF-4A38-AC61-F5AD0AD28A2E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pattern.Core.Autofac", "src\Pattern.Core.Autofac\Pattern.Core.Autofac.csproj", "{4861177D-BFCF-4A38-AC61-F5AD0AD28A2E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pattern.Core.SimpleIoc", "src\Pattern.Core.SimpleIoc\Pattern.Core.SimpleIoc.csproj", "{53CFC21A-A9F3-4A87-A55E-89FDFBFEBD03}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pattern.Core.SimpleIoc", "src\Pattern.Core.SimpleIoc\Pattern.Core.SimpleIoc.csproj", "{53CFC21A-A9F3-4A87-A55E-89FDFBFEBD03}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pattern.Api", "src\Pattern.Api\Pattern.Api.csproj", "{BB14606F-211F-4240-8CCA-A3ED34CA52A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pattern.Api", "src\Pattern.Api\Pattern.Api.csproj", "{BB14606F-211F-4240-8CCA-A3ED34CA52A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pattern.Tasks", "src\Pattern.Tasks\Pattern.Tasks.csproj", "{AFEA4543-E2B4-42A8-AE16-B77E3BC36B1A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pattern.Tasks", "src\Pattern.Tasks\Pattern.Tasks.csproj", "{AFEA4543-E2B4-42A8-AE16-B77E3BC36B1A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pattern.Mvvm.Forms", "src\Pattern.Mvvm.Forms\Pattern.Mvvm.Forms.csproj", "{6F31EA12-B0F2-439B-9A05-F4FAFBA9A419}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pattern.Mvvm.Forms", "src\Pattern.Mvvm.Forms\Pattern.Mvvm.Forms.csproj", "{6F31EA12-B0F2-439B-9A05-F4FAFBA9A419}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pattern.Api.Server.Core", "src\Pattern.Api.Server.Core\Pattern.Api.Server.Core.csproj", "{BE0CF8FE-687F-469B-9F0E-677F13094D44}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -347,6 +349,18 @@ Global
 		{6F31EA12-B0F2-439B-9A05-F4FAFBA9A419}.Release|x64.Build.0 = Release|Any CPU
 		{6F31EA12-B0F2-439B-9A05-F4FAFBA9A419}.Release|x86.ActiveCfg = Release|Any CPU
 		{6F31EA12-B0F2-439B-9A05-F4FAFBA9A419}.Release|x86.Build.0 = Release|Any CPU
+		{BE0CF8FE-687F-469B-9F0E-677F13094D44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE0CF8FE-687F-469B-9F0E-677F13094D44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE0CF8FE-687F-469B-9F0E-677F13094D44}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{BE0CF8FE-687F-469B-9F0E-677F13094D44}.Debug|x64.Build.0 = Debug|Any CPU
+		{BE0CF8FE-687F-469B-9F0E-677F13094D44}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BE0CF8FE-687F-469B-9F0E-677F13094D44}.Debug|x86.Build.0 = Debug|Any CPU
+		{BE0CF8FE-687F-469B-9F0E-677F13094D44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE0CF8FE-687F-469B-9F0E-677F13094D44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE0CF8FE-687F-469B-9F0E-677F13094D44}.Release|x64.ActiveCfg = Release|Any CPU
+		{BE0CF8FE-687F-469B-9F0E-677F13094D44}.Release|x64.Build.0 = Release|Any CPU
+		{BE0CF8FE-687F-469B-9F0E-677F13094D44}.Release|x86.ActiveCfg = Release|Any CPU
+		{BE0CF8FE-687F-469B-9F0E-677F13094D44}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -375,6 +389,7 @@ Global
 		{BB14606F-211F-4240-8CCA-A3ED34CA52A7} = {38133F35-7BEA-4C0C-AA6E-50EE8CDB7360}
 		{AFEA4543-E2B4-42A8-AE16-B77E3BC36B1A} = {38133F35-7BEA-4C0C-AA6E-50EE8CDB7360}
 		{6F31EA12-B0F2-439B-9A05-F4FAFBA9A419} = {38133F35-7BEA-4C0C-AA6E-50EE8CDB7360}
+		{BE0CF8FE-687F-469B-9F0E-677F13094D44} = {38133F35-7BEA-4C0C-AA6E-50EE8CDB7360}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {77CAE16C-EE31-46B6-996B-E0F3523E2B59}
