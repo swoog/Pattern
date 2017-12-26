@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Pattern.Core.Interfaces;
@@ -10,7 +11,7 @@ namespace Pattern.Api.Server.Core
     {
         public IKernel Kernel { get; }
 
-        public PaternServiceProvider(IKernel kernel, IServiceCollection services)
+        public PaternServiceProvider(IKernel kernel, IEnumerable<ServiceDescriptor> services)
         {
             this.Kernel = kernel;
             this.Kernel.Bind(typeof(IServiceProvider), new LambdaFactory(c => this));
@@ -25,7 +26,7 @@ namespace Pattern.Api.Server.Core
             return this.Kernel.Get(serviceType);
         }
 
-        private void Populate(IServiceCollection services)
+        private void Populate(IEnumerable<ServiceDescriptor> services)
         {
             foreach (var service in services)
             {
