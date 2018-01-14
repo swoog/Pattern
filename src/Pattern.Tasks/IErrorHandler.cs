@@ -2,7 +2,7 @@
 
 namespace Pattern.Tasks
 {
-    public interface IHandleError
+    public interface IErrorHandler
     {
         void Handle(Exception ex);
     }

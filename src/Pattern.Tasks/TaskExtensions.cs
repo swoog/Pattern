@@ -6,24 +6,7 @@ namespace Pattern.Tasks
 {
     public static class TaskExtensions
     {
-        public static IHandleError DefaultHandler { get; set; }
-
-        public static Task FireAsync(this Task task, CancellationToken cancellationToken)
-        {
-            return Task.Run(() => task.FireAsyncInternal(), cancellationToken);
-        }
-
-        private static async Task FireAsyncInternal(this Task task)
-        {
-            try
-            {
-                await task;
-            }
-            catch (Exception ex)
-            {
-                DefaultHandler.Handle(ex);
-            }
-        }
+        private static IErrorHandler defaultHandler;
 
         public static async void Fire(this Task task, ILoadingHandler loadingHandler = null)
         {
@@ -34,12 +17,36 @@ namespace Pattern.Tasks
             }
             catch (Exception ex)
             {
-                DefaultHandler.Handle(ex);
+                defaultHandler?.Handle(ex);
             }
             finally
             {
                 loadingHandler?.StopLoading();
             }
+        }
+
+        public static async void Fire(this Task task, IErrorHandler errorHandler)
+        {
+            try
+            {
+                await task;
+            }
+            catch (Exception ex)
+            {
+                errorHandler.Handle(ex);
+            }
+        }
+
+        public static IErrorHandler UseDefault(this IErrorHandler errorHandler)
+        {
+            defaultHandler = errorHandler;
+
+            return errorHandler;
+        }
+
+        public static IErrorHandler CombineWithDefault(this IErrorHandler errorHandler)
+        {
+            return new CombineErrorHandler(defaultHandler, errorHandler);
         }
     }
 }
