@@ -21,6 +21,11 @@ namespace Pattern.Api.Server.Core
 
             var context = (IHttpContextAccessor)this.kernel.Get(null, typeof(IHttpContextAccessor));
 
+            if (context.HttpContext == null)
+            {
+                return this.factory.Create(callContext);
+            }
+
             if (context.HttpContext.Items.ContainsKey(name))
             {
                 return context.HttpContext.Items[name];
