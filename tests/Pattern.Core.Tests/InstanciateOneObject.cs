@@ -234,11 +234,23 @@ namespace Pattern.Core.Tests
             Assert.Null(instance);
         }
 
+        [NamedFact(nameof(Should_instanciate_generic_type_When_have_a_generic_but_no_parameter))]
+        public void Should_instanciate_type_When_type_herite_from_dictionary()
+        {
+            kernel.Bind(typeof(Motors), new TypeFactory(typeof(Motors), this.kernel));
+
+            var instance = kernel.Get(typeof(Motors));
+
+            Assert.NotNull(instance);
+            Assert.IsType<Motors>(instance);
+        }
+
         private TypeFactory GetTypeFactory<T>()
         {
             return new TypeFactory(typeof(T), this.kernel);
         }
     }
+
 
     public class Options<T> : IOptions<T>
     {

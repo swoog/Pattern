@@ -121,11 +121,11 @@
             return callContext;
         }
 
-        private static CallContext CreateInternalCallContext(Type parentType, Type @from)
+        private CallContext CreateInternalCallContext(Type parentType, Type @from)
         {
             var typeInfo = @from.GetTypeInfo();
             var enumerableType = GetEnumerableType(typeInfo.ImplementedInterfaces);
-            if (enumerableType != null)
+            if (enumerableType != null && !this.binds.ContainsKey(@from))
             {
                 return new CallContext(enumerableType.GenericTypeArguments[0], parentType, false, enumerableType);
             }
