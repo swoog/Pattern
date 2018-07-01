@@ -1,4 +1,5 @@
-﻿using Pattern.Core.Interfaces;
+﻿using Pattern.Config;
+using Pattern.Core.Interfaces;
 using Xamarin.Forms;
 
 namespace Pattern.Mvvm.Forms
@@ -10,6 +11,15 @@ namespace Pattern.Mvvm.Forms
             where TViewModel : ViewModelBase
         {
             syntax.Bind(typeof(TView), new PageFactory(typeof(TView), typeof(TViewModel), syntax));
+        }
+        
+        public static NavigationPage LoadNaviationPage(this IKernel kernel, NavigationConfig config)
+        {
+            kernel.Bind<NavigationConfig>().ToMethod(() => config);
+            kernel.Bind<INavigationService>().To<NavigationService>().InSingletonScope();
+            kernel.Bind<NavigationPage>().ToSelf().InSingletonScope();
+
+            return kernel.Get<NavigationPage>();
         }
     }
 }
