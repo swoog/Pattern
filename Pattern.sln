@@ -14,21 +14,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{6E44F257-F107-4287-9026-48BAE6CC41E5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pattern.Core", "src\Pattern.Core\Pattern.Core.csproj", "{3A451DC6-7B3A-4000-BD3F-222ACF463E94}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pattern.Core", "src\Pattern.Core\Pattern.Core.csproj", "{3A451DC6-7B3A-4000-BD3F-222ACF463E94}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pattern.Config", "src\Pattern.Config\Pattern.Config.csproj", "{12A8B944-08CF-4341-9CB2-81004BC2B97F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pattern.Config", "src\Pattern.Config\Pattern.Config.csproj", "{12A8B944-08CF-4341-9CB2-81004BC2B97F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pattern.Core.Interfaces", "src\Pattern.Core.Interfaces\Pattern.Core.Interfaces.csproj", "{83438130-B295-41BF-A473-82C9F8F1D321}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pattern.Core.Interfaces", "src\Pattern.Core.Interfaces\Pattern.Core.Interfaces.csproj", "{83438130-B295-41BF-A473-82C9F8F1D321}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pattern.Core.Ninject", "src\Pattern.Core.Ninject\Pattern.Core.Ninject.csproj", "{8E33601C-F407-45DD-AF11-30BBDA4F4616}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pattern.Core.Ninject", "src\Pattern.Core.Ninject\Pattern.Core.Ninject.csproj", "{8E33601C-F407-45DD-AF11-30BBDA4F4616}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pattern.Logging", "src\Pattern.Logging\Pattern.Logging.csproj", "{8BEF5A1E-9895-432E-9E0F-8F381405EFB5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pattern.Logging", "src\Pattern.Logging\Pattern.Logging.csproj", "{8BEF5A1E-9895-432E-9E0F-8F381405EFB5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pattern.Logging.Log4net", "src\Pattern.Logging.Log4net\Pattern.Logging.Log4net.csproj", "{58D5FB76-A9AC-4C32-A2FB-B1F331962643}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pattern.Logging.Log4net", "src\Pattern.Logging.Log4net\Pattern.Logging.Log4net.csproj", "{58D5FB76-A9AC-4C32-A2FB-B1F331962643}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pattern.Config.Tests", "tests\Pattern.Config.Tests\Pattern.Config.Tests.csproj", "{C74BEF6F-CE96-4DF8-A83D-CC2D62A30179}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pattern.Config.Tests", "tests\Pattern.Config.Tests\Pattern.Config.Tests.csproj", "{C74BEF6F-CE96-4DF8-A83D-CC2D62A30179}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pattern.Core.Tests", "tests\Pattern.Core.Tests\Pattern.Core.Tests.csproj", "{642F842D-0336-4C9E-A48B-478FB82F4207}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pattern.Core.Tests", "tests\Pattern.Core.Tests\Pattern.Core.Tests.csproj", "{642F842D-0336-4C9E-A48B-478FB82F4207}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pattern.Mvvm", "src\Pattern.Mvvm\Pattern.Mvvm.csproj", "{F0BBE62E-CCBA-45FC-A08B-F1AB95CDD498}"
 EndProject
@@ -45,6 +45,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pattern.Mapper.Tests", "tests\Pattern.Mapper.Tests\Pattern.Mapper.Tests.csproj", "{C6B8A30D-3DDF-4F55-BB3C-9C63CC0967D0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pattern.Web.Api", "src\Pattern.Web.Api\Pattern.Web.Api.csproj", "{375D0361-970A-4CE1-BA5D-6F57BBE8A1DB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "performances", "performances", "{D0DF4790-75F3-4D7E-BAF8-CDEB35CC41FD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
