@@ -4,7 +4,11 @@
     <TargetFramework>netstandard1.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="NETStandard.Library" Version="1.6">
+    <PackageReference Include="NETStandard.Library">
+      <Version>1.6.1</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Pattern.Tasks\Pattern.Tasks.csproj" />
   </ItemGroup>
 </Project>

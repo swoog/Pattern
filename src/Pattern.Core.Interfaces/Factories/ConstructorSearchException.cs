@@ -9,7 +9,7 @@ namespace Pattern.Core.Interfaces.Factories
         }
 
         public ConstructorSearchException(Type typeToCreate)
-            :this($"Can create instance of {typeToCreate.Name}.")
+            :this($"Can not create instance of {typeToCreate.Name}.")
         {
         }
 

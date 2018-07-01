@@ -11,7 +11,7 @@ namespace Pattern.Logging.Log4net
         {
             kernel.Bind(
                 typeof(ILogger),
-                new LambdaFactory(() => new Log4netLogger(LogManager.GetLogger(typeof(Log4netLogger)))));
+                new LambdaFactory(c => new Log4netLogger(LogManager.GetLogger(typeof(Log4netLogger)))));
 
             return kernel;
         }

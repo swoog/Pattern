@@ -1,4 +1,6 @@
-﻿namespace Pattern.Core.Tests
+﻿using Pattern.Core.Tests.Example;
+
+namespace Pattern.Core.Tests
 {
     using Pattern.Core;
     using Pattern.Core.Interfaces;
@@ -38,42 +40,42 @@
         [NamedFact(nameof(Should_instanciate_type_When_have_two_constructor))]
         public void Should_instanciate_type_When_have_two_constructor()
         {
-            kernel.Bind(typeof(SimpleClassWithTwoConstructor), this.GetTypeFactory<SimpleClassWithTwoConstructor>());
+            kernel.Bind(typeof(MotorWithTwoConstructor), this.GetTypeFactory<MotorWithTwoConstructor>());
 
-            var instance = kernel.Get(typeof(SimpleClassWithTwoConstructor));
+            var instance = kernel.Get(typeof(MotorWithTwoConstructor));
 
             Assert.NotNull(instance);
-            Assert.IsType<SimpleClassWithTwoConstructor>(instance);
+            Assert.IsType<MotorWithTwoConstructor>(instance);
         }
 
         [NamedFact(nameof(Should_choice_biggest_constructor_type_When_have_more_than_one_constructor))]
         public void Should_choice_biggest_constructor_type_When_have_more_than_one_constructor()
         {
-            this.kernel.Bind(typeof(ISimpleClass), this.GetTypeFactory<SimpleClass>());
+            this.kernel.Bind(typeof(IMotor), this.GetTypeFactory<ElectricMotor>());
             kernel.Bind(typeof(SimpleClassWithConstructors), this.GetTypeFactory<SimpleClassWithConstructors>());
 
             var instance = kernel.Get(typeof(SimpleClassWithConstructors));
 
             Assert.NotNull(instance);
             var typedInstance = Assert.IsType<SimpleClassWithConstructors>(instance);
-            Assert.NotNull(typedInstance.SimpleClass);
+            Assert.NotNull(typedInstance.Motor);
         }
 
         [NamedFact(nameof(Should_instanciate_type_When_have_static_constructor))]
         public void Should_instanciate_type_When_have_static_constructor()
         {
-            kernel.Bind(typeof(SimpleClassWithStaticConstructor), this.GetTypeFactory<SimpleClassWithStaticConstructor>());
+            kernel.Bind(typeof(MotorWithStaticConstructor), this.GetTypeFactory<MotorWithStaticConstructor>());
 
-            var instance = kernel.Get(typeof(SimpleClassWithStaticConstructor));
+            var instance = kernel.Get(typeof(MotorWithStaticConstructor));
 
             Assert.NotNull(instance);
-            Assert.IsType<SimpleClassWithStaticConstructor>(instance);
+            Assert.IsType<MotorWithStaticConstructor>(instance);
         }
 
         [NamedFact(nameof(Should_instanciate_type_When_have_static_constructor_and_an_injected_constructor))]
         public void Should_instanciate_type_When_have_static_constructor_and_an_injected_constructor()
         {
-            this.kernel.Bind(typeof(ISimpleClass), this.GetTypeFactory<SimpleClass>());
+            this.kernel.Bind(typeof(IMotor), this.GetTypeFactory<ElectricMotor>());
             this.kernel.Bind(typeof(SimpleClassWithStaticConstructorAndInjectedConstructor), this.GetTypeFactory<SimpleClassWithStaticConstructorAndInjectedConstructor>());
 
             var instance = kernel.Get(typeof(SimpleClassWithStaticConstructorAndInjectedConstructor));
@@ -85,29 +87,29 @@
         [NamedFact(nameof(Should_instanciate_type_When_bind_self_type))]
         public void Should_instanciate_type_When_bind_self_type()
         {
-            kernel.Bind(typeof(SimpleClass), this.GetTypeFactory<SimpleClass>());
+            kernel.Bind(typeof(ElectricMotor), this.GetTypeFactory<ElectricMotor>());
 
-            var instance = kernel.Get(typeof(SimpleClass));
+            var instance = kernel.Get(typeof(ElectricMotor));
 
             Assert.NotNull(instance);
-            Assert.IsType<SimpleClass>(instance);
+            Assert.IsType<ElectricMotor>(instance);
         }
 
         [NamedFact(nameof(Should_instanciate_type_When_bind_self_type))]
         public void Should_instanciate_type_When_use_auto_bind_concret_type()
         {
-            var instance = kernel.Get(typeof(SimpleClass));
+            var instance = kernel.Get(typeof(ElectricMotor));
 
             Assert.NotNull(instance);
-            Assert.IsType<SimpleClass>(instance);
+            Assert.IsType<ElectricMotor>(instance);
         }
 
         [NamedFact(nameof(Should_instanciate_type__When_get_with_generic_method))]
         public void Should_instanciate_type__When_get_with_generic_method()
         {
-            this.kernel.Bind(typeof(ISimpleClass), this.GetTypeFactory<SimpleClass>());
+            this.kernel.Bind(typeof(IMotor), this.GetTypeFactory<ElectricMotor>());
 
-            ISimpleClass instance = this.kernel.Get<ISimpleClass>();
+            IMotor instance = this.kernel.Get<IMotor>();
 
             Assert.NotNull(instance);
         }
@@ -115,54 +117,54 @@
         [NamedFact(nameof(Should_instanciate_type_When_inject_another_type))]
         public void Should_instanciate_type_When_inject_another_type()
         {
-            this.kernel.Bind(typeof(ComplexClass), this.GetTypeFactory<ComplexClass>());
-            this.kernel.Bind(typeof(SimpleClass), this.GetTypeFactory<SimpleClass>());
+            this.kernel.Bind(typeof(ElectricCarVehicle), this.GetTypeFactory<ElectricCarVehicle>());
+            this.kernel.Bind(typeof(ElectricMotor), this.GetTypeFactory<ElectricMotor>());
 
-            var instance = this.kernel.Get(typeof(ComplexClass));
+            var instance = this.kernel.Get(typeof(ElectricCarVehicle));
 
             Assert.NotNull(instance);
-            var complexType = Assert.IsType<ComplexClass>(instance);
-            Assert.NotNull(complexType.InjectedType);
+            var complexType = Assert.IsType<ElectricCarVehicle>(instance);
+            Assert.NotNull(complexType.Motor);
         }
 
         [NamedFact(nameof(Should_instanciate_type_When_map_to_interface))]
         public void Should_instanciate_type_When_map_to_interface()
         {
-            this.kernel.Bind(typeof(ComplexInterfaceClass), this.GetTypeFactory<ComplexInterfaceClass>());
-            this.kernel.Bind(typeof(ISimpleClass), this.GetTypeFactory<SimpleClass>());
+            this.kernel.Bind(typeof(CarVehicle), this.GetTypeFactory<CarVehicle>());
+            this.kernel.Bind(typeof(IMotor), this.GetTypeFactory<ElectricMotor>());
 
-            var instance = this.kernel.Get(typeof(ComplexInterfaceClass));
+            var instance = this.kernel.Get(typeof(CarVehicle));
 
             Assert.NotNull(instance);
-            var complexType = Assert.IsType<ComplexInterfaceClass>(instance);
-            Assert.NotNull(complexType.InjectedType);
+            var complexType = Assert.IsType<CarVehicle>(instance);
+            Assert.NotNull(complexType.Motor);
         }
 
         [NamedFact(nameof(Should_instanciate_type_When_use_custom_factory))]
         public void Should_instanciate_type_When_use_custom_factory()
         {
-            this.kernel.Bind(typeof(ComplexInterfaceClass), this.GetTypeFactory<ComplexInterfaceClass>());
-            this.kernel.Bind(typeof(ISimpleClass), new LambdaFactory(() => new SimpleClass()));
+            this.kernel.Bind(typeof(CarVehicle), this.GetTypeFactory<CarVehicle>());
+            this.kernel.Bind(typeof(IMotor), new LambdaFactory(c => new ElectricMotor()));
 
-            var instance = this.kernel.Get(typeof(ComplexInterfaceClass));
+            var instance = this.kernel.Get(typeof(CarVehicle));
 
             Assert.NotNull(instance);
-            var complexType = Assert.IsType<ComplexInterfaceClass>(instance);
-            Assert.NotNull(complexType.InjectedType);
+            var complexType = Assert.IsType<CarVehicle>(instance);
+            Assert.NotNull(complexType.Motor);
         }
 
         [NamedFact(nameof(Should_display_an_error_message_When_instanciate_an_unknow_object))]
         public void Should_display_an_error_message_When_instanciate_an_unknow_object()
         {
-            this.kernel.Bind(typeof(ComplexInterfaceClass), this.GetTypeFactory<ComplexInterfaceClass>());
+            this.kernel.Bind(typeof(CarVehicle), this.GetTypeFactory<CarVehicle>());
 
             var exception = Assert.Throws<InjectionException>(
                 () =>
                     {
-                        this.kernel.Get(typeof(ComplexInterfaceClass));
+                        this.kernel.Get(typeof(CarVehicle));
                     });
 
-            Assert.Equal("Injection not found for ISimpleClass when injected in ComplexInterfaceClass.", exception.Message);
+            Assert.Equal("Injection not found for IMotor when injected in CarVehicle.", exception.Message);
         }
 
         [NamedFact(nameof(Should_display_an_error_message_When_instanciate_an_unknow_object_from_abstract))]
@@ -182,9 +184,65 @@
         [NamedFact(nameof(Should_return_false_When_test_can_resolve_interface))]
         public void Should_return_false_When_test_can_resolve_interface()
         {
-            var canResolve = this.kernel.CanResolve(null, typeof(ISimpleClass));
+            var canResolve = this.kernel.CanResolve(null, typeof(IMotor));
 
             Assert.False(canResolve);
+        }
+
+        [NamedFact(nameof(Should_instanciate_generic_type_When_have_a_generic_parameter))]
+        public void Should_instanciate_generic_type_When_have_a_generic_parameter()
+        {
+            kernel.Bind(typeof(IOptions<>), new TypeFactory(typeof(Options<>), this.kernel));
+
+            var instance = kernel.Get(typeof(IOptions<ElectricMotor>));
+
+            Assert.NotNull(instance);
+            Assert.IsType<Options<ElectricMotor>>(instance);
+        }
+
+        [NamedFact(nameof(Should_instanciate_generic_type_When_have_a_generic_but_no_parameter))]
+        public void Should_instanciate_generic_type_When_have_a_generic_but_no_parameter()
+        {
+            kernel.Bind(typeof(IOptions<ElectricMotor>), new TypeFactory(typeof(Options<ElectricMotor>), this.kernel));
+
+            var instance = kernel.Get(typeof(IOptions<ElectricMotor>));
+
+            Assert.NotNull(instance);
+            Assert.IsType<Options<ElectricMotor>>(instance);
+        }
+
+        [NamedFact(nameof(Should_instanciate_a_second_generic_type_When_have_two_generic_but_no_parameter))]
+        public void Should_instanciate_a_second_generic_type_When_have_two_generic_but_no_parameter()
+        {
+            kernel.Bind(
+                typeof(IOptions<>),
+                new SingletonFactory(new TypeFactory(typeof(Options<>), this.kernel)));
+
+            var firstInstance = this.kernel.Get(typeof(IOptions<GazoilMotor>));
+
+            var instance = kernel.Get(typeof(IOptions<ElectricMotor>));
+
+            Assert.NotNull(instance);
+            Assert.IsType<Options<ElectricMotor>>(instance);
+        }
+
+        [NamedFact(nameof(Should_return_null_When_have_a_generic_parameter_and_no_binding))]
+        public void Should_return_null_When_have_a_generic_parameter_and_no_binding()
+        {
+            var instance = kernel.Get(typeof(IOptions<ElectricMotor>));
+
+            Assert.Null(instance);
+        }
+
+        [NamedFact(nameof(Should_instanciate_generic_type_When_have_a_generic_but_no_parameter))]
+        public void Should_instanciate_type_When_type_herite_from_dictionary()
+        {
+            kernel.Bind(typeof(Motors), new TypeFactory(typeof(Motors), this.kernel));
+
+            var instance = kernel.Get(typeof(Motors));
+
+            Assert.NotNull(instance);
+            Assert.IsType<Motors>(instance);
         }
 
         private TypeFactory GetTypeFactory<T>()
@@ -193,18 +251,27 @@
         }
     }
 
+
+    public class Options<T> : IOptions<T>
+    {
+    }
+
+    public interface IOptions<T>
+    {
+    }
+
     public class SimpleClassWithConstructors
     {
-        public ISimpleClass SimpleClass { get; }
+        public IMotor Motor { get; }
 
         public SimpleClassWithConstructors()
         {
 
         }
 
-        public SimpleClassWithConstructors(ISimpleClass simpleClass)
+        public SimpleClassWithConstructors(IMotor motor)
         {
-            this.SimpleClass = simpleClass;
+            this.Motor = motor;
         }
     }
 }

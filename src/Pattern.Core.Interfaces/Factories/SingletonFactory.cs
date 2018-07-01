@@ -1,30 +1,45 @@
 namespace Pattern.Core.Interfaces.Factories
 {
+    using System;
+    using System.Collections.Generic;
+
     public class SingletonFactory : IFactory
     {
         private readonly IFactory factory;
 
-        private object instance;
+        private Dictionary<Type, object> instance = new Dictionary<Type, object>();
 
         public SingletonFactory(IFactory factory)
         {
             this.factory = factory;
         }
 
-        public object Create(object[] parameters)
+        public object Create(CallContext callContext)
         {
-            if (this.instance == null)
+            var key = this.GetKey(callContext);
+
+            if (!this.instance.ContainsKey(key))
             {
                 lock (this)
                 {
-                    if (this.instance == null)
+                    if (!this.instance.ContainsKey(key))
                     {
-                        this.instance = this.factory.Create(parameters);
+                        this.instance.Add(key, this.factory.Create(callContext));
                     }
                 }
             }
 
-            return this.instance;
+            return this.instance[key];
+        }
+
+        private Type GetKey(CallContext callContext)
+        {
+            if (callContext.GenericTypes != null && callContext.GenericTypes.Length == 1)
+            {
+                return callContext.GenericTypes[0];
+            }
+
+            return callContext.InstanciatedType;
         }
     }
 }
