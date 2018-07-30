@@ -6,14 +6,16 @@ namespace Pattern.Mvvm.Forms
 {
     public interface INavigationService
     {
-        Dictionary<string, string> QueryString { get; set; }
+        Task Navigate(Type pageType);
 
-        Task Navigate(string path, bool toPopup = false, bool toPane = false);
+        Task Navigate<T>(Type pageType, T parameterToNextViewModel);
 
-        Task Navigate<T>(string path, Action<T> callBack, bool toPopup = false, bool toPane = false);
+        Task Navigate<T>(Type pageType, Action<T> callBackWhenViewBack);
 
         Task NavigateBack();
 
-        Task NavigateRoot(string path);
+        Task NavigateRoot(Type pageType);
+
+        Task<T> GetParameter<T>();
     }
 }
