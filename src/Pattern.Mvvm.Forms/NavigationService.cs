@@ -3,8 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Pattern.Tasks;
 using Xamarin.Forms;
 
 namespace Pattern.Mvvm.Forms
@@ -15,7 +17,9 @@ namespace Pattern.Mvvm.Forms
 
         private readonly NavigationPage navigationPage;
         private readonly INavigationHandler navigationHandler;
-        private Action<object> callBack;
+
+        private readonly ConditionalWeakTable<object, Func<object, Task>> callbacks =
+            new ConditionalWeakTable<object, Func<object, Task>>();
 
         private object parameter;
 
@@ -24,6 +28,7 @@ namespace Pattern.Mvvm.Forms
             this.kernel = kernel;
             this.navigationPage = navigationPage;
             this.navigationHandler = navigationHandler;
+            this.navigationPage.Popped += this.NavigationPage_Popped;
         }
 
         public Task Navigate(Type pageType)
@@ -45,23 +50,24 @@ namespace Pattern.Mvvm.Forms
             return this.navigationPage.PushAsync(page, true);
         }
 
-        public Task Navigate<T>(Type pageType, Action<T> callBackWhenViewBack)
+        public Task Navigate<T>(Type pageType, Func<object, Task> callBackWhenViewBack)
         {
             var page = this.ResolveView(pageType);
 
             this.navigationHandler?.Navigate(pageType.Name, page);
 
-            this.callBack = (o) => callBackWhenViewBack((T)o);
-            this.navigationPage.Popped += this.NavigationPage_Popped;
+            this.callbacks.Add(page.BindingContext, (o) => callBackWhenViewBack((T)o));
 
             return this.navigationPage.PushAsync(page, true);
         }
 
-        void NavigationPage_Popped(object sender, NavigationEventArgs e)
+        private void NavigationPage_Popped(object sender, NavigationEventArgs e)
         {
-            this.navigationPage.Popped -= this.NavigationPage_Popped;
-            this.callBack?.Invoke(e.Page.BindingContext);
-            this.callBack = null;
+            if (this.callbacks.TryGetValue(e.Page.BindingContext, out var action))
+            {
+                this.callbacks.Remove(e.Page.BindingContext);
+                action(e.Page.BindingContext).Fire();
+            }
         }
 
         public async Task NavigateBack()
