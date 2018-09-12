@@ -8,8 +8,11 @@ namespace Pattern.Mvvm
     {
         private readonly Func<T, Task> method;
 
-        public AsyncCommand(Func<T, Task> p)
-            : base(t => p(t).Fire())
+        public AsyncCommand(
+            Func<T, Task> p,
+            ILoadingHandler loadingHandler = null,
+                Func<T, bool> canExecute = null)
+            : base(t => p(t).Fire(loadingHandler), canExecute)
         {
             this.method = p;
         }
@@ -24,8 +27,11 @@ namespace Pattern.Mvvm
     {
         private readonly Func<Task> method;
 
-        public AsyncCommand(Func<Task> p, ILoadingHandler loadingHandler = null)
-            : base(() => p().Fire(loadingHandler))
+        public AsyncCommand(
+            Func<Task> p,
+            ILoadingHandler loadingHandler = null,
+            Func<bool> canExecute = null)
+            : base(() => p().Fire(loadingHandler), canExecute)
         {
             this.method = p;
         }
