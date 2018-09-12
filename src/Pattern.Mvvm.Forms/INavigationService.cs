@@ -10,7 +10,7 @@ namespace Pattern.Mvvm.Forms
 
         Task Navigate<T>(Type pageType, T parameterToNextViewModel);
 
-        Task Navigate<T>(Type pageType, Func<object, Task> callBackWhenViewBack);
+        Task Navigate<T>(Type pageType, Func<T, Task> callBackWhenViewBack);
 
         Task NavigateBack();
 

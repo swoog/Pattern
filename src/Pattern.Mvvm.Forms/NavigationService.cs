@@ -50,7 +50,7 @@ namespace Pattern.Mvvm.Forms
             return this.navigationPage.PushAsync(page, true);
         }
 
-        public Task Navigate<T>(Type pageType, Func<object, Task> callBackWhenViewBack)
+        public Task Navigate<T>(Type pageType, Func<T, Task> callBackWhenViewBack)
         {
             var page = this.ResolveView(pageType);
 
