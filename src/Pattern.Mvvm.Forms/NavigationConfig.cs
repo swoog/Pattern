@@ -1,11 +1,10 @@
-﻿using System.Reflection;
+﻿using System;
+using Xamarin.Forms;
 
 namespace Pattern.Mvvm.Forms
 {
     public class NavigationConfig
     {
-        public string PagePattern { get; set; }
-
-        public Assembly PageAssembly { get; set; }
+        public Type RootPage { get; set; }
     }
 }

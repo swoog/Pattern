@@ -17,7 +17,10 @@ namespace Pattern.Mvvm.Forms
         {
             kernel.Bind<NavigationConfig>().ToMethod(() => config);
             kernel.Bind<INavigationService>().To<NavigationService>().InSingletonScope();
-            kernel.Bind<NavigationPage>().ToSelf().InSingletonScope();
+
+            kernel.Bind<NavigationPage>()
+                .ToMethod(() => new NavigationPage((Page) kernel.Get(config.RootPage)))
+                .InSingletonScope();
 
             return kernel.Get<NavigationPage>();
         }
