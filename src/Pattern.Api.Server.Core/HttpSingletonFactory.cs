@@ -21,7 +21,7 @@ namespace Pattern.Api.Server.Core
 
             var context = (IHttpContextAccessor)this.kernel.Get(null, typeof(IHttpContextAccessor));
 
-            if (context.HttpContext == null)
+            if (context?.HttpContext == null)
             {
                 return this.factory.Create(callContext);
             }
