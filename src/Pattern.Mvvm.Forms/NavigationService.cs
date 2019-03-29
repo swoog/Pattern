@@ -18,7 +18,7 @@ namespace Pattern.Mvvm.Forms
         private readonly ConditionalWeakTable<object, Func<object, Task>> callbacks =
             new ConditionalWeakTable<object, Func<object, Task>>();
 
-        private object parameter;
+        private readonly ConditionalWeakTable<object, object> parameters = new ConditionalWeakTable<object, object>();
 
         public NavigationService(IKernel kernel, NavigationPage navigationPage, INavigationHandler navigationHandler)
         {
@@ -28,34 +28,14 @@ namespace Pattern.Mvvm.Forms
             this.navigationPage.Popped += this.NavigationPage_Popped;
         }
 
-        public async Task Navigate(Type pageType)
+        public Task Navigate(Type pageType)
         {
-            var animated = true;
-            if (this.navigationPage.CurrentPage is INavigateFrom pageNavigateFrom)
-            {
-                animated = false;
-                await pageNavigateFrom.NavigateFrom(pageType);
-            }
-
-            var page = this.ResolveView(pageType);
-            this.navigationHandler?.Navigate(pageType.Name, page);
-
-            await this.navigationPage.PushAsync(page, animated);
+            return this.Navigate<object>(pageType, null);
         }
 
-        public async Task Navigate<T>(Type pageType, T parameterToNextViewModel)
+        public Task Navigate<T>(Type pageType, T parameterToNextViewModel)
         {
-            var animated = true;
-            if (this.navigationPage.CurrentPage is INavigateFrom pageNavigateFrom)
-            {
-                animated = false;
-                await pageNavigateFrom.NavigateFrom(pageType);
-            }
-
-            this.parameter = parameterToNextViewModel;
-            var page = this.ResolveView(pageType);
-            this.navigationHandler?.Navigate(pageType.Name, page);
-            await this.navigationPage.PushAsync(page, animated);
+            return this.Navigate<object, T>(pageType, null, parameterToNextViewModel);
         }
 
         public async Task Navigate<T, TParameter>(
@@ -70,26 +50,25 @@ namespace Pattern.Mvvm.Forms
                 await pageNavigateFrom.NavigateFrom(pageType);
             }
 
-            this.parameter = parameterToNextViewModel;
-            var page = this.ResolveView(pageType);
+            var (page, viewmodel) = this.ResolveView(pageType);
+            viewmodel.InitAsync().Fire(viewmodel);
+            if (!parameterToNextViewModel.Equals(default(T)))
+            {
+                this.parameters.Add(viewmodel, parameterToNextViewModel);                
+            }
+
+            if (callBackWhenViewBack != null)
+            {
+                this.callbacks.Add(viewmodel, o => callBackWhenViewBack((T) o));                
+            }
+            
             this.navigationHandler?.Navigate(pageType.Name, page);
-            this.callbacks.Add(page.BindingContext, o => callBackWhenViewBack((T) o));
             await this.navigationPage.PushAsync(page, animated);
         }
 
-        public async Task Navigate<T>(Type pageType, Func<T, Task> callBackWhenViewBack)
+        public Task Navigate<T>(Type pageType, Func<T, Task> callBackWhenViewBack)
         {
-            var animated = true;
-            if (this.navigationPage.CurrentPage is INavigateFrom pageNavigateFrom)
-            {
-                animated = false;
-                await pageNavigateFrom.NavigateFrom(pageType);
-            }
-
-            var page = this.ResolveView(pageType);
-            this.navigationHandler?.Navigate(pageType.Name, page);
-            this.callbacks.Add(page.BindingContext, o => callBackWhenViewBack((T) o));
-            await this.navigationPage.PushAsync(page, animated);
+            return this.Navigate<T, object>(pageType, callBackWhenViewBack, null);
         }
 
         private void NavigationPage_Popped(object sender, NavigationEventArgs e)
@@ -107,19 +86,10 @@ namespace Pattern.Mvvm.Forms
             (this.navigationPage.CurrentPage.BindingContext as ViewModelBase)?.Resume();
         }
 
-        private object Resolve(Type pageType)
+        private (Page, ViewModelBase) ResolveView(Type pageType)
         {
-            return this.Instantiate(pageType);
-        }
-
-        private object Instantiate(Type pageType)
-        {
-            return this.kernel.Get(pageType);
-        }
-
-        private Page ResolveView(Type pageType)
-        {
-            return this.Resolve(pageType) as Page;
+            var page = this.kernel.Get(pageType) as Page;
+            return (page, page?.BindingContext as ViewModelBase);
         }
 
         public async Task NavigateRoot(Type pageType)
@@ -129,7 +99,7 @@ namespace Pattern.Mvvm.Forms
                 await pageNavigateFrom.NavigateFrom(pageType);
             }
 
-            var page = this.ResolveView(pageType);
+            var (page, _) = this.ResolveView(pageType);
             this.navigationHandler?.Navigate(pageType.Name, page);
             this.navigationPage.Navigation.InsertPageBefore(page,
                 this.navigationPage.Navigation.NavigationStack.First());
@@ -138,7 +108,14 @@ namespace Pattern.Mvvm.Forms
 
         public Task<T> GetParameter<T>()
         {
-            return Task.FromResult((T) this.parameter);
+            if (this.navigationPage.CurrentPage is Page page 
+                && page.BindingContext is ViewModelBase viewModelBase
+                && this.parameters.TryGetValue(viewModelBase, out var parameter))
+            {
+                return Task.FromResult((T) parameter);
+            }
+            
+            return Task.FromResult(default(T));
         }
     }
 }

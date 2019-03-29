@@ -25,9 +25,6 @@ namespace Pattern.Mvvm.Forms
             {
                 var viewModel = (ViewModelBase)this.kernel.Get(this.viewModelType);
                 instancePage.BindingContext = viewModel;
-
-                viewModel.InitAsync().Fire(viewModel);
-
                 return instancePage;
             }
 
