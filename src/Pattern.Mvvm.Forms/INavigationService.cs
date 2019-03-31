@@ -18,6 +18,6 @@ namespace Pattern.Mvvm.Forms
 
         Task NavigateRoot(Type pageType);
 
-        Task<T> GetParameter<T>();
+        Task<T> GetParameter<T>(ViewModelBase viewModelBase);
     }
 }

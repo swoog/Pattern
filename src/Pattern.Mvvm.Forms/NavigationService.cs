@@ -106,11 +106,9 @@ namespace Pattern.Mvvm.Forms
             await this.navigationPage.PopToRootAsync(false);
         }
 
-        public Task<T> GetParameter<T>()
+        public Task<T> GetParameter<T>(ViewModelBase viewModelBase)
         {
-            if (this.navigationPage.CurrentPage is Page page 
-                && page.BindingContext is ViewModelBase viewModelBase
-                && this.parameters.TryGetValue(viewModelBase, out var parameter))
+            if (this.parameters.TryGetValue(viewModelBase, out var parameter))
             {
                 return Task.FromResult((T) parameter);
             }
