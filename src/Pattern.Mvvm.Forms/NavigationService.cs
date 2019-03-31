@@ -51,7 +51,6 @@ namespace Pattern.Mvvm.Forms
             }
 
             var (page, viewmodel) = this.ResolveView(pageType);
-            viewmodel.InitAsync().Fire(viewmodel);
             if (!parameterToNextViewModel.Equals(default(T)))
             {
                 this.parameters.Add(viewmodel, parameterToNextViewModel);                
@@ -61,7 +60,8 @@ namespace Pattern.Mvvm.Forms
             {
                 this.callbacks.Add(viewmodel, o => callBackWhenViewBack((T) o));                
             }
-            
+            viewmodel.InitAsync().Fire(viewmodel);
+       
             this.navigationHandler?.Navigate(pageType.Name, page);
             await this.navigationPage.PushAsync(page, animated);
         }
