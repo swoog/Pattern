@@ -51,7 +51,7 @@ namespace Pattern.Mvvm.Forms
             }
 
             var (page, viewmodel) = this.ResolveView(pageType);
-            if (!parameterToNextViewModel.Equals(default(T)))
+            if (!object.Equals(parameterToNextViewModel, default(T)))
             {
                 this.parameters.Add(viewmodel, parameterToNextViewModel);                
             }
