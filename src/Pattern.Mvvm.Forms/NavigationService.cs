@@ -99,7 +99,8 @@ namespace Pattern.Mvvm.Forms
                 await pageNavigateFrom.NavigateFrom(pageType);
             }
 
-            var (page, _) = this.ResolveView(pageType);
+            var (page, viewmodel) = this.ResolveView(pageType);
+            viewmodel.InitAsync().Fire(viewmodel);
             this.navigationHandler?.Navigate(pageType.Name, page);
             this.navigationPage.Navigation.InsertPageBefore(page,
                 this.navigationPage.Navigation.NavigationStack.First());
