@@ -11,7 +11,7 @@ namespace Pattern.Mvvm.Forms
     {
          private readonly Dictionary<string, ICommand> commands = new Dictionary<string, ICommand>();
  
-         protected AsyncCommand<T> CreateCommand<T>(Func<T, Task> method, ILoadingHandler loadingHandler = null,
+         protected AsyncCommand<T> CreateCommand<T>(Func<T, Task> method, Func<T, bool> canExecute = null, ILoadingHandler loadingHandler = null,
              [CallerMemberName] string name = null)
          {
              if (this.commands.ContainsKey(name))
@@ -19,13 +19,14 @@ namespace Pattern.Mvvm.Forms
                  return this.commands[name] as AsyncCommand<T>;
              }
  
-             var command = new AsyncCommand<T>(method, loadingHandler);
+             var command = new AsyncCommand<T>(method, loadingHandler, canExecute);
              this.commands.Add(name, command);
  
              return command;
          }
   
-         protected AsyncCommand CreateCommand(Func<Task> method, ILoadingHandler loadingHandler = null,
+         protected AsyncCommand CreateCommand(Func<Task> method, Func<bool> canExecute = null,
+             ILoadingHandler loadingHandler = null,
              [CallerMemberName] string name = null)
          {
              if (this.commands.ContainsKey(name))
@@ -33,7 +34,7 @@ namespace Pattern.Mvvm.Forms
                  return this.commands[name] as AsyncCommand;
              }
  
-             var command = new AsyncCommand(method, loadingHandler);
+             var command = new AsyncCommand(method, loadingHandler, canExecute);
              this.commands.Add(name, command);
  
              return command;

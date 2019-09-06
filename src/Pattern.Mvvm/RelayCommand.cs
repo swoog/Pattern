@@ -28,7 +28,10 @@ namespace Pattern.Mvvm
 
         public void Execute(object parameter)
         {
-            this.action((T)parameter);
+            if (this.CanExecute(parameter))
+            {
+                this.action((T)parameter);
+            }   
         }
     }
     
@@ -57,7 +60,10 @@ namespace Pattern.Mvvm
 
         public void Execute(object parameter)
         {
-            this.action();
+            if (this.CanExecute(parameter))
+            {
+                this.action();
+            }
         }
     }
 }
