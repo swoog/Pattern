@@ -64,6 +64,7 @@ namespace Pattern.Mvvm.Forms
        
             this.navigationHandler?.Navigate(pageType.Name, page);
             await this.navigationPage.PushAsync(page, animated);
+            await viewmodel.AfterNavigationAsync();
         }
 
         public Task Navigate<T>(Type pageType, Func<T, Task> callBackWhenViewBack)
@@ -105,6 +106,7 @@ namespace Pattern.Mvvm.Forms
             this.navigationPage.Navigation.InsertPageBefore(page,
                 this.navigationPage.Navigation.NavigationStack.First());
             await this.navigationPage.PopToRootAsync(false);
+            await viewmodel.AfterNavigationAsync();
         }
 
         public Task<T> GetParameter<T>(ViewModelBase viewModelBase)

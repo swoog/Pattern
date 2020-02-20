@@ -42,6 +42,11 @@ namespace Pattern.Mvvm.Forms
          
          public abstract Task InitAsync();
 
+         public virtual Task AfterNavigationAsync()
+         {
+             return Task.CompletedTask;
+         }
+
         public abstract Task Resume();
 
         public abstract void StartLoading();
