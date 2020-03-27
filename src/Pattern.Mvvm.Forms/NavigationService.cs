@@ -28,22 +28,24 @@ namespace Pattern.Mvvm.Forms
             this.navigationPage.Popped += this.NavigationPage_Popped;
         }
 
-        public Task Navigate(Type pageType)
+        public Task Navigate(Type pageType,
+            bool animated = true)
         {
-            return this.Navigate<object>(pageType, null);
+            return this.Navigate<object>(pageType, null, animated);
         }
 
-        public Task Navigate<T>(Type pageType, T parameterToNextViewModel)
+        public Task Navigate<T>(Type pageType, T parameterToNextViewModel,
+            bool animated = true)
         {
-            return this.Navigate<object, T>(pageType, null, parameterToNextViewModel);
+            return this.Navigate<object, T>(pageType, null, parameterToNextViewModel, animated);
         }
 
         public async Task Navigate<T, TParameter>(
             Type pageType,
             Func<T, Task> callBackWhenViewBack,
-            TParameter parameterToNextViewModel)
+            TParameter parameterToNextViewModel,
+            bool animated = true)
         {
-            var animated = true;
             if (this.navigationPage.CurrentPage is INavigateFrom pageNavigateFrom)
             {
                 animated = false;
@@ -67,9 +69,10 @@ namespace Pattern.Mvvm.Forms
             await viewmodel.AfterNavigationAsync();
         }
 
-        public Task Navigate<T>(Type pageType, Func<T, Task> callBackWhenViewBack)
+        public Task Navigate<T>(Type pageType, Func<T, Task> callBackWhenViewBack,
+            bool animated = true)
         {
-            return this.Navigate<T, object>(pageType, callBackWhenViewBack, null);
+            return this.Navigate<T, object>(pageType, callBackWhenViewBack, null, animated);
         }
 
         private void NavigationPage_Popped(object sender, NavigationEventArgs e)
@@ -80,10 +83,10 @@ namespace Pattern.Mvvm.Forms
             func(e.Page.BindingContext).Fire();
         }
 
-        public async Task NavigateBack()
+        public async Task NavigateBack(bool animated = true)
         {
             this.navigationHandler?.NavigateBack();
-            await this.navigationPage.PopAsync(true);
+            await this.navigationPage.PopAsync(animated);
             (this.navigationPage.CurrentPage.BindingContext as ViewModelBase)?.Resume();
         }
 

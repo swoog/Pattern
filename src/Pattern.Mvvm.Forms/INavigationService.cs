@@ -6,15 +6,15 @@ namespace Pattern.Mvvm.Forms
 {
     public interface INavigationService
     {
-        Task Navigate(Type pageType);
+        Task Navigate(Type pageType, bool animated = true);
 
-        Task Navigate<T>(Type pageType, T parameterToNextViewModel);
+        Task Navigate<T>(Type pageType, T parameterToNextViewModel, bool animated = true);
 
-        Task Navigate<T, TParameter>(Type pageType, Func<T, Task> callBackWhenViewBack, TParameter parameterToNextViewModel);
+        Task Navigate<T, TParameter>(Type pageType, Func<T, Task> callBackWhenViewBack, TParameter parameterToNextViewModel, bool animated = true);
         
-        Task Navigate<T>(Type pageType, Func<T, Task> callBackWhenViewBack);
+        Task Navigate<T>(Type pageType, Func<T, Task> callBackWhenViewBack, bool animated = true);
 
-        Task NavigateBack();
+        Task NavigateBack(bool animated = true);
 
         Task NavigateRoot(Type pageType);
 
