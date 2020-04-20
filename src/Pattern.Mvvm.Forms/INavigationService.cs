@@ -16,7 +16,8 @@ namespace Pattern.Mvvm.Forms
 
         Task NavigateBack(bool animated = true);
 
-        Task NavigateRoot(Type pageType);
+        Task NavigateRoot(Type pageType, bool animated = true);
+        Task NavigateRoot<TParameter>(Type pageType, TParameter parameterToNextViewModel, bool animated = true);
 
         Task<T> GetParameter<T>(ViewModelBase viewModelBase);
     }

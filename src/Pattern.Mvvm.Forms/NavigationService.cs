@@ -95,20 +95,32 @@ namespace Pattern.Mvvm.Forms
             var page = this.kernel.Get(pageType) as Page;
             return (page, page?.BindingContext as ViewModelBase);
         }
-
-        public async Task NavigateRoot(Type pageType)
+ 
+        public Task NavigateRoot(Type pageType, bool animated = false)
+        {
+            return NavigateRoot<object>(pageType, null, animated);
+        }
+        
+        public async Task NavigateRoot<TParameter>(Type pageType, TParameter parameterToNextViewModel, bool animated = false)
         {
             if (this.navigationPage.CurrentPage is INavigateFrom pageNavigateFrom)
             {
+                animated = false;
                 await pageNavigateFrom.NavigateFrom(pageType);
             }
 
             var (page, viewmodel) = this.ResolveView(pageType);
+            if (!object.Equals(parameterToNextViewModel, default(TParameter)))
+            {
+                this.parameters.Add(viewmodel, parameterToNextViewModel);                
+            }
+
             viewmodel.InitAsync().Fire(viewmodel);
+       
             this.navigationHandler?.Navigate(pageType.Name, page);
             this.navigationPage.Navigation.InsertPageBefore(page,
                 this.navigationPage.Navigation.NavigationStack.First());
-            await this.navigationPage.PopToRootAsync(false);
+            await this.navigationPage.PopToRootAsync(animated);
             await viewmodel.AfterNavigationAsync();
         }
 
