@@ -15,10 +15,10 @@ namespace Pattern.Mvvm.Forms
         private readonly NavigationPage navigationPage;
         private readonly INavigationHandler navigationHandler;
 
-        private readonly ConditionalWeakTable<object, Func<object, Task>> callbacks =
-            new ConditionalWeakTable<object, Func<object, Task>>();
+        private readonly WeakReferenceDictionary<object, Func<object, Task>> callbacks =
+            new WeakReferenceDictionary<object, Func<object, Task>>();
 
-        private readonly ConditionalWeakTable<object, object> parameters = new ConditionalWeakTable<object, object>();
+        private readonly WeakReferenceDictionary<ViewModelBase, object> parameters = new WeakReferenceDictionary<ViewModelBase, object>();
 
         public NavigationService(IKernel kernel, NavigationPage navigationPage, INavigationHandler navigationHandler)
         {
