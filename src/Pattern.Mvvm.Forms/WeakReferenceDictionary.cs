@@ -13,6 +13,11 @@ namespace Pattern.Mvvm.Forms
 
             public override bool Equals(object obj)
             {
+                if (this == obj)
+                {
+                    return true;
+                }
+
                 if (!(obj is Key k))
                 {
                     return false;
@@ -71,6 +76,8 @@ namespace Pattern.Mvvm.Forms
 
         public void Remove(object key)
         {
+            this.Clean();
+
             this.values.Remove(new Key
             {
                 KeyReference = new WeakReference(key)
