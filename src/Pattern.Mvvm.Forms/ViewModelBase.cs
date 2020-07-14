@@ -10,7 +10,9 @@ namespace Pattern.Mvvm.Forms
     public abstract class ViewModelBase : Pattern.Mvvm.ViewModelBase, ILoadingHandler
     {
          private readonly Dictionary<string, ICommand> commands = new Dictionary<string, ICommand>();
- 
+
+         public object Parameter { get; set; }
+
          protected AsyncCommand<T> CreateCommand<T>(Func<T, Task> method, Func<T, bool> canExecute = null, ILoadingHandler loadingHandler = null,
              [CallerMemberName] string name = null)
          {

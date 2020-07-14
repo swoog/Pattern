@@ -17,9 +17,7 @@ namespace Pattern.Mvvm.Forms
 
         private readonly WeakReferenceDictionary<object, Func<object, Task>> callbacks =
             new WeakReferenceDictionary<object, Func<object, Task>>();
-
-        private readonly WeakReferenceDictionary<ViewModelBase, object> parameters = new WeakReferenceDictionary<ViewModelBase, object>();
-
+        
         public NavigationService(IKernel kernel, NavigationPage navigationPage, INavigationHandler navigationHandler)
         {
             this.kernel = kernel;
@@ -55,7 +53,7 @@ namespace Pattern.Mvvm.Forms
             var (page, viewmodel) = this.ResolveView(pageType);
             if (!object.Equals(parameterToNextViewModel, default(T)))
             {
-                this.parameters.Add(viewmodel, parameterToNextViewModel);                
+                viewmodel.Parameter = parameterToNextViewModel;
             }
 
             if (callBackWhenViewBack != null)
@@ -112,7 +110,7 @@ namespace Pattern.Mvvm.Forms
             var (page, viewmodel) = this.ResolveView(pageType);
             if (!object.Equals(parameterToNextViewModel, default(TParameter)))
             {
-                this.parameters.Add(viewmodel, parameterToNextViewModel);                
+                viewmodel.Parameter = parameterToNextViewModel;
             }
 
             viewmodel.InitAsync().Fire(viewmodel);
@@ -126,9 +124,9 @@ namespace Pattern.Mvvm.Forms
 
         public Task<T> GetParameter<T>(ViewModelBase viewModelBase)
         {
-            if (this.parameters.TryGetValue(viewModelBase, out var parameter))
+            if (viewModelBase.Parameter != null)
             {
-                return Task.FromResult((T) parameter);
+                return Task.FromResult((T)viewModelBase.Parameter);
             }
             
             return Task.FromResult(default(T));
