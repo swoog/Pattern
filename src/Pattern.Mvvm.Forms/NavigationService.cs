@@ -14,9 +14,6 @@ namespace Pattern.Mvvm.Forms
 
         private readonly NavigationPage navigationPage;
         private readonly INavigationHandler navigationHandler;
-
-        private readonly WeakReferenceDictionary<object, Func<object, Task>> callbacks =
-            new WeakReferenceDictionary<object, Func<object, Task>>();
         
         public NavigationService(IKernel kernel, NavigationPage navigationPage, INavigationHandler navigationHandler)
         {
@@ -58,7 +55,7 @@ namespace Pattern.Mvvm.Forms
 
             if (callBackWhenViewBack != null)
             {
-                this.callbacks.Add(viewmodel, o => callBackWhenViewBack((T) o));                
+                viewmodel.Callback = o => callBackWhenViewBack((T) o);
             }
             viewmodel.InitAsync().Fire(viewmodel);
        
@@ -75,10 +72,9 @@ namespace Pattern.Mvvm.Forms
 
         private void NavigationPage_Popped(object sender, NavigationEventArgs e)
         {
-            if (!this.callbacks.TryGetValue(e.Page.BindingContext, out var func))
-                return;
-            this.callbacks.Remove(e.Page.BindingContext);
-            func(e.Page.BindingContext).Fire();
+            var viewModel = e.Page.BindingContext as ViewModelBase;
+            var func = viewModel?.Callback;
+            func?.Invoke(e.Page.BindingContext)?.Fire();
         }
 
         public async Task NavigateBack(bool animated = true)
