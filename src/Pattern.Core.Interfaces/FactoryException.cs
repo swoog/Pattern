@@ -8,5 +8,10 @@
             : base($"Injection have found many factories for {instanciatedType.Name}.")
         {
         }
+        
+        public FactoryException()
+            : base($"Injection have not found any factory.")
+        {
+        }
     }
 }

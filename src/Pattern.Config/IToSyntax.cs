@@ -10,6 +10,6 @@ namespace Pattern.Config
 
         IScopeSyntax ToMethod<TTo>(System.Func<TTo> p) where TTo : TFrom;
 
-        void ToFactory<T>() where T : IFactory;
+        void ToFactory<T>() where T : class, IFactory;
     }
 }

@@ -6,7 +6,7 @@
     {
         void Bind(Type @from, IFactory toFactory);
 
-        object Get(Type? parentType, Type @from);
+        object? Get(Type? parentType, Type @from);
 
         bool CanResolve(Type? parentType, Type @from);
     }

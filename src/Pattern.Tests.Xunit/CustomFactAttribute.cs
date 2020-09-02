@@ -13,14 +13,8 @@ namespace Pattern.Tests.Xunit
 
         public override string DisplayName
         {
-            get
-            {
-                return this.displayName;
-            }
-            set
-            {
-                this.displayName = value.Replace("_", " ");
-            }
+            get => this.displayName;
+            set => this.displayName = value.Replace("_", " ");
         }
     }
 }

@@ -1,3 +1,5 @@
+using Xunit;
+
 namespace Pattern.Config.Tests
 {
     using NSubstitute;
@@ -75,9 +77,20 @@ namespace Pattern.Config.Tests
         [NamedFact(nameof(Should_bind_class_When_bind_to_factory))]
         public void Should_bind_class_When_bind_to_factory()
         {
+            this.kernel.Get(null, typeof(FakeFactory)).Returns(new FakeFactory());
+            
             this.kernel.Bind<ISimpleClass>().ToFactory<FakeFactory>();
 
             this.kernel.Received(1).Bind(typeof(ISimpleClass), Arg.Any<FakeFactory>());
+        }
+        
+        [NamedFact(nameof(Should_throw_not_found_exception_When_bind_to_factory_not_exists))]
+        public void Should_throw_not_found_exception_When_bind_to_factory_not_exists()
+        {
+            var exception = Assert.Throws<FactoryException>(() =>
+                this.kernel.Bind<ISimpleClass>().ToFactory<FakeFactory>());
+
+            Assert.Equal("Injection have not found any factory.", exception.Message);
         }
     }
 }

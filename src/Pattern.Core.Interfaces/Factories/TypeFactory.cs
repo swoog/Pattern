@@ -137,7 +137,7 @@ namespace Pattern.Core.Interfaces.Factories
             return null;
         }
 
-        private object Resolve(Type parameterType, Type typeToInject)
+        private object? Resolve(Type parameterType, Type typeToInject)
         {
             return this.kernel.Get(typeToInject, parameterType);
         }

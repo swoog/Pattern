@@ -40,10 +40,15 @@ namespace Pattern.Config
         }
 
         public void ToFactory<T>()
-            where T : IFactory
+            where T : class, IFactory
         {
             var factory = this.kernel.Get<T>();
 
+            if (factory == null)
+            {
+                throw new FactoryException();
+            }
+            
             this.kernel.Bind(typeof(TFrom), factory);
         }
     }

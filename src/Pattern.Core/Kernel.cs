@@ -20,7 +20,7 @@
             this.Bind(typeof(IKernel), new LambdaFactory(c => this));
         }
 
-        public Action<CallContext> Log { get; set; }
+        public Action<CallContext>? Log { get; set; }
 
         public void Bind(Type @from, IFactory toFactory)
         {
@@ -34,7 +34,7 @@
             }
         }
 
-        public bool CanResolve(Type parentType, Type @from)
+        public bool CanResolve(Type? parentType, Type @from)
         {
             var callContext = CreateCallContext(parentType, @from);
 
@@ -51,7 +51,7 @@
             return this.GetFactories(ref callContext).Count >= 1;
         }
 
-        public object Get(Type parentType, Type @from)
+        public object? Get(Type? parentType, Type @from)
         {
             if (@from == null)
             {
@@ -69,6 +69,11 @@
                 var instanciateValues = factories.Select(t => t.Create(callContext));
                 var list = CreateList(callContext);
 
+                if (list == null)
+                {
+                    return null;
+                }
+                
                 foreach (var value in instanciateValues)
                 {
                     list.Add(value);
@@ -90,22 +95,27 @@
             return factories[0].Create(callContext);
         }
 
-        private static IList CreateList(CallContext callContext)
+        private static IList? CreateList(CallContext callContext)
         {
             var constructorInfo = GetConstructorInfo(callContext.EnumerableType)
                 ?? GetConstructorInfo(typeof(List<>).MakeGenericType(callContext.InstanciatedType));
 
-            return constructorInfo.Invoke(null) as IList;
+            return constructorInfo?.Invoke(null) as IList;
         }
 
-        private static ConstructorInfo GetConstructorInfo(Type enumerableType)
+        private static ConstructorInfo? GetConstructorInfo(Type? enumerableType)
         {
+            if (enumerableType == null)
+            {
+                return null;
+            }
+            
             return enumerableType.GetTypeInfo().DeclaredConstructors.FirstOrDefault();
         }
 
         private Dictionary<string, CallContext> callContextCache = new Dictionary<string, CallContext>();
 
-        private CallContext CreateCallContext(Type parentType, Type @from)
+        private CallContext CreateCallContext(Type? parentType, Type @from)
         {
             var key = $"{parentType?.FullName}_{@from.FullName}";
 
@@ -121,7 +131,7 @@
             return callContext;
         }
 
-        private CallContext CreateInternalCallContext(Type parentType, Type @from)
+        private CallContext CreateInternalCallContext(Type? parentType, Type @from)
         {
             var typeInfo = @from.GetTypeInfo();
             var enumerableType = GetEnumerableType(typeInfo.ImplementedInterfaces);
@@ -143,7 +153,7 @@
             return this.binds.ContainsKey(callContext.InstanciatedType);
         }
 
-        private static Type GetEnumerableType(IEnumerable<Type> typeInfoImplementedInterfaces)
+        private static Type? GetEnumerableType(IEnumerable<Type> typeInfoImplementedInterfaces)
         {
             foreach (var typeInfoImplementedInterface in typeInfoImplementedInterfaces)
             {

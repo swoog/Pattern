@@ -4,14 +4,14 @@ namespace Pattern.Core.Interfaces
 
     public static class KernelExtensions
     {
-        public static object Get(this IKernel kernel, Type @from)
+        public static object? Get(this IKernel kernel, Type @from)
         {
             return kernel.Get(null, @from);
         }
 
-        public static T Get<T>(this IKernel kernel)
+        public static T? Get<T>(this IKernel kernel) where T : class
         {
-            return (T)kernel.Get(null, typeof(T));
+            return kernel.Get(null, typeof(T)) as T;
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Pattern.Core.Interfaces
     {
         public CallContext(
             Type instanciatedType,
-            Type parent,
+            Type? parent,
             bool automaticInstance = true,
             Type? enumerableType = null,
             Type[]? genericTypes = null)
@@ -22,7 +22,7 @@ namespace Pattern.Core.Interfaces
 
         public Type InstanciatedType { get; }
 
-        public Type Parent { get; }
+        public Type? Parent { get; }
 
         public bool AutomaticInstance { get; }
 
