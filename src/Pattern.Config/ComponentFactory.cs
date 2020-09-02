@@ -11,7 +11,7 @@ namespace Pattern.Config
 
         public IFactory Factory { get; set; }
 
-        public object Create(CallContext callContext)
+        public object? Create(CallContext callContext)
         {
             return this.Factory.Create(callContext);
         }

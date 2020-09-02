@@ -24,7 +24,13 @@ namespace Pattern.Core.Interfaces.Factories
                 {
                     if (!this.instance.ContainsKey(key))
                     {
-                        this.instance.Add(key, this.factory.Create(callContext));
+                        var value = this.factory.Create(callContext);
+                        if (value == null)
+                        {
+                            throw new FactoryException(callContext.InstanciatedType);
+                        }
+
+                        this.instance.Add(key, value);
                     }
                 }
             }

@@ -15,7 +15,7 @@ namespace Pattern.Core.Interfaces.Factories
         private readonly bool isGenericType;
         private readonly TypeInfo typeInfo;
 
-        private ConstructorResult constructor;
+        private ConstructorResult? constructor;
 
         public TypeFactory(Type typeToCreate, IKernel kernel)
         {
@@ -25,7 +25,7 @@ namespace Pattern.Core.Interfaces.Factories
             this.typeInfo = this.TypeToCreate.GetTypeInfo();
         }
 
-        public virtual object Create(CallContext callContext)
+        public virtual object? Create(CallContext callContext)
         {
             var typeToCreate = this.typeInfo;
 
@@ -57,9 +57,9 @@ namespace Pattern.Core.Interfaces.Factories
             if (this.constructor != null)
             {
                 var parameters = this.constructor.Parameters
-                    .Select(arg => this.Resolve(arg.Type, TypeToCreate)).ToArray();
+                    .Select(arg => this.Resolve(arg.Type ?? throw new NotSupportedException(), TypeToCreate)).ToArray();
 
-                return this.constructor.Constructor.Invoke(parameters);
+                return this.constructor.Constructor?.Invoke(parameters);
             }
 
             var constructors2 = typeToCreate
@@ -114,10 +114,10 @@ namespace Pattern.Core.Interfaces.Factories
                 ResolveResultStruct(arg, typeof(bool)) ??
                 ResolveResultStruct(arg, typeof(IntPtr)) ??
                 ResolveResultFunc(arg) ??
-                new ResolveResult { Can = this.kernel.CanResolve(parentType, arg.ParameterType), Type = arg.ParameterType, IsInjectedType = true };
+                new ResolveResult (arg.ParameterType) { Can = this.kernel.CanResolve(parentType, arg.ParameterType), IsInjectedType = true };
         }
 
-        private static ResolveResult ResolveResultStruct(ParameterInfo arg, Type type)
+        private static ResolveResult? ResolveResultStruct(ParameterInfo arg, Type type)
         {
             if (arg.ParameterType == type)
             {
@@ -127,7 +127,7 @@ namespace Pattern.Core.Interfaces.Factories
             return null;
         }
 
-        private static ResolveResult ResolveResultFunc(ParameterInfo arg)
+        private static ResolveResult? ResolveResultFunc(ParameterInfo arg)
         {
             if (arg.ParameterType.Name.StartsWith("Func"))
             {
@@ -144,9 +144,19 @@ namespace Pattern.Core.Interfaces.Factories
 
         public class ResolveResult
         {
+            public ResolveResult(Type type)
+            {
+                this.Type = type;
+            }
+
+            public ResolveResult()
+            {
+                this.Type = null;
+            }
+
             public bool Can { get; set; }
 
-            public Type Type { get; internal set; }
+            public Type? Type { get; }
 
             public bool IsInjectedType { get; set; }
         }
@@ -155,9 +165,9 @@ namespace Pattern.Core.Interfaces.Factories
         {
             public bool Can { get; set; }
 
-            public ConstructorInfo Constructor { get; set; }
+            public ConstructorInfo? Constructor { get; set; }
 
-            public ResolveResult[] Parameters { get; internal set; }
+            public ResolveResult[] Parameters { get; internal set; } = new ResolveResult[0];
         }
     }
 }

@@ -2,6 +2,9 @@
   <PropertyGroup>
     <VersionPrefix>99.99.99.99</VersionPrefix>
     <TargetFramework>netstandard1.0</TargetFramework>
+    <LangVersion>8</LangVersion>
+    <Nullable>enable</Nullable>
+    <WarningsAsErrors>nullable</WarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="NETStandard.Library" Version="1.6" />

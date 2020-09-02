@@ -4,6 +4,6 @@
 
     public interface IFactory
     {
-        object Create(CallContext callContext);
+        object? Create(CallContext callContext);
     }
 }

@@ -8,8 +8,8 @@ namespace Pattern.Core.Interfaces
             Type instanciatedType,
             Type parent,
             bool automaticInstance = true,
-            Type enumerableType = null,
-            Type[] genericTypes = null)
+            Type? enumerableType = null,
+            Type[]? genericTypes = null)
         {
             this.InstanciatedType = instanciatedType;
             this.Parent = parent;
@@ -18,7 +18,7 @@ namespace Pattern.Core.Interfaces
             this.GenericTypes = genericTypes;
         }
 
-        public Type[] GenericTypes { get; }
+        public Type[]? GenericTypes { get; }
 
         public Type InstanciatedType { get; }
 
@@ -26,6 +26,6 @@ namespace Pattern.Core.Interfaces
 
         public bool AutomaticInstance { get; }
 
-        public Type EnumerableType { get; }
+        public Type? EnumerableType { get; }
     }
 }

@@ -4,7 +4,7 @@ namespace Pattern.Core.Interfaces
 
     public class InjectionException : Exception
     {
-        public InjectionException(Type @from, Type typeToInject)
+        public InjectionException(Type? @from, Type typeToInject)
             :base($"Injection not found for {from?.Name} when injected in {typeToInject?.Name}.")
         {
             
