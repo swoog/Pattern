@@ -23,10 +23,7 @@ namespace Pattern.Config
             where TTo : TFrom
         {
             var typeFactory = new TypeFactory(typeof(TTo), this.kernel);
-            var componentFactory = new ComponentFactory
-            {
-                Factory = typeFactory
-            };
+            var componentFactory = new ComponentFactory(typeFactory);
 
             this.kernel.Bind(typeof(TFrom), componentFactory);
 
@@ -36,10 +33,7 @@ namespace Pattern.Config
         public IScopeSyntax ToMethod<TTo>(Func<TTo> p) where TTo : TFrom
         {
             var typeFactory = new LambdaFactory(c => p());
-            var componentFactory = new ComponentFactory
-            {
-                Factory = typeFactory
-            };
+            var componentFactory = new ComponentFactory(typeFactory);
 
             this.kernel.Bind(typeof(TFrom), componentFactory);
             return new ScopeSyntax(componentFactory);

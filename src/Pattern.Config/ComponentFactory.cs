@@ -4,6 +4,11 @@ namespace Pattern.Config
 
     public class ComponentFactory : IFactory
     {
+        public ComponentFactory(IFactory factory)
+        {
+            this.Factory = factory;
+        }
+
         public IFactory Factory { get; set; }
 
         public object Create(CallContext callContext)
