@@ -12,51 +12,77 @@ namespace Pattern.Core.Interfaces.Factories
         public Type TypeToCreate { get; }
 
         private readonly IKernel kernel;
+        private readonly bool isGenericType;
+        private readonly TypeInfo typeInfo;
+
+        private ConstructorResult constructor;
 
         public TypeFactory(Type typeToCreate, IKernel kernel)
         {
             this.TypeToCreate = typeToCreate;
             this.kernel = kernel;
+            this.isGenericType = typeToCreate.GetTypeInfo().IsGenericTypeDefinition;
+            this.typeInfo = this.TypeToCreate.GetTypeInfo();
         }
 
         public virtual object Create(CallContext callContext)
         {
-            var typeToCreate = this.TypeToCreate;
+            var typeToCreate = this.typeInfo;
 
-            if (typeToCreate.GetTypeInfo().IsGenericTypeDefinition)
+            if (this.isGenericType)
             {
-                typeToCreate = typeToCreate.MakeGenericType(callContext.GenericTypes);
+                typeToCreate = this.TypeToCreate.MakeGenericType(callContext.GenericTypes).GetTypeInfo();
+
+                var constructors = typeToCreate
+                    .DeclaredConstructors
+                    .Where(IsPublic)
+                    .Select(CanResolve).ToArray();
+                
+                this.constructor = constructors
+                    .OrderByDescending(c => c.Parameters.Length)
+                    .FirstOrDefault(c => c.Can);
+            }
+            else if (this.constructor == null)
+            {
+                var constructors = typeToCreate
+                    .DeclaredConstructors
+                    .Where(IsPublic)
+                    .Select(CanResolve).ToArray();
+                
+                this.constructor = constructors
+                    .OrderByDescending(c => c.Parameters.Length)
+                    .FirstOrDefault(c => c.Can);
             }
 
-            var constructors = typeToCreate
-                .GetTypeInfo()
+            if (this.constructor != null)
+            {
+                var parameters = this.constructor.Parameters
+                    .Select(arg => this.Resolve(arg.Type, TypeToCreate)).ToArray();
+
+                return this.constructor.Constructor.Invoke(parameters);
+            }
+
+            var constructors2 = typeToCreate
                 .DeclaredConstructors
-                .Where(c => c.IsPublic)
-                .Select(CanResolve).ToList();
-
-            var constructor = constructors
-                .OrderByDescending(c => c.Parameters?.Count() ?? 0)
-                .FirstOrDefault(c => c.Can);
-
-            if (constructor != null)
-            {
-                var parameters = constructor.Parameters
-                    .Select(arg => arg.Value ?? this.Resolve(arg.Type, typeToCreate)).ToArray();
-
-                return constructor.Constructor.Invoke(parameters);
-            }
-
-            var typetoInject = constructors
+                .Where(IsPublic)
+                .Select(CanResolve).ToArray();
+            
+            var typetoInject = constructors2
                 .FirstOrDefault(c => c.Parameters?.All(p => p.IsInjectedType) ?? false)
                 ?.Parameters
                 ?.FirstOrDefault(p => !p.Can && p.IsInjectedType);
 
             if (typetoInject != null)
             {
-                throw new InjectionException(typetoInject.Type, typeToCreate);
+                throw new InjectionException(typetoInject.Type, TypeToCreate);
             }
 
-            throw new ConstructorSearchException(typeToCreate);
+            throw new ConstructorSearchException(TypeToCreate);
+        }
+
+        private static bool IsPublic(ConstructorInfo constructorInfo)
+        {
+            return constructorInfo.IsPublic;
         }
 
         private ConstructorResult CanResolve(ConstructorInfo constructorInfo)
@@ -68,7 +94,9 @@ namespace Pattern.Core.Interfaces.Factories
 
             var parameters = constructorInfo.GetParameters();
 
-            var parametersResult = parameters.Select(p => CanResolve(constructorInfo.DeclaringType, p)).ToList();
+            var parametersResult = parameters
+                .Select(p => CanResolve(constructorInfo.DeclaringType, p))
+                .ToArray();
 
             return new ConstructorResult
             {
@@ -120,8 +148,6 @@ namespace Pattern.Core.Interfaces.Factories
 
             public Type Type { get; internal set; }
 
-            public object Value { get; set; }
-
             public bool IsInjectedType { get; set; }
         }
 
@@ -131,7 +157,7 @@ namespace Pattern.Core.Interfaces.Factories
 
             public ConstructorInfo Constructor { get; set; }
 
-            public IEnumerable<ResolveResult> Parameters { get; internal set; }
+            public ResolveResult[] Parameters { get; internal set; }
         }
     }
 }

@@ -1,9 +1,8 @@
 ﻿using System;
+using Unity;
 
 namespace Pattern.Core.Unity
 {
-    using Microsoft.Practices.Unity;
-
     using Pattern.Core.Interfaces;
     using Pattern.Core.Interfaces.Factories;
 

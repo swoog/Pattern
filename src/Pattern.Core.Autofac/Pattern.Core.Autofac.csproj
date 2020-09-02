@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <VersionPrefix>99.99.99.99</VersionPrefix>
-    <TargetFramework>net45</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <AssemblyName>Pattern.Core.Autofac</AssemblyName>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Autofac" Version="4.6.0" />
+    <PackageReference Include="Autofac" Version="5.2.0" />
   </ItemGroup>
 
   <ItemGroup>

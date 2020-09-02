@@ -8,14 +8,6 @@ namespace Pattern.Perf
     using System.Linq;
     using System.Text;
 
-    using Pattern.Core;
-    using Pattern.Core.Autofac;
-    using Pattern.Core.Interfaces;
-    using Pattern.Core.Interfaces.Factories;
-    using Pattern.Core.Ninject;
-    using Pattern.Core.SimpleIoc;
-    using Pattern.Core.Unity;
-
     public class MyClass : IMyClass
     {
 
@@ -25,12 +17,22 @@ namespace Pattern.Perf
     {
 
     }
+    
+    public class MyClassGeneric<T> : IMyClassGeneric<T>
+    {
 
-    public class Program
+    }
+
+    public interface IMyClassGeneric<T>
+    {
+
+    }
+
+    public partial class Program
     {
         static void Main(string[] args)
         {
-            var numbers = new int[] { 100000, 10000, 1000, 1 };
+            var numbers = new int[] {  1, 1000, 10000, 100000 };
 
             var perfsNumbers = new List<PerfNumber>();
 
@@ -54,48 +56,46 @@ namespace Pattern.Perf
                 var plurial = perfsNumber.Number > 1 ? "s" : string.Empty;
                 sbReports.AppendLine($"For {perfsNumber.Number} instance{plurial} :");
                 sbReports.AppendLine();
-                sbReports.AppendLine($"| Container | Milisecondes | Coef |");
-                sbReports.AppendLine($"| - | - | -: |");
+                sbReports.AppendLine($"| Container | Init | Milisecondes | Coef |");
+                sbReports.AppendLine($"| - | - | - | -: |");
                 foreach (var perf in perfsNumber.Perfs)
                 {
-                    sbReports.AppendLine($"| {perf.Name} | {perf.ElapsedMilliseconds} | x{perf.Coef:##.00} |");
+                    sbReports.AppendLine($"| {perf.Name} | {perf.ElapsedMillisecondsInit} | {perf.ElapsedMilliseconds} | x{perf.Coef:##.00} |");
                 }
 
                 sbReports.AppendLine();
             }
 
             File.WriteAllText("../performances.md", sbReports.ToString());
-#if DEBUG
-            Console.ReadLine();
-#endif
         }
 
         private static List<PerfStat> PerfStatsFor(string[] args, int count)
         {
-            var kernels = new IKernel[]
+            var perfAnalysers = new IPerfAnalyser[]
                               {
-                                  new NinjectStandardKernel(),
-                                  new UnityStandardKernel(),
-                                  new AutofacKernel(),
-                                  new SimpleIocKernel(),
-                                  new Kernel()
+                                  new ServiceCollectionPerfAnalyser(),
+                                  new NinjectPerfAnalyser(), 
+                                  new AutofacPerfAnalyser(), 
+                                  new KernelPerfAnalyser(),
+                                  new UnityPerfAnalyser(),
                               };
-
-            foreach (var kernel in kernels)
-            {
-                kernel.Bind(typeof(IMyClass), new TypeFactory(typeof(MyClass), kernel));
-            }
-
-            foreach (var kernel in kernels.OfType<AutofacKernel>())
-            {
-                kernel.Init();
-            }
-
+            
             var perfs = new List<PerfStat>();
 
-            foreach (var kernel in kernels)
+            foreach (var kernel in perfAnalysers)
             {
-                perfs.Add(Perf(kernel, count));
+                var stopWatch = new Stopwatch();
+                stopWatch.Start();
+
+                kernel.Create();
+                kernel.Bind();
+                kernel.Init();
+
+                stopWatch.Stop();
+
+                var perfStat = Perf(kernel, count);
+                perfStat.ElapsedMillisecondsInit = stopWatch.ElapsedMilliseconds;
+                perfs.Add(perfStat);
             }
 
             perfs = perfs.OrderBy(p => p.ElapsedMilliseconds).ToList();
@@ -110,19 +110,19 @@ namespace Pattern.Perf
             return perfs;
         }
 
-        private static PerfStat Perf(IKernel kernel, int l)
+        private static PerfStat Perf(IPerfAnalyser kernel, int l)
         {
             var stopWatch = new Stopwatch();
             stopWatch.Start();
 
             for (int i = 0; i < l; i++)
             {
-                var c = kernel.Get(null, typeof(IMyClass));
+                kernel.Get();
             }
 
             stopWatch.Stop();
 
-            return new PerfStat(kernel.GetType().Name, stopWatch.ElapsedMilliseconds, l);
+            return new PerfStat(kernel.Name, stopWatch.ElapsedMilliseconds, l);
         }
     }
 
@@ -142,6 +142,7 @@ namespace Pattern.Perf
         public int Count { get; }
 
         public double Coef { get; set; }
+        public long ElapsedMillisecondsInit { get; set; }
 
         public override string ToString()
         {

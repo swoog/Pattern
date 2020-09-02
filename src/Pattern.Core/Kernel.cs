@@ -87,7 +87,7 @@
                 return null;
             }
 
-            return factories.Select(t => t.Create(callContext)).Single();
+            return factories[0].Create(callContext);
         }
 
         private static IList CreateList(CallContext callContext)

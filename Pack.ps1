@@ -1,4 +1,4 @@
-Param(
+isGenericTypeParam(
   [string]$versionNumber
 )
 Write-Output "Pack all projects"
