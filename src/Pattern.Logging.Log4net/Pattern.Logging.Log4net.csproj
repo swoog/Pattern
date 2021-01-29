@@ -16,7 +16,7 @@
       <Version>1.6.1</Version>
     </PackageReference>
     <PackageReference Include="log4net">
-      <Version>2.0.5</Version>
+      <Version>2.0.10</Version>
     </PackageReference>
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
